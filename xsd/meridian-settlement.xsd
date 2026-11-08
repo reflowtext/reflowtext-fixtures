@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Meridian Payments: settlement batch, version 2.
+  Validates xml/meridian-settlement-batch.xml.
+
+  Shows, in one self-contained schema:
+    * simple types narrowed by restriction (patterns, ranges, enumerations)
+    * a simple-content Money type, then narrowed again by restriction
+    * an abstract Party extended into Merchant and Acquirer
+    * an abstract run line with a substitution group of five concrete kinds
+    * model groups, attribute groups, choice inside sequence, occurs ranges
+    * identity constraints (key / keyref / unique) across the document
+
+  Meridian Payments is fictional. Released under CC0-1.0.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="urn:example:meridian:settlement:2"
+           xmlns:m="urn:example:meridian:settlement:2"
+           targetNamespace="urn:example:meridian:settlement:2"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="2.3.0">
+
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      A settlement batch is the file Meridian hands to its bank partner at the end of
+      each payout cycle: the merchants being paid, the sealed runs that make up each
+      payout, every line in those runs, and control totals the bank checks before it
+      moves any money. Money is always an integer count of minor units plus a currency.
+    </xs:documentation>
+  </xs:annotation>
+
+  <!-- ================================================================ simple types -->
+
+  <xs:simpleType name="Identifier">
+    <xs:annotation>
+      <xs:documentation>A prefixed identifier: two to four lower-case letters, an
+        underscore, and twenty lower-case alphanumerics.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[a-z]{2,4}_[0-9a-z]{20}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CurrencyCode">
+    <xs:annotation>
+      <xs:documentation>Currencies Meridian settles in this region.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="EUR"/>
+      <xs:enumeration value="SEK"/>
+      <xs:enumeration value="NOK"/>
+      <xs:enumeration value="DKK"/>
+      <xs:enumeration value="PLN"/>
+      <xs:enumeration value="CHF"/>
+      <xs:enumeration value="GBP"/>
+      <xs:enumeration value="JPY"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CountryCode">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[A-Z]{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="BasisPoints">
+    <xs:annotation>
+      <xs:documentation>Hundredths of a per cent: 145 is 1.45 %.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:maxInclusive value="1000"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Sha256">
+    <xs:restriction base="xs:hexBinary">
+      <xs:length value="32"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="MerchantCategory">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="food-and-drink"/>
+      <xs:enumeration value="retail-goods"/>
+      <xs:enumeration value="digital-goods"/>
+      <xs:enumeration value="travel"/>
+      <xs:enumeration value="professional-services"/>
+      <xs:enumeration value="education"/>
+      <xs:enumeration value="nonprofit"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Cadence">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="daily"/>
+      <xs:enumeration value="weekly"/>
+      <xs:enumeration value="monthly"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="RefundReason">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="requested-by-customer"/>
+      <xs:enumeration value="duplicate"/>
+      <xs:enumeration value="goods-not-received"/>
+      <xs:enumeration value="fraudulent"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ================================================================ money -->
+
+  <xs:complexType name="Money">
+    <xs:annotation>
+      <xs:documentation>Integer minor units with a currency. Negative for debits.
+        Never a decimal: ten cents is 10, not 0.10.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:long">
+        <xs:attribute name="currency" type="CurrencyCode" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="NonNegativeMoney">
+    <xs:annotation>
+      <xs:documentation>Money that cannot be negative: gross, fees and payouts.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:restriction base="Money">
+        <xs:minInclusive value="0"/>
+      </xs:restriction>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- ================================================================ shared attributes -->
+
+  <xs:attributeGroup name="Audit">
+    <xs:annotation>
+      <xs:documentation>When an object was created, and by which system.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="created" type="xs:dateTime" use="required"/>
+    <xs:attribute name="source" use="optional" default="api">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="api"/>
+          <xs:enumeration value="dashboard"/>
+          <xs:enumeration value="scheduler"/>
+          <xs:enumeration value="support"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+
+  <!-- ================================================================ parties -->
+
+  <xs:complexType name="Address">
+    <xs:sequence>
+      <xs:element name="line" type="xs:string" maxOccurs="3"/>
+      <xs:element name="city" type="xs:string"/>
+      <xs:element name="postalCode" type="xs:token" minOccurs="0"/>
+      <xs:element name="country" type="CountryCode"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Party" abstract="true">
+    <xs:annotation>
+      <xs:documentation>Anyone money moves to or from. Merchant and Acquirer extend it.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="legalName" type="xs:string"/>
+      <xs:element name="address" type="Address"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="Identifier" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="BankAccount">
+    <xs:annotation>
+      <xs:documentation>Either an IBAN-style account or a domestic one.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="holder" type="xs:string"/>
+      <xs:choice>
+        <xs:sequence>
+          <xs:element name="iban" type="xs:token"/>
+          <xs:element name="bic" type="xs:token" minOccurs="0"/>
+        </xs:sequence>
+        <xs:sequence>
+          <xs:element name="country" type="CountryCode"/>
+          <xs:element name="routingNumber" type="xs:token"/>
+          <xs:element name="accountNumber" type="xs:token"/>
+        </xs:sequence>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="id" type="Identifier" use="required"/>
+    <xs:attribute name="currency" type="CurrencyCode" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="FeeTier">
+    <xs:attribute name="upToVolume" type="xs:nonNegativeInteger" use="optional">
+      <xs:annotation>
+        <xs:documentation>Ceiling of the tier in minor units of the settlement currency.
+          Absent on the last, open-ended tier.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="percent" type="BasisPoints" use="required"/>
+    <xs:attribute name="fixed" type="xs:nonNegativeInteger" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Merchant">
+    <xs:complexContent>
+      <xs:extension base="Party">
+        <xs:sequence>
+          <xs:element name="tradingName" type="xs:string" minOccurs="0"/>
+          <xs:element name="category" type="MerchantCategory"/>
+          <xs:element name="window">
+            <xs:complexType>
+              <xs:attribute name="cadence" type="Cadence" use="required"/>
+              <xs:attribute name="cutoff" type="xs:time" use="required"/>
+              <xs:attribute name="timeZone" type="xs:token" use="required"/>
+              <xs:attribute name="delayDays" use="optional" default="2">
+                <xs:simpleType>
+                  <xs:restriction base="xs:nonNegativeInteger">
+                    <xs:maxInclusive value="14"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="feeSchedule">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="tier" type="FeeTier" minOccurs="1" maxOccurs="4"/>
+              </xs:sequence>
+              <xs:attribute name="effectiveFrom" type="xs:date" use="required"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="payoutAccount" type="BankAccount" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="Audit"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Acquirer">
+    <xs:complexContent>
+      <xs:extension base="Party">
+        <xs:sequence>
+          <xs:element name="bic" type="xs:token"/>
+        </xs:sequence>
+        <xs:attribute name="role" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:token">
+              <xs:enumeration value="sponsor-bank"/>
+              <xs:enumeration value="settlement-bank"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- ================================================================ run lines -->
+
+  <xs:group name="Posting">
+    <xs:annotation>
+      <xs:documentation>What every run line records, whatever its kind.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="amount" type="Money"/>
+      <xs:element name="posted" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:group>
+
+  <xs:complexType name="Line" abstract="true">
+    <xs:annotation>
+      <xs:documentation>One immutable line of a run. A correction is a new line with
+        reverses set, never an edit.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="Posting"/>
+    </xs:sequence>
+    <xs:attribute name="seq" type="xs:positiveInteger" use="required"/>
+    <xs:attribute name="source" type="Identifier" use="required"/>
+    <xs:attribute name="reverses" type="xs:positiveInteger" use="optional"/>
+  </xs:complexType>
+
+  <xs:element name="line" type="Line" abstract="true"/>
+
+  <xs:complexType name="CaptureLine">
+    <xs:complexContent>
+      <xs:extension base="Line">
+        <xs:sequence>
+          <xs:element name="method">
+            <xs:complexType>
+              <xs:choice>
+                <xs:element name="card">
+                  <xs:complexType>
+                    <xs:attribute name="network" type="xs:token" use="required"/>
+                    <xs:attribute name="last4" use="required">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:token">
+                          <xs:pattern value="[0-9]{4}"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="funding" use="optional">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:token">
+                          <xs:enumeration value="credit"/>
+                          <xs:enumeration value="debit"/>
+                          <xs:enumeration value="prepaid"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="accountDebit">
+                  <xs:complexType>
+                    <xs:attribute name="mandate" type="Identifier" use="required"/>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="wallet">
+                  <xs:complexType>
+                    <xs:attribute name="provider" type="xs:token" use="required"/>
+                  </xs:complexType>
+                </xs:element>
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="fx" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Present when the payer paid in another currency.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="original" type="Money"/>
+                <xs:element name="rate" type="xs:decimal"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="reference" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="FeeLine">
+    <xs:complexContent>
+      <xs:extension base="Line">
+        <xs:attribute name="tier" type="xs:positiveInteger" use="required"/>
+        <xs:attribute name="schedule" type="xs:date" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="RefundLine">
+    <xs:complexContent>
+      <xs:extension base="Line">
+        <xs:sequence>
+          <xs:element name="reason" type="RefundReason"/>
+        </xs:sequence>
+        <xs:attribute name="capture" type="Identifier" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ReserveLine">
+    <xs:complexContent>
+      <xs:extension base="Line">
+        <xs:attribute name="direction" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:token">
+              <xs:enumeration value="hold"/>
+              <xs:enumeration value="release"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="releaseOn" type="xs:date" use="optional"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AdjustmentLine">
+    <xs:complexContent>
+      <xs:extension base="Line">
+        <xs:sequence>
+          <xs:element name="explanation" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="approvedBy" type="xs:token" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="capture" type="CaptureLine" substitutionGroup="line"/>
+  <xs:element name="fee" type="FeeLine" substitutionGroup="line"/>
+  <xs:element name="refund" type="RefundLine" substitutionGroup="line"/>
+  <xs:element name="reserve" type="ReserveLine" substitutionGroup="line"/>
+  <xs:element name="adjustment" type="AdjustmentLine" substitutionGroup="line"/>
+
+  <!-- ================================================================ runs and payouts -->
+
+  <xs:complexType name="Totals">
+    <xs:annotation>
+      <xs:documentation>net = gross - fees - refunds + adjustments - reserves, to the minor unit.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="gross" type="NonNegativeMoney"/>
+      <xs:element name="fees" type="NonNegativeMoney"/>
+      <xs:element name="refunds" type="NonNegativeMoney"/>
+      <xs:element name="reserves" type="Money" minOccurs="0"/>
+      <xs:element name="adjustments" type="Money" minOccurs="0"/>
+      <xs:element name="net" type="Money"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Run">
+    <xs:sequence>
+      <xs:element name="window">
+        <xs:complexType>
+          <xs:attribute name="opens" type="xs:dateTime" use="required"/>
+          <xs:attribute name="closes" type="xs:dateTime" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="lines">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="line" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="totals" type="Totals"/>
+      <xs:element name="seal" type="Sha256"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="Identifier" use="required"/>
+    <xs:attribute name="merchant" type="Identifier" use="required"/>
+    <xs:attribute name="currency" type="CurrencyCode" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Payout">
+    <xs:sequence>
+      <xs:element name="amount" type="NonNegativeMoney"/>
+      <xs:element name="run" minOccurs="1" maxOccurs="31">
+        <xs:annotation>
+          <xs:documentation>The sealed runs this payout settles. A monthly merchant can
+            settle up to 31 daily runs in one payout.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="ref" type="Identifier" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="valueDate" type="xs:date"/>
+      <xs:element name="remittance" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="Identifier" use="required"/>
+    <xs:attribute name="merchant" type="Identifier" use="required"/>
+    <xs:attribute name="account" type="Identifier" use="required"/>
+  </xs:complexType>
+
+  <!-- ================================================================ the batch -->
+
+  <xs:element name="settlementBatch">
+    <xs:annotation>
+      <xs:documentation>The root. Header, parties, runs, payouts, then control totals.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="header">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="cycle" type="xs:date"/>
+              <xs:element name="sender" type="Acquirer"/>
+              <xs:element name="receiver" type="Acquirer"/>
+              <xs:element name="environment">
+                <xs:simpleType>
+                  <xs:restriction base="xs:token">
+                    <xs:enumeration value="production"/>
+                    <xs:enumeration value="sandbox"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="merchants">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="merchant" type="Merchant" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="runs">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="run" type="Run" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="payouts">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="payout" type="Payout" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="trailer">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="runCount" type="xs:nonNegativeInteger"/>
+              <xs:element name="lineCount" type="xs:nonNegativeInteger"/>
+              <xs:element name="payoutTotal" type="NonNegativeMoney" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="Identifier" use="required"/>
+      <xs:attribute name="schemaVersion" type="xs:token" fixed="2.3"/>
+    </xs:complexType>
+
+    <xs:key name="merchantKey">
+      <xs:selector xpath="m:merchants/m:merchant"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="runKey">
+      <xs:selector xpath="m:runs/m:run"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="runMerchant" refer="merchantKey">
+      <xs:selector xpath="m:runs/m:run"/>
+      <xs:field xpath="@merchant"/>
+    </xs:keyref>
+    <xs:keyref name="payoutMerchant" refer="merchantKey">
+      <xs:selector xpath="m:payouts/m:payout"/>
+      <xs:field xpath="@merchant"/>
+    </xs:keyref>
+    <xs:keyref name="payoutRun" refer="runKey">
+      <xs:selector xpath="m:payouts/m:payout/m:run"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:unique name="oneCurrencyTotal">
+      <xs:selector xpath="m:trailer/m:payoutTotal"/>
+      <xs:field xpath="@currency"/>
+    </xs:unique>
+  </xs:element>
+
+</xs:schema>

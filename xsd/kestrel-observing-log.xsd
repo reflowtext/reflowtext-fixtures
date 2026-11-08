@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Kestrel Ridge Observatory: observing log.
+  Pulls in kestrel-common.xsd with xs:include and builds on its types:
+    Record      (abstract)  -> extended by Observation
+    Equipment   (abstract)  -> extended by Telescope and Camera
+    Quantity                -> restricted to Seconds and Arcseconds
+    SkyConditions (group), Provenance (attribute group) -> reused as-is
+  Validates xml/kestrel-observing-log.xml. Kestrel Ridge Observatory is
+  fictional. Released under CC0-1.0.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="urn:example:kestrel-ridge:observing:1"
+           xmlns:k="urn:example:kestrel-ridge:observing:1"
+           targetNamespace="urn:example:kestrel-ridge:observing:1"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.2">
+
+  <xs:include schemaLocation="kestrel-common.xsd"/>
+
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      One season of the observatory's shared log: the site, the instruments on it,
+      the observers who use them (by code only), and one record per target per
+      session. Observer and instrument references are checked with keys.
+    </xs:documentation>
+  </xs:annotation>
+
+  <!-- ===================================================== root -->
+
+  <xs:element name="observingLog">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="site" type="Site"/>
+        <xs:element name="instruments">
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="telescope" type="Telescope"/>
+              <xs:element name="camera" type="Camera"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="observers">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="observer" type="Observer" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="observations">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="observation" type="Observation" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="season" type="xs:token" use="required"/>
+      <xs:attribute name="generated" type="xs:dateTime" use="optional"/>
+    </xs:complexType>
+
+    <xs:key name="observerKey">
+      <xs:selector xpath="k:observers/k:observer"/>
+      <xs:field xpath="@code"/>
+    </xs:key>
+    <xs:keyref name="observationObserver" refer="observerKey">
+      <xs:selector xpath="k:observations/k:observation"/>
+      <xs:field xpath="@observer"/>
+    </xs:keyref>
+  </xs:element>
+
+  <!-- ===================================================== site -->
+
+  <xs:complexType name="Site">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="elevation" type="Quantity"/>
+      <xs:element name="timeZone" type="xs:token"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="code" type="xs:token" use="required"/>
+  </xs:complexType>
+
+  <!-- ===================================================== quantities, narrowed -->
+
+  <xs:complexType name="Seconds">
+    <xs:annotation>
+      <xs:documentation>A Quantity restricted to positive durations in seconds.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:restriction base="Quantity">
+        <xs:minExclusive value="0"/>
+        <xs:maxInclusive value="3600"/>
+        <xs:attribute name="unit" type="Unit" use="required" fixed="s"/>
+      </xs:restriction>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="Millimetres">
+    <xs:simpleContent>
+      <xs:restriction base="Quantity">
+        <xs:minExclusive value="0"/>
+        <xs:attribute name="unit" type="Unit" use="required" fixed="mm"/>
+      </xs:restriction>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- ===================================================== equipment -->
+
+  <xs:complexType name="Telescope">
+    <xs:annotation>
+      <xs:documentation>Extends the shared Equipment base with optics and mount.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Equipment">
+        <xs:sequence>
+          <xs:element name="design">
+            <xs:simpleType>
+              <xs:restriction base="xs:token">
+                <xs:enumeration value="refractor"/>
+                <xs:enumeration value="newtonian"/>
+                <xs:enumeration value="ritchey-chretien"/>
+                <xs:enumeration value="schmidt-cassegrain"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="aperture" type="Millimetres"/>
+          <xs:element name="focalLength" type="Millimetres"/>
+          <xs:element name="mount">
+            <xs:complexType>
+              <xs:attribute name="type" use="required">
+                <xs:simpleType>
+                  <xs:restriction base="xs:token">
+                    <xs:enumeration value="equatorial"/>
+                    <xs:enumeration value="alt-az"/>
+                    <xs:enumeration value="fork"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+              <xs:attribute name="guided" type="xs:boolean" default="true"/>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="dome" type="xs:token" use="optional"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Camera">
+    <xs:complexContent>
+      <xs:extension base="Equipment">
+        <xs:sequence>
+          <xs:element name="sensor" type="xs:string"/>
+          <xs:element name="pixelSize" type="Quantity"/>
+          <xs:element name="cooledTo" type="Quantity" minOccurs="0"/>
+          <xs:element name="filters">
+            <xs:simpleType>
+              <xs:list itemType="FilterBand"/>
+            </xs:simpleType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="mono" type="xs:boolean" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="FilterBand">
+    <xs:annotation>
+      <xs:documentation>Luminance, the three colour channels, and two narrowband lines.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="L"/>
+      <xs:enumeration value="R"/>
+      <xs:enumeration value="G"/>
+      <xs:enumeration value="B"/>
+      <xs:enumeration value="Ha"/>
+      <xs:enumeration value="OIII"/>
+      <xs:enumeration value="visual"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ===================================================== people -->
+
+  <xs:complexType name="Observer">
+    <xs:sequence>
+      <xs:element name="role">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="staff"/>
+            <xs:enumeration value="volunteer"/>
+            <xs:enumeration value="student"/>
+            <xs:enumeration value="visiting"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="since" type="xs:gYear"/>
+    </xs:sequence>
+    <xs:attribute name="code" type="ObserverCode" use="required"/>
+  </xs:complexType>
+
+  <!-- ===================================================== the record -->
+
+  <xs:simpleType name="ObjectClass">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="galaxy"/>
+      <xs:enumeration value="open-cluster"/>
+      <xs:enumeration value="globular-cluster"/>
+      <xs:enumeration value="emission-nebula"/>
+      <xs:enumeration value="planetary-nebula"/>
+      <xs:enumeration value="supernova-remnant"/>
+      <xs:enumeration value="double-star"/>
+      <xs:enumeration value="variable-star"/>
+      <xs:enumeration value="star"/>
+      <xs:enumeration value="planet"/>
+      <xs:enumeration value="moon"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="Target">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="class" type="ObjectClass" use="required"/>
+        <xs:attribute name="catalogue" type="xs:token" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="Observation">
+    <xs:annotation>
+      <xs:documentation>One target in one session. Extends the shared Record base, so it
+        carries id, night and Provenance; reuses the SkyConditions group.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Record">
+        <xs:sequence>
+          <xs:element name="target" type="Target"/>
+          <xs:element name="constellation" type="ConstellationAbbrev"/>
+          <xs:element name="start" type="xs:dateTime"/>
+          <xs:element name="altitude" type="Altitude"/>
+          <xs:element name="azimuth" type="Azimuth"/>
+          <xs:element name="filter" type="FilterBand"/>
+          <xs:choice>
+            <xs:annotation>
+              <xs:documentation>Imaging sessions log exposures; visual sessions log an
+                eyepiece magnification instead.</xs:documentation>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element name="exposure" type="Seconds"/>
+              <xs:element name="frames" type="xs:positiveInteger"/>
+            </xs:sequence>
+            <xs:element name="magnification" type="xs:positiveInteger"/>
+          </xs:choice>
+          <xs:group ref="SkyConditions"/>
+          <xs:element name="quality" type="QualityGrade"/>
+          <xs:element name="notes" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="instrument" type="xs:IDREF" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Kestrel Ridge Observatory: shared vocabulary.
+  Included by kestrel-observing-log.xsd (same target namespace). Kestrel Ridge
+  Observatory is fictional. Released under CC0-1.0.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="urn:example:kestrel-ridge:observing:1"
+           targetNamespace="urn:example:kestrel-ridge:observing:1"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.2">
+
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      Building blocks shared by every Kestrel Ridge schema: identifiers, angles,
+      measured quantities with units, sky conditions, and the abstract record
+      and equipment types that the observing log extends.
+    </xs:documentation>
+  </xs:annotation>
+
+  <!-- ===================================================== identifiers -->
+
+  <xs:simpleType name="RecordId">
+    <xs:annotation>
+      <xs:documentation>KR-, the year, and a four-digit serial: KR-2026-0042.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:ID">
+      <xs:pattern value="KR-[0-9]{4}-[0-9]{4}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ObserverCode">
+    <xs:annotation>
+      <xs:documentation>Observers are logged by code, never by name.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="ob[0-9]{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ConstellationAbbrev">
+    <xs:annotation>
+      <xs:documentation>The three-letter constellation abbreviation, such as Ori or UMa.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[A-Z][A-Za-z]{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ===================================================== angles and scales -->
+
+  <xs:simpleType name="Azimuth">
+    <xs:annotation>
+      <xs:documentation>Degrees east of true north, 0 inclusive to 360 exclusive.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+      <xs:maxExclusive value="360"/>
+      <xs:fractionDigits value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Altitude">
+    <xs:annotation>
+      <xs:documentation>Degrees above the horizon. Below 15 the log accepts it, but the
+        reduction pipeline flags the frame for airmass.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="-90"/>
+      <xs:maxInclusive value="90"/>
+      <xs:fractionDigits value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Fraction">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="QualityGrade">
+    <xs:annotation>
+      <xs:documentation>The observer's own grade: 1 unusable, 5 excellent.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:positiveInteger">
+      <xs:maxInclusive value="5"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Transparency">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="excellent"/>
+      <xs:enumeration value="good"/>
+      <xs:enumeration value="fair"/>
+      <xs:enumeration value="poor"/>
+      <xs:enumeration value="clouded-out"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Unit">
+    <xs:annotation>
+      <xs:documentation>Units the observatory records. SI where possible.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="s"/>
+      <xs:enumeration value="arcsec"/>
+      <xs:enumeration value="mm"/>
+      <xs:enumeration value="m"/>
+      <xs:enumeration value="degC"/>
+      <xs:enumeration value="percent"/>
+      <xs:enumeration value="mag"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ===================================================== quantities -->
+
+  <xs:complexType name="Quantity">
+    <xs:annotation>
+      <xs:documentation>A decimal that always carries its unit. The main schema narrows this
+        into Seconds and Arcseconds by restriction.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:decimal">
+        <xs:attribute name="unit" type="Unit" use="required"/>
+        <xs:attribute name="uncertainty" type="xs:decimal" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- ===================================================== shared attributes -->
+
+  <xs:attributeGroup name="Provenance">
+    <xs:annotation>
+      <xs:documentation>Who wrote a record and when it was last revised.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="observer" type="ObserverCode" use="required"/>
+    <xs:attribute name="revised" type="xs:dateTime" use="optional"/>
+  </xs:attributeGroup>
+
+  <!-- ===================================================== abstract bases -->
+
+  <xs:complexType name="Record" abstract="true">
+    <xs:annotation>
+      <xs:documentation>Every log record has an id, the night it belongs to (the local date
+        on which the night began) and provenance. Concrete records extend this.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="id" type="RecordId" use="required"/>
+    <xs:attribute name="night" type="xs:date" use="required"/>
+    <xs:attributeGroup ref="Provenance"/>
+  </xs:complexType>
+
+  <xs:complexType name="Equipment" abstract="true">
+    <xs:annotation>
+      <xs:documentation>Anything with a serial number and a service history.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="commissioned" type="xs:gYear"/>
+      <xs:element name="lastServiced" type="xs:date" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="required"/>
+    <xs:attribute name="status" use="optional" default="in-service">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="in-service"/>
+          <xs:enumeration value="maintenance"/>
+          <xs:enumeration value="retired"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!-- ===================================================== sky conditions -->
+
+  <xs:group name="SkyConditions">
+    <xs:annotation>
+      <xs:documentation>The conditions every observation records, in this order.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="seeing" type="Quantity">
+        <xs:annotation>
+          <xs:documentation>Full width at half maximum of a star image, in arcseconds.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="transparency" type="Transparency"/>
+      <xs:element name="moonIllumination" type="Fraction"/>
+    </xs:sequence>
+  </xs:group>
+
+</xs:schema>

@@ -1,0 +1,55 @@
+# Halcyon documentation site — project layout
+
+The Halcyon Instruments documentation is built three ways while the team chooses a generator. Each layout is shown below.
+
+## Nextra
+
+`pages` starts open and `docs/intro.mdx` is the page being edited.
+
+<FileTree>
+  <FileTree.Folder name="pages" defaultOpen>
+    <FileTree.File name="_meta.json" />
+    <FileTree.File name="index.mdx" />
+    <FileTree.Folder name="docs">
+      <FileTree.File name="intro.mdx" active />
+      <FileTree.File name="setup.mdx" />
+    </FileTree.Folder>
+    <FileTree.Folder name="archive" defaultOpen={false}>
+      <FileTree.File name="firmware-1x.mdx" />
+    </FileTree.Folder>
+  </FileTree.Folder>
+  <FileTree.File name="package.json" />
+  <FileTree.File name="README.md" />
+</FileTree>
+
+## Starlight
+
+A trailing `/` marks a folder, even an empty one, and `…` stands for more files.
+
+<FileTree>
+
+- src/
+  - components/
+    - Header.astro
+    - Footer.astro
+  - pages/
+    - index.astro
+- public/
+- …
+- astro.config.mjs
+- README.md
+- setup.py
+
+</FileTree>
+
+## Fumadocs
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <File name="layout.tsx" />
+    <File name="page.tsx" />
+  </Folder>
+  <File name="next.config.mjs" />
+</Files>
+
+The archived firmware notes live in `pages/archive/firmware-1x.mdx`.

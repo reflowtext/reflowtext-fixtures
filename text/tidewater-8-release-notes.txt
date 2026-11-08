@@ -1,0 +1,245 @@
+===============================================================================
+ HALCYON INSTRUMENTS  ::  TIDEWATER 8 POLYPHONIC SYNTHESIZER
+ Firmware 4.2.0 Release Notes and Field Manual Supplement
+===============================================================================
+
+ Released ......... 6 November 2026
+ Applies to ....... Tidewater 8, Tidewater 8 Desktop, Tidewater 8 SE
+ Replaces ......... Firmware 4.1.3
+ Install time ..... about 4 minutes (do not power off while the ring is amber)
+ Patch format ..... v3 (v2 patches are converted on first load, see 4.3)
+
+
+CONTENTS
+--------
+
+  1. Summary
+  2. What is new
+  3. Changes in behaviour
+  4. Installing
+  5. Fixed issues
+  6. Known issues
+  7. Reference tables
+  8. Getting help
+
+
+-------------------------------------------------------------------------------
+1. SUMMARY
+-------------------------------------------------------------------------------
+
+Firmware 4.2 is the largest update to the Tidewater 8 since launch. It adds
+a second LFO per voice, a performance mode for live sets, and MPE support on
+the USB port. It also halves the time it takes to switch patches and fixes
+the occasional stuck note reported when chaining two units over MIDI.
+
+Your patches, sequences and global settings are kept. Back them up anyway
+(4.1); it takes thirty seconds.
+
+
+-------------------------------------------------------------------------------
+2. WHAT IS NEW
+-------------------------------------------------------------------------------
+
+2.1  Second LFO per voice
+
+     Every voice now has two LFOs. LFO 2 shares the shapes of LFO 1 and adds
+     two more: SMOOTH RANDOM and STEPPED-8. Hold SHIFT and turn the RATE
+     knob to reach LFO 2's page.
+
+       +------------------+-------------+---------------+-------------------+
+       | Parameter        | LFO 1       | LFO 2         | Notes             |
+       +------------------+-------------+---------------+-------------------+
+       | Rate             | 0.02-80 Hz  | 0.02-80 Hz    | Syncs to clock    |
+       | Shapes           | 6           | 8             | +2 random shapes  |
+       | Key sync         | yes         | yes           |                   |
+       | Fade-in          | 0-10 s      | 0-10 s        |                   |
+       | Per-voice phase  | yes         | yes           | SPREAD control    |
+       | Mod destinations | 24          | 24            | Same matrix       |
+       +------------------+-------------+---------------+-------------------+
+
+2.2  Performance mode
+
+     Press PERFORM to turn the eight patch buttons into a set list. Each
+     button recalls a patch with its own volume and transpose, and the
+     switch happens on the next downbeat, so held notes ring out into the
+     new sound without a gap.
+
+     A set list holds up to 64 entries in 8 pages. Sets are saved with the
+     global settings, not with any one patch.
+
+2.3  MPE over USB
+
+     With MPE enabled (GLOBAL > MIDI > MPE), each note gets its own channel
+     for pitch bend, pressure and slide. Bend range defaults to 48 semitones
+     and can be set from 1 to 96.
+
+2.4  Faster patch changes
+
+     Switching patches used to take 38 ms on average. It now takes 17 ms,
+     measured from the MIDI program change to the first sample of the new
+     sound. See 7.3 for the details.
+
+
+-------------------------------------------------------------------------------
+3. CHANGES IN BEHAVIOUR
+-------------------------------------------------------------------------------
+
+Read this section if you play the Tidewater live. Each change below can make
+an existing setup behave differently.
+
+  * VELOCITY CURVE. The default curve is now SOFT instead of LINEAR. Players
+    with light hands get more range. To restore the old feel:
+    GLOBAL > KEYS > CURVE > LINEAR.
+
+  * PROGRAM CHANGE ON CHANNEL 16. Channel 16 is now reserved for the
+    performance mode set list. If your controller sends program changes on
+    channel 16 to choose patches, move it to another channel.
+
+  * FILTER RESONANCE ABOVE 90 %. Self-oscillation now tracks the keyboard
+    more accurately. Patches that used a whistling filter as a fixed drone
+    will now follow the keys; set KEY TRACK to 0 % for the old drone.
+
+  * CLOCK OUT. The clock output sends 24 PPQN by default (was 4 PPQN). Older
+    drum machines in the same rig may run six times too fast; set
+    GLOBAL > SYNC > CLOCK OUT to 4 PPQN.
+
+
+-------------------------------------------------------------------------------
+4. INSTALLING
+-------------------------------------------------------------------------------
+
+4.1  Back up first
+
+     1. Connect the Tidewater to your computer with the USB-C cable.
+     2. Hold GLOBAL and press WRITE. The display shows BACKUP.
+     3. The instrument appears as a drive named TIDEWATER. Copy the folder
+        BACKUP to your computer.
+     4. Eject the drive and press EXIT.
+
+4.2  Install
+
+     1. Download the update file for your model:
+
+          Tidewater 8 .............. tw8-fw-4.2.0.hfw
+          Tidewater 8 Desktop ...... tw8d-fw-4.2.0.hfw
+          Tidewater 8 SE ........... tw8se-fw-4.2.0.hfw
+
+        The file for one model will not install on another; the instrument
+        checks and refuses it.
+
+     2. Hold SHIFT and GLOBAL while switching the instrument on. The display
+        shows UPDATE and the drive appears.
+     3. Copy the .hfw file to the drive. Do not rename it.
+     4. Eject the drive. The ring around the main knob turns amber while the
+        update installs, then green. The instrument restarts by itself.
+     5. Check the version: GLOBAL > INFO should read 4.2.0.
+
+     If the ring turns red, the file was damaged on the way. Switch off,
+     download the file again, and repeat from step 2. Nothing on the
+     instrument has been changed.
+
+4.3  Patch conversion
+
+     Patches saved under firmware 3.x use format v2. The first time one is
+     loaded under 4.2 it is converted to v3 and saved back in place. The
+     conversion sets LFO 2 to OFF, so the sound does not change. A v3 patch
+     cannot be loaded on firmware older than 4.0.
+
+
+-------------------------------------------------------------------------------
+5. FIXED ISSUES
+-------------------------------------------------------------------------------
+
+  +--------+-------------------------------------------------------------+
+  | Ref    | Fixed                                                       |
+  +--------+-------------------------------------------------------------+
+  | TW-418 | A note could stick when two units were chained over MIDI    |
+  |        | and the second unit received notes faster than ~1 kHz.      |
+  | TW-433 | The arpeggiator skipped its first step after a tempo change |
+  |        | made while it was latched.                                  |
+  | TW-447 | Renaming a patch to a name with 16 characters cut off the   |
+  |        | last character on the display.                              |
+  | TW-452 | Aftertouch to filter cutoff had no effect on voices 7 and 8 |
+  |        | in UNISON mode.                                             |
+  | TW-461 | The tuning routine could stop at 90 % if the room was very  |
+  |        | cold (below 8 C).                                           |
+  | TW-470 | Sustain pedal polarity was detected wrongly when the pedal  |
+  |        | was held down at power-on.                                  |
+  +--------+-------------------------------------------------------------+
+
+
+-------------------------------------------------------------------------------
+6. KNOWN ISSUES
+-------------------------------------------------------------------------------
+
+  TW-481  In performance mode, switching to a patch that uses the sequencer
+          starts the sequence one bar late if the clock source is external.
+          Workaround: start the external clock one bar early.
+          A fix is planned for 4.2.1.
+
+  TW-486  MPE pressure is ignored on notes held across a patch change.
+          Release and replay the note.
+
+
+-------------------------------------------------------------------------------
+7. REFERENCE TABLES
+-------------------------------------------------------------------------------
+
+7.1  Polyphony and voice modes
+
+  +------------+--------+------------------------------------------------+
+  | Mode       | Voices | Behaviour                                      |
+  +------------+--------+------------------------------------------------+
+  | POLY       | 8      | One voice per note, oldest note stolen first   |
+  | DUO        | 4 x 2  | Two voices per note, detuned by SPREAD         |
+  | UNISON     | 1 x 8  | All voices on one note; legato glides          |
+  | SPLIT      | 4 + 4  | Separate patches below and above SPLIT POINT   |
+  +------------+--------+------------------------------------------------+
+
+7.2  MIDI implementation (changes in 4.2 only)
+
+  +--------------------+---------+----------+--------------------------------+
+  | Message            | Receive | Transmit | Remarks                        |
+  +--------------------+---------+----------+--------------------------------+
+  | Program change     | 1-15    | 1-15     | Ch 16 now set-list only        |
+  | Program change     | 16      | 16       | Selects set-list entry 1-64    |
+  | CC 74 (slide)      | yes     | no       | Per-note in MPE mode           |
+  | Channel pressure   | yes     | yes      | Per-note in MPE mode           |
+  | Pitch bend         | yes     | yes      | Range 1-96 semitones (MPE)     |
+  | RPN 6 (MPE config) | yes     | no       | Zone setup from the controller |
+  +--------------------+---------+----------+--------------------------------+
+
+7.3  Patch change latency (ms, from program change to first new sample)
+
+  +----------------------------+---------+---------+---------+
+  | Situation                  | 4.1.3   | 4.2.0   | Change  |
+  +----------------------------+---------+---------+---------+
+  | Same bank, no sequencer    |   31    |   12    |  -61 %  |
+  | Other bank                 |   38    |   17    |  -55 %  |
+  | Patch with sequence        |   52    |   24    |  -54 %  |
+  | Performance mode, on beat  |   n/a   |    0 *  |         |
+  +----------------------------+---------+---------+---------+
+
+  * Performance mode loads the next patch ahead of the downbeat, so the
+    switch itself is sample-accurate.
+
+7.4  Front panel shortcuts added in 4.2
+
+  SHIFT + RATE ............. LFO 2 page
+  SHIFT + PERFORM .......... edit the current set list
+  PERFORM + patch 1-8 ...... jump to set-list page 1-8
+  GLOBAL + WRITE ........... backup to USB (unchanged, listed for reference)
+
+
+-------------------------------------------------------------------------------
+8. GETTING HELP
+-------------------------------------------------------------------------------
+
+Please include the firmware version (GLOBAL > INFO) and the serial number
+from the back panel in any support request. A copy of the BACKUP folder is
+the fastest way for us to reproduce a problem with a patch.
+
+  Support portal ..... support.halcyon-instruments.example
+  Forum .............. forum.halcyon-instruments.example/tidewater
+
+                                                       -- end of document --

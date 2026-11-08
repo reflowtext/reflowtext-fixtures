@@ -1,0 +1,117 @@
+---
+title: Halcyon Cloud Patch Library — Launch Readiness
+version: 1.4.2
+reflow:
+  profile: reflow-mdx
+  version: 1
+---
+
+export const meta = { owner: "Patch Library team", release: "2026.11" }
+
+# {frontmatter.title}
+
+Owned by **{meta.owner}**, release {meta.release}. Halcyon Cloud lets owners of the *Aurora* and *Nocturne* synthesizers back up, share and audition patches from any browser. This page is the go / no-go record for the public launch.
+
+> [!WARNING]
+> Launch is blocked until both critical findings below are closed.
+
+<Callout type="tip" title="How to read this page">
+Findings are grouped by severity. Clear the **critical** filter to see everything, and open the accordions for the detail behind each decision.
+</Callout>
+
+:::note Launch window
+The public launch is scheduled for the week of 23 November, after the Aurora 2.3 firmware ships.
+:::
+
+## Install the companion CLI
+
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash
+npm install --global @halcyon-example/patch-cli
+halcyon login --device aurora-02
+```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add --global @halcyon-example/patch-cli
+halcyon login --device aurora-02
+```
+
+</TabItem>
+</Tabs>
+
+<Accordion title="Why patches are signed on the instrument">
+A patch is signed by the synthesizer that created it, so a shared patch can never be altered on its way to another player. The cloud stores the signature with the patch and checks it again on every download.
+</Accordion>
+
+<Steps>
+<Step title="Connect">Plug the instrument in over USB-C and run `halcyon login`.</Step>
+<Step title="Back up">Run `halcyon backup` to upload every bank, signed.</Step>
+<Step title="Share">Publish a bank with `halcyon share bank-04 --public`.</Step>
+</Steps>
+
+## Findings
+
+<Findings id="findings" groupBy="Severity" filter="severity=critical" detail="Description">
+
+| ID | Severity | Area | Description |
+|---|---|---|---|
+| SEC-01 | critical | Auth | The admin API accepts unauthenticated calls from inside the cluster; any workload can reach it. |
+| SEC-02 | high | TLS | The upload gateway still offers two legacy cipher suites. |
+| PERF-01 | critical | Audition | Previewing a patch re-renders the whole bank on every key press. |
+| DOC-01 | low | Docs | The quick-start guide shows the old device name format. |
+| SEC-03 | high | Auth | Device sessions never expire after a factory reset. |
+
+</Findings>
+
+There are <Metric of="findings" where="severity=critical">two</Metric> critical and <Metric of="findings" where="severity=high">two</Metric> high findings.
+
+## Work remaining
+
+<DataTable hide="Notes" order="Status, Task">
+
+| Task | Owner | Status | Notes |
+|---|---|---|---|
+| Signed bank export | Synthesis | done | Verified on Aurora and Nocturne |
+| Public patch pages | Web | todo | Needs the audition fix first |
+| Rate limits per device | Platform | todo | Draft limits in the runbook |
+
+</DataTable>
+
+## Beta usage
+
+<Chart type="bar" x="Month" y="Uploads, Downloads" title="Beta: patches uploaded and downloaded" exclude="Month=Total">
+
+| Month | Uploads | Downloads |
+|---|---|---|
+| Jul | 1,200 | 800 |
+| Aug | 1,500 | 2,900 |
+| Sep | n/a | 3,950 |
+| Oct | 1,700 | 5,000 |
+| Total | 4,400 | 12,650 |
+
+</Chart>
+
+<Chart type="pie" x="Severity" y="Count" title="Findings by severity">
+
+| Severity | Count |
+|---|---|
+| Critical | 2 |
+| High | 2 |
+| Low | 1 |
+
+</Chart>
+
+## Gateway settings
+
+```json
+{ "service": "patch-gateway", "tls": { "min": "1.3", "ciphers": ["TLS_AES_128_GCM_SHA256", "TLS_AES_256_GCM_SHA384"] }, "replicas": 3 }
+```
+
+## Pricing (to be confirmed)
+
+<PricingTable plan="studio" />

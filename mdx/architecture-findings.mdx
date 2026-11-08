@@ -1,0 +1,42 @@
+---
+reflow:
+  profile: reflow-mdx
+  version: '1.0'
+title: Payment Platform Modernisation
+---
+
+# Payment Platform Modernisation
+
+Architecture review · October 2026
+
+<Metric countOf="findings" where="severity=critical">
+2 critical findings
+</Metric>
+
+## Findings
+
+<Findings id="findings" groupBy="severity" filter>
+
+| ID | Severity | Area | Title | Status |
+|---|---|---|---|---|
+| SEC-01 | critical | Identity | Missing service-to-service authentication | open |
+| SEC-02 | critical | Secrets | Database credentials in deploy manifests | open |
+| PERF-01 | high | Settlement | Synchronous settlement blocks checkout | open |
+| REL-01 | high | Ledger | No idempotency key on refund endpoint | accepted |
+| REL-02 | medium | Ledger | Single-region Postgres primary | open |
+| OBS-01 | medium | Observability | Payment traces dropped at the gateway | open |
+| PERF-02 | low | Reporting | Nightly report scans full transaction table | open |
+| DOC-01 | low | Docs | Runbook missing for chargeback spikes | accepted |
+
+</Findings>
+
+<Chart type="bar" x="Severity" y="count">
+
+| Severity | count |
+|---|---|
+| critical | 2 |
+| high | 2 |
+| medium | 2 |
+| low | 2 |
+
+</Chart>

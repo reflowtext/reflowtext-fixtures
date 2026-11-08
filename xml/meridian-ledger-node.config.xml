@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ==========================================================================
+  Meridian Payments: ledger node configuration
+  ==========================================================================
+
+  This file configures ONE ledger node: the process that appends settlement
+  run lines, seals runs at the end of their window, and posts the balanced
+  double entries behind every payout.
+
+  Meridian Payments is a fictional company. Every host name, port, limit and
+  key reference below is invented. Released under CC0-1.0.
+
+  How to read this file
+  ~~~~~~~~~~~~~~~~~~~~~
+  * Three namespaces are in play:
+      (default)  urn:example:meridian:node:3      the node itself
+      sec:       urn:example:meridian:security:1  keys, TLS, access rules
+      obs:       urn:example:meridian:observe:2   metrics, logs, traces
+    A section belongs to whichever team owns its namespace, and only that
+    team's reviewers can approve a change to it.
+  * Durations are ISO 8601 (PT30S = thirty seconds). Sizes carry a unit.
+  * Secrets are NEVER written here. A `secret-ref` names an entry in the
+    secrets vault; the node resolves it at start-up and refuses to boot if
+    it cannot.
+  * Comments explain WHY a value is what it is. If you change a value, update
+    its comment in the same commit.
+  ==========================================================================
+-->
+<node xmlns="urn:example:meridian:node:3"
+      xmlns:sec="urn:example:meridian:security:1"
+      xmlns:obs="urn:example:meridian:observe:2"
+      id="ledger-eu-north-02"
+      role="ledger"
+      region="eu-north"
+      config-version="2026.10.3">
+
+  <!--
+    Identity. `cluster` must match every peer's, or the node will refuse
+    to join: two clusters writing one ledger is the failure we fear most.
+  -->
+  <identity>
+    <cluster>meridian-ledger-eu</cluster>
+    <zone>eu-north-b</zone>
+    <!-- Lower wins leader elections. Spread them so a rolling restart never
+         restarts the two most-preferred nodes back to back. -->
+    <election-priority>20</election-priority>
+  </identity>
+
+  <!-- ======================================================================
+       Storage
+       ====================================================================== -->
+  <storage engine="append-log">
+    <!--
+      The run log is append-only. Corrections are new lines that reverse an
+      earlier one; nothing in this section can enable in-place updates, and
+      that is deliberate.
+    -->
+    <data-dir>/var/lib/meridian/ledger</data-dir>
+    <segment size="256" unit="MiB"/>
+
+    <!--
+      fsync policy. `every-commit` costs ~0.4 ms per append on the current
+      disks and is the only safe choice for money. `batched` exists for the
+      load-test environment and the node logs a warning at boot if it sees it
+      outside that environment.
+    -->
+    <durability fsync="every-commit"/>
+
+    <!-- Sealed runs are immutable; keep them hot for the reconciliation
+         window, then move them to cold storage. Seven years total. -->
+    <retention>
+      <hot>P90D</hot>
+      <cold>P7Y</cold>
+      <cold-store uri="s3-compatible://archive.meridian.example/ledger-eu"
+                  sec:secret-ref="vault:storage/archive-eu/writer"/>
+    </retention>
+
+    <!-- Compaction never touches a sealed segment: it only merges the index. -->
+    <compaction schedule="0 3 * * *" max-duration="PT45M"/>
+  </storage>
+
+  <!-- ======================================================================
+       Replication
+       ====================================================================== -->
+  <replication mode="quorum">
+    <!--
+      A line is acknowledged only once a majority of the five nodes has it on
+      disk. With five nodes we survive two failures; with three we would
+      survive one, and zone eu-north-a has had two correlated outages this
+      year.
+    -->
+    <peers>
+      <peer id="ledger-eu-north-01" address="ledger-01.eu-north.meridian.example:7400" zone="eu-north-a"/>
+      <peer id="ledger-eu-north-02" address="ledger-02.eu-north.meridian.example:7400" zone="eu-north-b" self="true"/>
+      <peer id="ledger-eu-north-03" address="ledger-03.eu-north.meridian.example:7400" zone="eu-north-c"/>
+      <peer id="ledger-eu-central-01" address="ledger-01.eu-central.meridian.example:7400" zone="eu-central-a"/>
+      <peer id="ledger-eu-central-02" address="ledger-02.eu-central.meridian.example:7400" zone="eu-central-b"/>
+    </peers>
+    <!-- Above this, a follower is considered lagging and cannot vote. -->
+    <max-lag lines="5000" duration="PT10S"/>
+    <heartbeat interval="PT0.25S" timeout="PT2S"/>
+  </replication>
+
+  <!-- ======================================================================
+       Settlement windows
+       ====================================================================== -->
+  <settlement>
+    <!--
+      Runs close at each merchant's local cut-off. The scheduler wakes a
+      little early so that a run with tens of thousands of lines can be
+      sealed before the cut-off passes, not after.
+    -->
+    <scheduler tick="PT1S" lead-time="PT30S"/>
+
+    <!--
+      Currencies this node settles, with the minor-unit exponent. The node
+      refuses a capture whose amount does not fit the exponent exactly: no
+      rounding happens anywhere in the ledger.
+    -->
+    <currencies>
+      <currency code="EUR" exponent="2"/>
+      <currency code="SEK" exponent="2"/>
+      <currency code="NOK" exponent="2"/>
+      <currency code="DKK" exponent="2"/>
+      <currency code="PLN" exponent="2"/>
+      <currency code="CHF" exponent="2"/>
+      <!-- Zero-exponent currency: kept here as the canary for exponent bugs. -->
+      <currency code="JPY" exponent="0"/>
+    </currencies>
+
+    <!--
+      Public holidays close runs early and push payouts back. The calendars
+      are fetched daily; a missing calendar is a page, not a warning, because
+      a wrong payout date is visible to every merchant at once.
+    -->
+    <holiday-calendars refresh="P1D" on-missing="page">
+      <calendar country="SE"/>
+      <calendar country="NO"/>
+      <calendar country="DK"/>
+      <calendar country="FI"/>
+      <calendar country="DE"/>
+      <calendar country="PL"/>
+    </holiday-calendars>
+
+    <!-- A run larger than this is split into chunks when sealing, so a
+         single huge merchant cannot hold the seal lock for seconds. -->
+    <seal chunk-lines="20000" hash="sha-256"/>
+  </settlement>
+
+  <!-- ======================================================================
+       Network listeners
+       ====================================================================== -->
+  <listeners>
+    <!-- Peer traffic only. Bound to the private interface. -->
+    <listener name="replication" bind="10.40.2.12" port="7400" protocol="ledger-rpc" sec:tls-profile="mutual"/>
+    <!-- Internal API used by the settlement and payout services. -->
+    <listener name="internal-api" bind="10.40.2.12" port="7443" protocol="https" sec:tls-profile="mutual"/>
+    <!-- Health and metrics; reachable from the monitoring subnet only. -->
+    <listener name="ops" bind="10.40.9.12" port="9100" protocol="http" sec:tls-profile="none"/>
+  </listeners>
+
+  <!-- ======================================================================
+       Security  (owned by Platform Security; namespace sec:)
+       ====================================================================== -->
+  <sec:security>
+    <!--
+      TLS profiles referenced by the listeners above. `mutual` requires a
+      client certificate issued by the internal CA; there is no fallback to
+      one-way TLS.
+    -->
+    <sec:tls-profile name="mutual" min-version="1.3">
+      <sec:certificate sec:secret-ref="vault:pki/ledger-eu-north-02/cert"/>
+      <sec:private-key sec:secret-ref="vault:pki/ledger-eu-north-02/key"/>
+      <sec:client-ca sec:secret-ref="vault:pki/internal-ca/bundle"/>
+      <sec:rotate before-expiry="P14D"/>
+    </sec:tls-profile>
+    <sec:tls-profile name="none"/>
+
+    <!--
+      Signing keys for sealed runs. A run's seal is signed so that a payout
+      service can prove the totals it pays came from this ledger. Two keys
+      overlap during rotation: `active` signs, `previous` is still accepted.
+    -->
+    <sec:signing-keys algorithm="ed25519">
+      <sec:key state="active" id="seal-2026-q4" sec:secret-ref="vault:signing/ledger-eu/2026-q4"/>
+      <sec:key state="previous" id="seal-2026-q3" sec:secret-ref="vault:signing/ledger-eu/2026-q3"/>
+    </sec:signing-keys>
+
+    <!--
+      Access rules for the internal API. Deny by default; each rule names the
+      calling service (from its client certificate) and what it may do.
+    -->
+    <sec:access default="deny">
+      <sec:allow service="settlement-scheduler" operations="append seal"/>
+      <sec:allow service="payout-service" operations="read-sealed mark-paid"/>
+      <sec:allow service="reconciliation" operations="read-sealed read-ledger"/>
+      <!-- Support tooling can read but never write, and every read is audited. -->
+      <sec:allow service="support-console" operations="read-sealed" audit="always"/>
+    </sec:access>
+  </sec:security>
+
+  <!-- ======================================================================
+       Observability  (owned by SRE; namespace obs:)
+       ====================================================================== -->
+  <obs:observability>
+    <obs:metrics listener="ops" path="/metrics" interval="PT15S">
+      <!-- Labels added to every series from this node. Do NOT add merchant
+           ids here: the cardinality would sink the metrics store. -->
+      <obs:label name="cluster" value="meridian-ledger-eu"/>
+      <obs:label name="zone" value="eu-north-b"/>
+    </obs:metrics>
+
+    <obs:logs format="json" level="info">
+      <!-- Amounts and account identifiers are redacted before a log line
+           leaves the process. The patterns live in code, not here, so they
+           cannot be switched off by a configuration change. -->
+      <obs:redaction enforced="true"/>
+      <obs:sink type="stdout"/>
+    </obs:logs>
+
+    <obs:tracing sample-rate="0.02" propagate="true">
+      <!-- Sealing is rare and important: always trace it. -->
+      <obs:always-sample operation="seal"/>
+      <obs:always-sample operation="leader-election"/>
+    </obs:tracing>
+
+    <!--
+      Alert thresholds the node evaluates itself and exposes as gauges. The
+      paging rules that read them live with the on-call runbooks.
+    -->
+    <obs:slo name="append-latency-p99" target="PT0.015S" window="PT5M"/>
+    <obs:slo name="seal-before-cutoff" target="0.9995" window="P30D"/>
+    <obs:slo name="replication-lag" target="PT2S" window="PT1M"/>
+  </obs:observability>
+
+  <!-- ======================================================================
+       Feature flags
+       ====================================================================== -->
+  <features>
+    <!-- Splits the seal into chunks (see settlement/seal). On since 2026.08. -->
+    <feature name="chunked-seal" enabled="true"/>
+    <!-- Experimental: parallel index rebuild on start-up. Off in production
+         until the start-up time test passes three releases in a row. -->
+    <feature name="parallel-index-rebuild" enabled="false"/>
+    <!-- Reserve releases post as their own line kind instead of a negative
+         adjustment. Required by the reconciliation report v2. -->
+    <feature name="reserve-line-kinds" enabled="true"/>
+  </features>
+
+</node>

@@ -1,0 +1,154 @@
+# Configuration for the Meridian settlement worker.
+#
+# Values here are defaults for every environment. An environment file
+# (settlement-worker.staging.toml, settlement-worker.production.toml) is
+# merged on top, key by key, and environment variables named
+# MERIDIAN__<SECTION>__<KEY> win over both.
+
+[service]
+name = "settlement-worker"
+environment = "development"
+region = "eu-central"
+# Batches are cut at this local time each business day.
+cutoff = 17:30:00
+timezone = "Europe/Amsterdam"
+shutdown_grace = "45s"
+
+[service.http]
+bind = "0.0.0.0:8443"
+read_timeout = "10s"
+write_timeout = "30s"
+max_body_bytes = 1_048_576
+allowed_origins = ["https://console.meridian.example"]
+
+[service.http.tls]
+certificate = "/etc/meridian/tls/worker.crt"
+private_key = "/etc/meridian/tls/worker.key"
+min_version = "1.3"
+
+[database]
+url = "postgres://settlement@db.internal:5432/ledger"
+password = "REPLACE_ME"
+pool = { min = 4, max = 32, idle_timeout = "5m", acquire_timeout = "3s" }
+statement_timeout = "15s"
+# Read replicas are used for reports only, never for anything that writes.
+replicas = [
+  { url = "postgres://settlement_ro@replica-a.internal:5432/ledger", weight = 2 },
+  { url = "postgres://settlement_ro@replica-b.internal:5432/ledger", weight = 1 },
+]
+
+[queue]
+kind = "stream"
+brokers = ["192.0.2.21:9092", "192.0.2.22:9092", "192.0.2.23:9092"]
+topic_captures = "payments.captured.v2"
+topic_refunds = "payments.refunded.v2"
+consumer_group = "settlement-worker"
+max_in_flight = 512
+commit_interval = "2s"
+
+[fees]
+# Basis points (1 bp = 0.01 %) and fixed amounts in minor units.
+default_capture_bp = 145
+default_fixed_minor = 25
+chargeback_minor = 1_500
+# Merchants on a negotiated plan; anyone not listed pays the defaults.
+overrides = [
+  { merchant = "mrc_harbourline", capture_bp = 110, fixed_minor = 20 },
+  { merchant = "mrc_tidewater", capture_bp = 125 },
+]
+
+[[rails]]
+name = "sepa"
+currencies = ["EUR"]
+endpoint = "https://rail-sepa.internal/v1/credit-transfers"
+max_amount_minor = 99_999_999_99
+cutoff = 15:00:00
+settlement_days = 1
+enabled = true
+
+[rails.retry]
+attempts = 5
+base_delay = "200ms"
+max_delay = "20s"
+
+[[rails]]
+name = "faster-payments"
+currencies = ["GBP"]
+endpoint = "https://rail-fps.internal/v2/payments"
+max_amount_minor = 1_000_000_00
+settlement_days = 0
+enabled = true
+
+[rails.retry]
+attempts = 3
+base_delay = "100ms"
+max_delay = "5s"
+
+[[rails]]
+name = "bankgiro"
+currencies = ["SEK"]
+endpoint = "https://rail-bg.internal/payouts"
+max_amount_minor = 50_000_000_00
+cutoff = 13:00:00
+settlement_days = 1
+# Disabled until the new certificate is installed on the rail side.
+enabled = false
+
+[rails.retry]
+attempts = 4
+base_delay = "500ms"
+max_delay = "60s"
+
+[calendar]
+# Days on which no rail settles, beyond weekends. Rails may add their own.
+holidays = [
+  2026-12-25,
+  2026-12-26,
+  2027-01-01,
+  2027-04-02,
+  2027-04-05,
+]
+
+[[calendar.rail_holidays]]
+rail = "faster-payments"
+dates = [2026-12-28, 2027-05-03]
+
+[[calendar.rail_holidays]]
+rail = "bankgiro"
+dates = [2027-01-06, 2027-06-25]
+
+[alerts]
+overdue_after_days = 2
+chargeback_ratio_warn = 0.009
+chargeback_ratio_page = 0.015
+
+[[alerts.routes]]
+match = { severity = "page" }
+channel = "pager"
+quiet_hours = false
+
+[[alerts.routes]]
+match = { severity = "warn", team = "risk" }
+channel = "chat:#risk-alerts"
+quiet_hours = true
+
+[[alerts.routes]]
+match = { severity = "warn" }
+channel = "chat:#settlement"
+quiet_hours = true
+
+[telemetry]
+log_level = "info"
+log_format = "json"
+traces_sample_ratio = 0.05
+metrics_listen = "127.0.0.1:9464"
+
+[telemetry.redact]
+# Fields removed from logs before they leave the process.
+fields = ["iban", "account_number", "card_last4", "authorization"]
+replacement = "[redacted]"
+
+[features]
+weekly_batching_pilot = false
+streaming_reports = true
+dual_write_attempts = true

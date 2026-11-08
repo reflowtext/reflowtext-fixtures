@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Halcyon Instruments: instrument definition schema, version 3.
+
+  Describes a synthesizer as a graph of modules (oscillators, filters,
+  envelopes, LFOs, mixers, effects) joined by patch cables, with a front
+  panel that maps physical controls onto module parameters, and a library
+  of factory patches.
+
+  Self-contained: no includes, no imports, no external references.
+  Halcyon Instruments and its products are fictional. Released under CC0-1.0.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="urn:example:halcyon:instrument:3"
+           xmlns:h="urn:example:halcyon:instrument:3"
+           targetNamespace="urn:example:halcyon:instrument:3"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="3.0.2">
+
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      An instrument definition is the single file from which Halcyon builds the
+      firmware's voice graph, the editor's panel layout and the printed manual's
+      parameter tables. It has four parts, in order: identity, the module graph,
+      the front panel, and the factory library.
+    </xs:documentation>
+    <xs:appinfo>
+      <h:generator-hint target="firmware" emit="voice-graph"/>
+    </xs:appinfo>
+  </xs:annotation>
+
+  <!-- ================================================================== -->
+  <!--  1. Scalar types                                                   -->
+  <!-- ================================================================== -->
+
+  <xs:simpleType name="Name">
+    <xs:annotation>
+      <xs:documentation>Lower-case, hyphenated; unique within its scope.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:NCName">
+      <xs:pattern value="[a-z][a-z0-9\-]{0,31}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PortRef">
+    <xs:annotation>
+      <xs:documentation>module.port, for example osc-1.out or vcf.cutoff-cv.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[a-z][a-z0-9\-]*\.[a-z][a-z0-9\-]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Normalised">
+    <xs:restriction base="xs:float">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Bipolar">
+    <xs:restriction base="xs:float">
+      <xs:minInclusive value="-1"/>
+      <xs:maxInclusive value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Hertz">
+    <xs:restriction base="xs:decimal">
+      <xs:minExclusive value="0"/>
+      <xs:maxInclusive value="24000"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NoteName">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[A-G](#|b)?(-1|[0-9])"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="MidiNumber">
+    <xs:restriction base="xs:unsignedByte">
+      <xs:maxInclusive value="127"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Key">
+    <xs:annotation>
+      <xs:documentation>A key may be given by name (C3) or by MIDI number (60): a union.</xs:documentation>
+    </xs:annotation>
+    <xs:union memberTypes="NoteName MidiNumber"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="TempoDivision">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="1/1"/>
+      <xs:enumeration value="1/2"/>
+      <xs:enumeration value="1/4"/>
+      <xs:enumeration value="1/8"/>
+      <xs:enumeration value="1/16"/>
+      <xs:enumeration value="1/4T"/>
+      <xs:enumeration value="1/8T"/>
+      <xs:enumeration value="1/8D"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Rate">
+    <xs:annotation>
+      <xs:documentation>A free rate in hertz, or a tempo division: another union.</xs:documentation>
+    </xs:annotation>
+    <xs:union memberTypes="Hertz TempoDivision"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="Waveform">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="sine"/>
+      <xs:enumeration value="triangle"/>
+      <xs:enumeration value="saw"/>
+      <xs:enumeration value="square"/>
+      <xs:enumeration value="pulse"/>
+      <xs:enumeration value="noise"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="WaveformSet">
+    <xs:annotation>
+      <xs:documentation>A space-separated list of waveforms a switch can select.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction>
+      <xs:simpleType>
+        <xs:list itemType="Waveform"/>
+      </xs:simpleType>
+      <xs:minLength value="1"/>
+      <xs:maxLength value="6"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Curve">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="linear"/>
+      <xs:enumeration value="exponential"/>
+      <xs:enumeration value="logarithmic"/>
+      <xs:enumeration value="s-curve"/>
+      <xs:enumeration value="stepped"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="SignalKind">
+    <xs:annotation>
+      <xs:documentation>Audio runs at the sample rate; control at 1 kHz; gate is on/off.
+        A cable may only join ports of compatible kinds.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="audio"/>
+      <xs:enumeration value="control"/>
+      <xs:enumeration value="gate"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ================================================================== -->
+  <!--  2. Rich text for manual entries                                   -->
+  <!-- ================================================================== -->
+
+  <xs:complexType name="Prose" mixed="true">
+    <xs:annotation>
+      <xs:documentation>Mixed content: text with a few inline elements, so a parameter's
+        manual entry can be written in the schema-checked file itself.</xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="em" type="xs:string"/>
+      <xs:element name="control" type="xs:string"/>
+      <xs:element name="value" type="xs:string"/>
+      <xs:element name="see">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute name="module" type="Name" use="required"/>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+
+  <!-- ================================================================== -->
+  <!--  3. Parameters and ports                                           -->
+  <!-- ================================================================== -->
+
+  <xs:attributeGroup name="Range">
+    <xs:attribute name="min" type="xs:decimal" use="required"/>
+    <xs:attribute name="max" type="xs:decimal" use="required"/>
+    <xs:attribute name="default" type="xs:decimal" use="required"/>
+    <xs:attribute name="unit" type="xs:token" use="optional"/>
+    <xs:attribute name="curve" type="Curve" default="linear"/>
+  </xs:attributeGroup>
+
+  <xs:complexType name="Parameter">
+    <xs:annotation>
+      <xs:documentation>A continuously variable value a module exposes. Stored normalised in
+        patches; min, max and curve map it to real units.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="label" type="xs:string"/>
+      <xs:element name="manual" type="Prose" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="Name" use="required"/>
+    <xs:attributeGroup ref="Range"/>
+    <xs:attribute name="modulatable" type="xs:boolean" default="true"/>
+  </xs:complexType>
+
+  <xs:complexType name="SwitchParameter">
+    <xs:annotation>
+      <xs:documentation>A parameter with discrete positions. Restricts Parameter: a switch is
+        never modulatable and always linear.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:restriction base="Parameter">
+        <xs:sequence>
+          <xs:element name="label" type="xs:string"/>
+          <xs:element name="manual" type="Prose" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="curve" type="Curve" fixed="stepped"/>
+        <xs:attribute name="modulatable" type="xs:boolean" fixed="false"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Port">
+    <xs:attribute name="name" type="Name" use="required"/>
+    <xs:attribute name="signal" type="SignalKind" use="required"/>
+    <xs:attribute name="direction" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="in"/>
+          <xs:enumeration value="out"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="normalledTo" type="PortRef" use="optional">
+      <xs:annotation>
+        <xs:documentation>The port this input listens to when no cable is plugged in.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!-- ================================================================== -->
+  <!--  4. Modules: abstract base, substitution group, concrete kinds      -->
+  <!-- ================================================================== -->
+
+  <xs:complexType name="Module" abstract="true">
+    <xs:annotation>
+      <xs:documentation>Every module has a name, some ports and some parameters. Each concrete
+        module adds the elements that make it what it is.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="description" type="Prose" minOccurs="0"/>
+      <xs:element name="port" type="Port" minOccurs="1" maxOccurs="16"/>
+      <xs:choice minOccurs="0" maxOccurs="24">
+        <xs:element name="param" type="Parameter"/>
+        <xs:element name="switch" type="SwitchParameter"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="name" type="Name" use="required"/>
+    <xs:attribute name="perVoice" type="xs:boolean" default="true"/>
+  </xs:complexType>
+
+  <xs:element name="module" type="Module" abstract="true"/>
+
+  <xs:complexType name="Oscillator">
+    <xs:complexContent>
+      <xs:extension base="Module">
+        <xs:sequence>
+          <xs:element name="waveforms" type="WaveformSet"/>
+          <xs:element name="drift" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>The per-voice random walk that makes analogue-modelled voices
+                disagree slightly. Off on precise engines.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:attribute name="maxCents" use="required">
+                <xs:simpleType>
+                  <xs:restriction base="xs:decimal">
+                    <xs:minInclusive value="0"/>
+                    <xs:maxInclusive value="20"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+              <xs:attribute name="pull" type="Normalised" default="0.0008"/>
+              <xs:attribute name="followsTuning" type="xs:boolean" default="false"/>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="sync" minOccurs="0">
+            <xs:complexType>
+              <xs:attribute name="source" type="PortRef" use="required"/>
+              <xs:attribute name="mode" default="hard">
+                <xs:simpleType>
+                  <xs:restriction base="xs:token">
+                    <xs:enumeration value="hard"/>
+                    <xs:enumeration value="soft"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="engine" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:token">
+              <xs:enumeration value="virtual-analogue"/>
+              <xs:enumeration value="wavetable"/>
+              <xs:enumeration value="fm-operator"/>
+              <xs:enumeration value="sample"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Filter">
+    <xs:complexContent>
+      <xs:extension base="Module">
+        <xs:sequence>
+          <xs:element name="topology">
+            <xs:complexType>
+              <xs:attribute name="model" use="required">
+                <xs:simpleType>
+                  <xs:restriction base="xs:token">
+                    <xs:enumeration value="ladder"/>
+                    <xs:enumeration value="state-variable"/>
+                    <xs:enumeration value="diode"/>
+                    <xs:enumeration value="comb"/>
+                    <xs:enumeration value="formant"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+              <xs:attribute name="poles" default="4">
+                <xs:simpleType>
+                  <xs:restriction base="xs:positiveInteger">
+                    <xs:enumeration value="1"/>
+                    <xs:enumeration value="2"/>
+                    <xs:enumeration value="4"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+              <xs:attribute name="selfOscillates" type="xs:boolean" default="false"/>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="EnvelopeStage">
+    <xs:attribute name="name" type="Name" use="required"/>
+    <xs:attribute name="target" type="Normalised" use="required"/>
+    <xs:attribute name="curve" type="Curve" default="exponential"/>
+    <xs:attribute name="holds" type="xs:boolean" default="false"/>
+  </xs:complexType>
+
+  <xs:complexType name="Envelope">
+    <xs:complexContent>
+      <xs:extension base="Module">
+        <xs:sequence>
+          <xs:element name="stage" type="EnvelopeStage" minOccurs="2" maxOccurs="16"/>
+        </xs:sequence>
+        <xs:attribute name="loops" type="xs:boolean" default="false"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Lfo">
+    <xs:complexContent>
+      <xs:extension base="Module">
+        <xs:sequence>
+          <xs:element name="defaultRate" type="Rate"/>
+          <xs:element name="retrigger" default="per-note">
+            <xs:simpleType>
+              <xs:restriction base="xs:token">
+                <xs:enumeration value="free"/>
+                <xs:enumeration value="per-note"/>
+                <xs:enumeration value="per-phrase"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Effect">
+    <xs:complexContent>
+      <xs:extension base="Module">
+        <xs:sequence>
+          <xs:element name="algorithm" type="xs:token"/>
+          <xs:element name="latencySamples" type="xs:nonNegativeInteger" nillable="true">
+            <xs:annotation>
+              <xs:documentation>xsi:nil="true" when the latency depends on settings and is
+                reported at run time.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="oscillator" type="Oscillator" substitutionGroup="module"/>
+  <xs:element name="filter" type="Filter" substitutionGroup="module"/>
+  <xs:element name="envelope" type="Envelope" substitutionGroup="module"/>
+  <xs:element name="lfo" type="Lfo" substitutionGroup="module"/>
+  <xs:element name="effect" type="Effect" substitutionGroup="module"/>
+
+  <!-- ================================================================== -->
+  <!--  5. The module graph                                               -->
+  <!-- ================================================================== -->
+
+  <xs:complexType name="Cable">
+    <xs:attribute name="from" type="PortRef" use="required"/>
+    <xs:attribute name="to" type="PortRef" use="required"/>
+    <xs:attribute name="amount" type="Bipolar" default="1"/>
+    <xs:attribute name="fixed" type="xs:boolean" default="true">
+      <xs:annotation>
+        <xs:documentation>A fixed cable is internal wiring; an unfixed one is a slot in the
+          modulation matrix the player can repatch.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Graph">
+    <xs:sequence>
+      <xs:element name="modules">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="module" minOccurs="1" maxOccurs="64"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="cables">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="cable" type="Cable" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="voiceOutput" type="PortRef"/>
+    </xs:sequence>
+    <xs:attribute name="voices" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:positiveInteger">
+          <xs:maxInclusive value="32"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!-- ================================================================== -->
+  <!--  6. The front panel: recursive sections                            -->
+  <!-- ================================================================== -->
+
+  <xs:group name="Placement">
+    <xs:annotation>
+      <xs:documentation>Grid position on the panel, in 5 mm units from the top-left.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="at">
+        <xs:complexType>
+          <xs:attribute name="col" type="xs:nonNegativeInteger" use="required"/>
+          <xs:attribute name="row" type="xs:nonNegativeInteger" use="required"/>
+          <xs:attribute name="span" type="xs:positiveInteger" default="1"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+
+  <xs:complexType name="Control" abstract="true">
+    <xs:sequence>
+      <xs:group ref="Placement"/>
+    </xs:sequence>
+    <xs:attribute name="binds" type="PortRef" use="required">
+      <xs:annotation>
+        <xs:documentation>module.param this control drives.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="label" type="xs:string" use="required"/>
+    <xs:attribute name="midiCc" type="MidiNumber" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="Knob">
+    <xs:complexContent>
+      <xs:extension base="Control">
+        <xs:attribute name="size" default="medium">
+          <xs:simpleType>
+            <xs:restriction base="xs:token">
+              <xs:enumeration value="small"/>
+              <xs:enumeration value="medium"/>
+              <xs:enumeration value="large"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="detent" type="Normalised" use="optional"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Slider">
+    <xs:complexContent>
+      <xs:extension base="Control">
+        <xs:attribute name="travelMm" type="xs:positiveInteger" default="45"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Button">
+    <xs:complexContent>
+      <xs:extension base="Control">
+        <xs:attribute name="behaviour" default="latch">
+          <xs:simpleType>
+            <xs:restriction base="xs:token">
+              <xs:enumeration value="latch"/>
+              <xs:enumeration value="momentary"/>
+              <xs:enumeration value="cycle"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="led" type="xs:boolean" default="true"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="PanelSection">
+    <xs:annotation>
+      <xs:documentation>A labelled area of the panel. Sections nest: a section may hold
+        controls and further sections, to any depth (this type refers to itself).</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="title" type="xs:string"/>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="knob" type="Knob"/>
+        <xs:element name="slider" type="Slider"/>
+        <xs:element name="button" type="Button"/>
+        <xs:element name="section" type="PanelSection"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="id" type="Name" use="required"/>
+    <xs:attribute name="colour" type="xs:token" use="optional"/>
+  </xs:complexType>
+
+  <!-- ================================================================== -->
+  <!--  7. Factory patches                                                -->
+  <!-- ================================================================== -->
+
+  <xs:complexType name="Setting">
+    <xs:simpleContent>
+      <xs:extension base="Normalised">
+        <xs:attribute name="param" type="PortRef" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="Patch">
+    <xs:sequence>
+      <xs:element name="meta">
+        <xs:complexType>
+          <xs:all>
+            <xs:annotation>
+              <xs:documentation>xs:all: these may appear in any order, each at most once.</xs:documentation>
+            </xs:annotation>
+            <xs:element name="category" type="xs:token"/>
+            <xs:element name="author" type="xs:token" minOccurs="0"/>
+            <xs:element name="tags" minOccurs="0">
+              <xs:simpleType>
+                <xs:list itemType="Name"/>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="notes" type="Prose" minOccurs="0"/>
+          </xs:all>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="set" type="Setting" maxOccurs="unbounded"/>
+      <xs:element name="route" type="Cable" minOccurs="0" maxOccurs="32"/>
+      <xs:element name="split" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="low" type="Key" use="required"/>
+          <xs:attribute name="high" type="Key" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Third-party editors may attach their own data in their own
+            namespace; the firmware ignores it.</xs:documentation>
+        </xs:annotation>
+      </xs:any>
+    </xs:sequence>
+    <xs:attribute name="slot" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:pattern value="[A-H][0-9]{2}"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="name" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:minLength value="1"/>
+          <xs:maxLength value="24"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:anyAttribute namespace="##other" processContents="lax"/>
+  </xs:complexType>
+
+  <!-- ================================================================== -->
+  <!--  8. The root                                                       -->
+  <!-- ================================================================== -->
+
+  <xs:element name="instrument">
+    <xs:annotation>
+      <xs:documentation>Identity, graph, panel, library.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="identity">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="model" type="xs:token"/>
+              <xs:element name="revision" type="xs:token"/>
+              <xs:element name="firmware">
+                <xs:simpleType>
+                  <xs:restriction base="xs:token">
+                    <xs:pattern value="[0-9]+\.[0-9]+\.[0-9]+"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="keys" minOccurs="0">
+                <xs:complexType>
+                  <xs:attribute name="count" type="xs:positiveInteger" use="required"/>
+                  <xs:attribute name="lowest" type="Key" use="required"/>
+                  <xs:attribute name="aftertouch" default="channel">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:token">
+                        <xs:enumeration value="none"/>
+                        <xs:enumeration value="channel"/>
+                        <xs:enumeration value="polyphonic"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="graph" type="Graph"/>
+        <xs:element name="panel">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="section" type="PanelSection" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="widthHp" type="xs:positiveInteger" use="required"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="library" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="patch" type="Patch" minOccurs="0" maxOccurs="512"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="formatVersion" type="xs:token" fixed="3"/>
+    </xs:complexType>
+
+    <xs:unique name="uniqueModuleName">
+      <xs:selector xpath="h:graph/h:modules/*"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+    <xs:unique name="uniqueSectionId">
+      <xs:selector xpath="h:panel/h:section|h:panel/h:section/h:section"/>
+      <xs:field xpath="@id"/>
+    </xs:unique>
+    <xs:unique name="uniquePatchSlot">
+      <xs:selector xpath="h:library/h:patch"/>
+      <xs:field xpath="@slot"/>
+    </xs:unique>
+    <xs:unique name="uniqueMidiCc">
+      <xs:selector xpath=".//h:knob|.//h:slider|.//h:button"/>
+      <xs:field xpath="@midiCc"/>
+    </xs:unique>
+  </xs:element>
+
+</xs:schema>

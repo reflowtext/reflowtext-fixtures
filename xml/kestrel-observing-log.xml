@@ -1,0 +1,2666 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Kestrel Ridge Observatory: observing log, spring 2026.
+  185 observation records across 62 nights. Validates against
+  xsd/kestrel-observing-log.xsd (which includes xsd/kestrel-common.xsd).
+  The observatory, its instruments and its observers are fictional; the
+  targets are real objects, but every pointing and condition is invented.
+  Released under CC0-1.0.
+-->
+<observingLog xmlns="urn:example:kestrel-ridge:observing:1" season="2026-spring" generated="2026-05-31T09:00:00Z">
+  <site code="KRO">
+    <name>Kestrel Ridge Observatory</name>
+    <elevation unit="m">1142</elevation>
+    <timeZone>UTC</timeZone>
+    <description>A volunteer-run dark-sky site on a granite ridge, two hours from the nearest city. Three domes and a roll-off shed.</description>
+  </site>
+  <instruments>
+    <telescope id="t-aquila" dome="north">
+      <name>Aquila</name><commissioned>2011</commissioned><lastServiced>2025-11-14</lastServiced>
+      <design>ritchey-chretien</design><aperture unit="mm">406</aperture><focalLength unit="mm">3250</focalLength>
+      <mount type="equatorial" guided="true"/>
+    </telescope>
+    <telescope id="t-merlin" dome="south">
+      <name>Merlin</name><commissioned>2018</commissioned><lastServiced>2026-02-20</lastServiced>
+      <design>refractor</design><aperture unit="mm">130</aperture><focalLength unit="mm">910</focalLength>
+      <mount type="equatorial"/>
+    </telescope>
+    <telescope id="t-wren" dome="roll-off">
+      <name>Wren</name><commissioned>2004</commissioned>
+      <design>newtonian</design><aperture unit="mm">305</aperture><focalLength unit="mm">1525</focalLength>
+      <mount type="alt-az" guided="false"/>
+    </telescope>
+    <camera id="c-ember" status="in-service" mono="true">
+      <name>Ember</name><commissioned>2022</commissioned>
+      <sensor>Back-illuminated CMOS, 26 megapixels</sensor><pixelSize unit="mm">0.00376</pixelSize><cooledTo unit="degC">-10</cooledTo>
+      <filters>L R G B Ha OIII</filters>
+    </camera>
+    <camera id="c-flint" status="maintenance" mono="false">
+      <name>Flint</name><commissioned>2016</commissioned><lastServiced>2026-03-30</lastServiced>
+      <sensor>CCD, 8 megapixels</sensor><pixelSize unit="mm">0.0054</pixelSize>
+      <filters>L R G B</filters>
+    </camera>
+  </instruments>
+  <observers>
+    <observer code="ob01"><role>staff</role><since>2009</since></observer>
+    <observer code="ob02"><role>staff</role><since>2014</since></observer>
+    <observer code="ob03"><role>volunteer</role><since>2017</since></observer>
+    <observer code="ob04"><role>volunteer</role><since>2019</since></observer>
+    <observer code="ob05"><role>student</role><since>2025</since></observer>
+    <observer code="ob06"><role>volunteer</role><since>2021</since></observer>
+    <observer code="ob07"><role>visiting</role><since>2026</since></observer>
+    <observer code="ob08"><role>student</role><since>2026</since></observer>
+  </observers>
+  <observations>
+    <observation id="KR-2026-0001" night="2026-01-09" observer="ob02" instrument="t-aquila">
+      <target class="globular-cluster" catalogue="M13">Great Hercules Cluster</target>
+      <constellation>Her</constellation>
+      <start>2026-01-09T19:07:00Z</start>
+      <altitude>45.20</altitude>
+      <azimuth>111.43</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">30</exposure>
+      <frames>24</frames>
+      <seeing unit="arcsec">2.9</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.41</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0002" night="2026-01-09" observer="ob02" instrument="t-aquila">
+      <target class="open-cluster" catalogue="M44">Beehive Cluster</target>
+      <constellation>Cnc</constellation>
+      <start>2026-01-09T20:02:00Z</start>
+      <altitude>78.34</altitude>
+      <azimuth>23.92</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">300</exposure>
+      <frames>36</frames>
+      <seeing unit="arcsec">2.6</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.41</moonIllumination>
+      <quality>3</quality>
+      <notes>Collimation touched up before starting; star test clean.</notes>
+    </observation>
+    <observation id="KR-2026-0003" night="2026-01-09" observer="ob02" instrument="t-aquila">
+      <target class="galaxy" catalogue="M101">Pinwheel Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-01-09T21:18:00Z</start>
+      <altitude>42.85</altitude>
+      <azimuth>204.98</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">120</exposure>
+      <frames>41</frames>
+      <seeing unit="arcsec">3.2</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.41</moonIllumination>
+      <quality>2</quality>
+      <notes>Colour balance checked against a G2 star in the same field.</notes>
+    </observation>
+    <observation id="KR-2026-0004" night="2026-01-09" observer="ob02" instrument="t-aquila">
+      <target class="moon">Moon</target>
+      <constellation>Leo</constellation>
+      <start>2026-01-09T22:43:00Z</start>
+      <altitude>27.72</altitude>
+      <azimuth>35.22</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">30</exposure>
+      <frames>45</frames>
+      <seeing unit="arcsec">2.7</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.41</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0005" night="2026-01-13" observer="ob02" instrument="t-aquila">
+      <target class="planet">Saturn</target>
+      <constellation>Aqr</constellation>
+      <start>2026-01-13T19:16:00Z</start>
+      <altitude>22.11</altitude>
+      <azimuth>90.10</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">60</exposure>
+      <frames>46</frames>
+      <seeing unit="arcsec">2.0</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.68</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0006" night="2026-01-13" observer="ob02" instrument="t-aquila">
+      <target class="planetary-nebula" catalogue="M27">Dumbbell Nebula</target>
+      <constellation>Vul</constellation>
+      <start>2026-01-13T20:23:00Z</start>
+      <altitude>23.89</altitude>
+      <azimuth>331.78</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">60</exposure>
+      <frames>40</frames>
+      <seeing unit="arcsec">2.2</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.68</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0007" night="2026-01-17" observer="ob06" instrument="t-merlin">
+      <target class="galaxy" catalogue="M33">Triangulum Galaxy</target>
+      <constellation>Tri</constellation>
+      <start>2026-01-17T19:24:00Z</start>
+      <altitude>60.59</altitude>
+      <azimuth>154.58</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">30</exposure>
+      <frames>16</frames>
+      <seeing unit="arcsec">2.3</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.95</moonIllumination>
+      <quality>2</quality>
+      <notes>Collimation touched up before starting; star test clean.</notes>
+    </observation>
+    <observation id="KR-2026-0008" night="2026-01-17" observer="ob06" instrument="t-merlin">
+      <target class="globular-cluster" catalogue="M92">M92</target>
+      <constellation>Her</constellation>
+      <start>2026-01-17T20:07:00Z</start>
+      <altitude>51.22</altitude>
+      <azimuth>45.24</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">30</exposure>
+      <frames>24</frames>
+      <seeing unit="arcsec">2.4</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.95</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0009" night="2026-01-17" observer="ob06" instrument="t-merlin">
+      <target class="galaxy" catalogue="M101">Pinwheel Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-01-17T21:41:00Z</start>
+      <altitude>29.73</altitude>
+      <azimuth>80.03</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">60</exposure>
+      <frames>9</frames>
+      <seeing unit="arcsec">1.8</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.95</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0010" night="2026-01-17" observer="ob06" instrument="t-merlin">
+      <target class="variable-star">Algol</target>
+      <constellation>Per</constellation>
+      <start>2026-01-17T22:34:00Z</start>
+      <altitude>81.68</altitude>
+      <azimuth>214.36</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">300</exposure>
+      <frames>34</frames>
+      <seeing unit="arcsec">2.3</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.95</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0011" night="2026-01-18" observer="ob01" instrument="t-wren">
+      <target class="variable-star">Algol</target>
+      <constellation>Per</constellation>
+      <start>2026-01-18T19:23:00Z</start>
+      <altitude>54.55</altitude>
+      <azimuth>34.83</azimuth>
+      <filter>visual</filter>
+      <magnification>48</magnification>
+      <seeing unit="arcsec">1.7</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.98</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0012" night="2026-01-18" observer="ob01" instrument="t-wren">
+      <target class="emission-nebula" catalogue="M42">Orion Nebula</target>
+      <constellation>Ori</constellation>
+      <start>2026-01-18T20:09:00Z</start>
+      <altitude>22.00</altitude>
+      <azimuth>243.62</azimuth>
+      <filter>visual</filter>
+      <magnification>96</magnification>
+      <seeing unit="arcsec">1.1</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.98</moonIllumination>
+      <quality>5</quality>
+      <notes>Moon rising behind the ridge; gradient on the last third of frames.</notes>
+    </observation>
+    <observation id="KR-2026-0013" night="2026-01-18" observer="ob01" instrument="t-wren">
+      <target class="moon">Moon</target>
+      <constellation>Leo</constellation>
+      <start>2026-01-18T21:33:00Z</start>
+      <altitude>73.87</altitude>
+      <azimuth>258.58</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">1.1</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.98</moonIllumination>
+      <quality>4</quality>
+      <notes>Colour balance checked against a G2 star in the same field.</notes>
+    </observation>
+    <observation id="KR-2026-0014" night="2026-01-18" observer="ob01" instrument="t-wren">
+      <target class="galaxy" catalogue="M31">Andromeda Galaxy</target>
+      <constellation>And</constellation>
+      <start>2026-01-18T23:03:00Z</start>
+      <altitude>54.90</altitude>
+      <azimuth>286.70</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">1.6</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.98</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0015" night="2026-01-20" observer="ob06" instrument="t-aquila">
+      <target class="planetary-nebula" catalogue="M27">Dumbbell Nebula</target>
+      <constellation>Vul</constellation>
+      <start>2026-01-20T19:22:00Z</start>
+      <altitude>80.07</altitude>
+      <azimuth>188.50</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">600</exposure>
+      <frames>12</frames>
+      <seeing unit="arcsec">2.5</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.85</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0016" night="2026-01-20" observer="ob06" instrument="t-aquila">
+      <target class="double-star">Albireo</target>
+      <constellation>Cyg</constellation>
+      <start>2026-01-20T20:30:00Z</start>
+      <altitude>69.66</altitude>
+      <azimuth>152.10</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">180</exposure>
+      <frames>20</frames>
+      <seeing unit="arcsec">2.4</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.85</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0017" night="2026-01-22" observer="ob02" instrument="t-merlin">
+      <target class="globular-cluster" catalogue="M92">M92</target>
+      <constellation>Her</constellation>
+      <start>2026-01-22T19:24:00Z</start>
+      <altitude>72.99</altitude>
+      <azimuth>26.99</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">600</exposure>
+      <frames>43</frames>
+      <seeing unit="arcsec">2.5</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.71</moonIllumination>
+      <quality>2</quality>
+      <notes>Satellite trail on frame 7; kept, rejected in stacking.</notes>
+    </observation>
+    <observation id="KR-2026-0018" night="2026-01-22" observer="ob02" instrument="t-merlin">
+      <target class="planet">Saturn</target>
+      <constellation>Aqr</constellation>
+      <start>2026-01-22T20:25:00Z</start>
+      <altitude>49.57</altitude>
+      <azimuth>323.77</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">600</exposure>
+      <frames>19</frames>
+      <seeing unit="arcsec">2.0</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.71</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0019" night="2026-01-24" observer="ob06" instrument="t-merlin">
+      <target class="galaxy" catalogue="M81">Bode's Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-01-24T19:38:00Z</start>
+      <altitude>51.87</altitude>
+      <azimuth>298.25</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">600</exposure>
+      <frames>37</frames>
+      <seeing unit="arcsec">2.0</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.58</moonIllumination>
+      <quality>2</quality>
+      <notes>Comparison sequence for the variable recorded in the same session.</notes>
+    </observation>
+    <observation id="KR-2026-0020" night="2026-01-24" observer="ob06" instrument="t-merlin">
+      <target class="open-cluster" catalogue="M35">M35</target>
+      <constellation>Gem</constellation>
+      <start>2026-01-24T20:38:00Z</start>
+      <altitude>54.03</altitude>
+      <azimuth>55.49</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">180</exposure>
+      <frames>31</frames>
+      <seeing unit="arcsec">2.1</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.58</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0021" night="2026-01-24" observer="ob06" instrument="t-merlin">
+      <target class="variable-star">Betelgeuse</target>
+      <constellation>Ori</constellation>
+      <start>2026-01-24T21:50:00Z</start>
+      <altitude>29.88</altitude>
+      <azimuth>359.63</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">60</exposure>
+      <frames>45</frames>
+      <seeing unit="arcsec">1.9</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.58</moonIllumination>
+      <quality>3</quality>
+      <notes>Comparison sequence for the variable recorded in the same session.</notes>
+    </observation>
+    <observation id="KR-2026-0022" night="2026-01-24" observer="ob06" instrument="t-merlin">
+      <target class="galaxy" catalogue="M82">Cigar Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-01-24T22:54:00Z</start>
+      <altitude>50.56</altitude>
+      <azimuth>217.82</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">300</exposure>
+      <frames>48</frames>
+      <seeing unit="arcsec">2.0</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.58</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0023" night="2026-01-25" observer="ob01" instrument="t-aquila">
+      <target class="globular-cluster" catalogue="M13">Great Hercules Cluster</target>
+      <constellation>Her</constellation>
+      <start>2026-01-25T19:00:00Z</start>
+      <altitude>33.92</altitude>
+      <azimuth>285.23</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">60</exposure>
+      <frames>32</frames>
+      <seeing unit="arcsec">1.9</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.51</moonIllumination>
+      <quality>2</quality>
+      <notes>Moon rising behind the ridge; gradient on the last third of frames.</notes>
+    </observation>
+    <observation id="KR-2026-0024" night="2026-01-25" observer="ob01" instrument="t-aquila">
+      <target class="galaxy" catalogue="M82">Cigar Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-01-25T19:39:00Z</start>
+      <altitude>48.31</altitude>
+      <azimuth>277.29</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">300</exposure>
+      <frames>60</frames>
+      <seeing unit="arcsec">2.4</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.51</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0025" night="2026-01-25" observer="ob01" instrument="t-aquila">
+      <target class="double-star">Albireo</target>
+      <constellation>Cyg</constellation>
+      <start>2026-01-25T20:11:00Z</start>
+      <altitude>34.33</altitude>
+      <azimuth>193.86</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">300</exposure>
+      <frames>13</frames>
+      <seeing unit="arcsec">2.4</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.51</moonIllumination>
+      <quality>1</quality>
+      <notes>Comparison sequence for the variable recorded in the same session.</notes>
+    </observation>
+    <observation id="KR-2026-0026" night="2026-01-28" observer="ob02" instrument="t-wren">
+      <target class="globular-cluster" catalogue="M3">M3</target>
+      <constellation>CVn</constellation>
+      <start>2026-01-28T19:47:00Z</start>
+      <altitude>35.55</altitude>
+      <azimuth>341.98</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">1.2</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.31</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0027" night="2026-01-28" observer="ob02" instrument="t-wren">
+      <target class="variable-star">Algol</target>
+      <constellation>Per</constellation>
+      <start>2026-01-28T20:20:00Z</start>
+      <altitude>61.97</altitude>
+      <azimuth>349.91</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">1.3</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.31</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0028" night="2026-01-28" observer="ob02" instrument="t-wren">
+      <target class="open-cluster" catalogue="M44">Beehive Cluster</target>
+      <constellation>Cnc</constellation>
+      <start>2026-01-28T21:06:00Z</start>
+      <altitude>51.03</altitude>
+      <azimuth>258.39</azimuth>
+      <filter>visual</filter>
+      <magnification>220</magnification>
+      <seeing unit="arcsec">1.1</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.31</moonIllumination>
+      <quality>4</quality>
+      <notes>Aurora reported low on the northern horizon; no effect at this altitude.</notes>
+    </observation>
+    <observation id="KR-2026-0029" night="2026-01-28" observer="ob02" instrument="t-wren">
+      <target class="emission-nebula" catalogue="M16">Eagle Nebula</target>
+      <constellation>Ser</constellation>
+      <start>2026-01-28T21:38:00Z</start>
+      <altitude>44.58</altitude>
+      <azimuth>87.84</azimuth>
+      <filter>visual</filter>
+      <magnification>96</magnification>
+      <seeing unit="arcsec">1.2</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.31</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0030" night="2026-01-30" observer="ob07" instrument="t-merlin">
+      <target class="globular-cluster" catalogue="M92">M92</target>
+      <constellation>Her</constellation>
+      <start>2026-01-30T19:04:00Z</start>
+      <altitude>74.78</altitude>
+      <azimuth>317.48</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">300</exposure>
+      <frames>42</frames>
+      <seeing unit="arcsec">3.2</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.17</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0031" night="2026-01-30" observer="ob07" instrument="t-merlin">
+      <target class="planetary-nebula" catalogue="M27">Dumbbell Nebula</target>
+      <constellation>Vul</constellation>
+      <start>2026-01-30T20:22:00Z</start>
+      <altitude>70.35</altitude>
+      <azimuth>77.95</azimuth>
+      <filter>OIII</filter>
+      <exposure unit="s">120</exposure>
+      <frames>23</frames>
+      <seeing unit="arcsec">3.0</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.17</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0032" night="2026-01-30" observer="ob07" instrument="t-merlin">
+      <target class="globular-cluster" catalogue="M92">M92</target>
+      <constellation>Her</constellation>
+      <start>2026-01-30T20:54:00Z</start>
+      <altitude>34.82</altitude>
+      <azimuth>91.07</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">600</exposure>
+      <frames>51</frames>
+      <seeing unit="arcsec">2.7</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.17</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0033" night="2026-02-02" observer="ob04" instrument="t-aquila">
+      <target class="globular-cluster" catalogue="M3">M3</target>
+      <constellation>CVn</constellation>
+      <start>2026-02-02T19:15:00Z</start>
+      <altitude>70.57</altitude>
+      <azimuth>293.95</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">180</exposure>
+      <frames>48</frames>
+      <seeing unit="arcsec">1.5</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.03</moonIllumination>
+      <quality>5</quality>
+    </observation>
+    <observation id="KR-2026-0034" night="2026-02-02" observer="ob04" instrument="t-aquila">
+      <target class="open-cluster" catalogue="M44">Beehive Cluster</target>
+      <constellation>Cnc</constellation>
+      <start>2026-02-02T20:42:00Z</start>
+      <altitude>66.77</altitude>
+      <azimuth>178.11</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">600</exposure>
+      <frames>49</frames>
+      <seeing unit="arcsec">1.6</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.03</moonIllumination>
+      <quality>4</quality>
+      <notes>Focus drifted with falling temperature; autofocus rerun every 40 minutes.</notes>
+    </observation>
+    <observation id="KR-2026-0035" night="2026-02-05" observer="ob02" instrument="t-merlin">
+      <target class="galaxy" catalogue="M31">Andromeda Galaxy</target>
+      <constellation>And</constellation>
+      <start>2026-02-05T19:19:00Z</start>
+      <altitude>80.34</altitude>
+      <azimuth>116.96</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">120</exposure>
+      <frames>42</frames>
+      <seeing unit="arcsec">3.2</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.24</moonIllumination>
+      <quality>2</quality>
+      <notes>Colour balance checked against a G2 star in the same field.</notes>
+    </observation>
+    <observation id="KR-2026-0036" night="2026-02-05" observer="ob02" instrument="t-merlin">
+      <target class="galaxy" catalogue="M51">Whirlpool Galaxy</target>
+      <constellation>CVn</constellation>
+      <start>2026-02-05T19:45:00Z</start>
+      <altitude>36.79</altitude>
+      <azimuth>345.06</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">600</exposure>
+      <frames>32</frames>
+      <seeing unit="arcsec">3.2</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.24</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0037" night="2026-02-05" observer="ob02" instrument="t-merlin">
+      <target class="galaxy" catalogue="M82">Cigar Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-02-05T20:10:00Z</start>
+      <altitude>36.20</altitude>
+      <azimuth>253.41</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">300</exposure>
+      <frames>21</frames>
+      <seeing unit="arcsec">3.1</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.24</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0038" night="2026-02-08" observer="ob08" instrument="t-aquila">
+      <target class="double-star">Albireo</target>
+      <constellation>Cyg</constellation>
+      <start>2026-02-08T19:26:00Z</start>
+      <altitude>64.35</altitude>
+      <azimuth>95.50</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">60</exposure>
+      <frames>54</frames>
+      <seeing unit="arcsec">3.2</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.44</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0039" night="2026-02-08" observer="ob08" instrument="t-aquila">
+      <target class="open-cluster" catalogue="M35">M35</target>
+      <constellation>Gem</constellation>
+      <start>2026-02-08T20:06:00Z</start>
+      <altitude>61.81</altitude>
+      <azimuth>83.83</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">180</exposure>
+      <frames>49</frames>
+      <seeing unit="arcsec">3.6</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.44</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0040" night="2026-02-08" observer="ob08" instrument="t-aquila">
+      <target class="double-star">Mizar and Alcor</target>
+      <constellation>UMa</constellation>
+      <start>2026-02-08T20:53:00Z</start>
+      <altitude>74.10</altitude>
+      <azimuth>63.74</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">30</exposure>
+      <frames>28</frames>
+      <seeing unit="arcsec">3.0</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.44</moonIllumination>
+      <quality>2</quality>
+      <notes>Public open night; target shown at the eyepiece to about forty visitors.</notes>
+    </observation>
+    <observation id="KR-2026-0041" night="2026-02-09" observer="ob02" instrument="t-merlin">
+      <target class="planet">Saturn</target>
+      <constellation>Aqr</constellation>
+      <start>2026-02-09T19:46:00Z</start>
+      <altitude>55.66</altitude>
+      <azimuth>53.48</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">300</exposure>
+      <frames>59</frames>
+      <seeing unit="arcsec">1.0</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.51</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0042" night="2026-02-09" observer="ob02" instrument="t-merlin">
+      <target class="double-star">Mizar and Alcor</target>
+      <constellation>UMa</constellation>
+      <start>2026-02-09T21:04:00Z</start>
+      <altitude>59.53</altitude>
+      <azimuth>172.85</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">30</exposure>
+      <frames>53</frames>
+      <seeing unit="arcsec">1.6</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.51</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0043" night="2026-02-11" observer="ob06" instrument="t-aquila">
+      <target class="planet">Jupiter</target>
+      <constellation>Tau</constellation>
+      <start>2026-02-11T19:19:00Z</start>
+      <altitude>71.87</altitude>
+      <azimuth>277.14</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">120</exposure>
+      <frames>60</frames>
+      <seeing unit="arcsec">1.4</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.64</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0044" night="2026-02-11" observer="ob06" instrument="t-aquila">
+      <target class="galaxy" catalogue="M101">Pinwheel Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-02-11T20:44:00Z</start>
+      <altitude>74.78</altitude>
+      <azimuth>243.89</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">300</exposure>
+      <frames>39</frames>
+      <seeing unit="arcsec">1.7</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.64</moonIllumination>
+      <quality>3</quality>
+      <notes>Moon rising behind the ridge; gradient on the last third of frames.</notes>
+    </observation>
+    <observation id="KR-2026-0045" night="2026-02-11" observer="ob06" instrument="t-aquila">
+      <target class="galaxy" catalogue="M33">Triangulum Galaxy</target>
+      <constellation>Tri</constellation>
+      <start>2026-02-11T21:29:00Z</start>
+      <altitude>62.42</altitude>
+      <azimuth>120.53</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">300</exposure>
+      <frames>35</frames>
+      <seeing unit="arcsec">1.3</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.64</moonIllumination>
+      <quality>4</quality>
+      <notes>Focus drifted with falling temperature; autofocus rerun every 40 minutes.</notes>
+    </observation>
+    <observation id="KR-2026-0046" night="2026-02-11" observer="ob06" instrument="t-aquila">
+      <target class="galaxy" catalogue="M101">Pinwheel Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-02-11T22:30:00Z</start>
+      <altitude>42.62</altitude>
+      <azimuth>18.08</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">60</exposure>
+      <frames>9</frames>
+      <seeing unit="arcsec">1.2</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.64</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0047" night="2026-02-12" observer="ob03" instrument="t-merlin">
+      <target class="open-cluster" catalogue="M35">M35</target>
+      <constellation>Gem</constellation>
+      <start>2026-02-12T19:50:00Z</start>
+      <altitude>66.11</altitude>
+      <azimuth>206.28</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">60</exposure>
+      <frames>59</frames>
+      <seeing unit="arcsec">2.3</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.71</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0048" night="2026-02-12" observer="ob03" instrument="t-merlin">
+      <target class="galaxy" catalogue="M82">Cigar Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-02-12T21:03:00Z</start>
+      <altitude>40.01</altitude>
+      <azimuth>313.98</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">300</exposure>
+      <frames>27</frames>
+      <seeing unit="arcsec">2.6</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.71</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0049" night="2026-02-12" observer="ob03" instrument="t-merlin">
+      <target class="variable-star">Betelgeuse</target>
+      <constellation>Ori</constellation>
+      <start>2026-02-12T22:02:00Z</start>
+      <altitude>39.18</altitude>
+      <azimuth>160.61</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">300</exposure>
+      <frames>48</frames>
+      <seeing unit="arcsec">2.1</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.71</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0050" night="2026-02-12" observer="ob03" instrument="t-merlin">
+      <target class="open-cluster" catalogue="M45">Pleiades</target>
+      <constellation>Tau</constellation>
+      <start>2026-02-12T23:16:00Z</start>
+      <altitude>45.38</altitude>
+      <azimuth>42.63</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">600</exposure>
+      <frames>22</frames>
+      <seeing unit="arcsec">2.3</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.71</moonIllumination>
+      <quality>3</quality>
+      <notes>Comparison sequence for the variable recorded in the same session.</notes>
+    </observation>
+    <observation id="KR-2026-0051" night="2026-02-14" observer="ob08" instrument="t-wren">
+      <target class="planetary-nebula" catalogue="M57">Ring Nebula</target>
+      <constellation>Lyr</constellation>
+      <start>2026-02-14T19:45:00Z</start>
+      <altitude>55.26</altitude>
+      <azimuth>198.86</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">2.3</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.84</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0052" night="2026-02-14" observer="ob08" instrument="t-wren">
+      <target class="planetary-nebula" catalogue="M57">Ring Nebula</target>
+      <constellation>Lyr</constellation>
+      <start>2026-02-14T20:49:00Z</start>
+      <altitude>62.39</altitude>
+      <azimuth>31.83</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">1.9</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.84</moonIllumination>
+      <quality>3</quality>
+      <notes>Colour balance checked against a G2 star in the same field.</notes>
+    </observation>
+    <observation id="KR-2026-0053" night="2026-02-16" observer="ob03" instrument="t-aquila">
+      <target class="double-star">Mizar and Alcor</target>
+      <constellation>UMa</constellation>
+      <start>2026-02-16T19:43:00Z</start>
+      <altitude>75.20</altitude>
+      <azimuth>314.20</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">300</exposure>
+      <frames>20</frames>
+      <seeing unit="arcsec">2.3</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.98</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0054" night="2026-02-16" observer="ob03" instrument="t-aquila">
+      <target class="galaxy" catalogue="M82">Cigar Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-02-16T21:16:00Z</start>
+      <altitude>45.28</altitude>
+      <azimuth>112.57</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">300</exposure>
+      <frames>38</frames>
+      <seeing unit="arcsec">1.7</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.98</moonIllumination>
+      <quality>4</quality>
+      <notes>Satellite trail on frame 7; kept, rejected in stacking.</notes>
+    </observation>
+    <observation id="KR-2026-0055" night="2026-02-16" observer="ob03" instrument="t-aquila">
+      <target class="globular-cluster" catalogue="M13">Great Hercules Cluster</target>
+      <constellation>Her</constellation>
+      <start>2026-02-16T22:34:00Z</start>
+      <altitude>48.85</altitude>
+      <azimuth>333.85</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">600</exposure>
+      <frames>56</frames>
+      <seeing unit="arcsec">2.1</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.98</moonIllumination>
+      <quality>3</quality>
+      <notes>Aurora reported low on the northern horizon; no effect at this altitude.</notes>
+    </observation>
+    <observation id="KR-2026-0056" night="2026-02-18" observer="ob07" instrument="t-aquila">
+      <target class="open-cluster" catalogue="M44">Beehive Cluster</target>
+      <constellation>Cnc</constellation>
+      <start>2026-02-18T19:27:00Z</start>
+      <altitude>32.80</altitude>
+      <azimuth>262.03</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">180</exposure>
+      <frames>50</frames>
+      <seeing unit="arcsec">1.7</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.88</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0057" night="2026-02-18" observer="ob07" instrument="t-aquila">
+      <target class="planetary-nebula" catalogue="M57">Ring Nebula</target>
+      <constellation>Lyr</constellation>
+      <start>2026-02-18T20:49:00Z</start>
+      <altitude>77.98</altitude>
+      <azimuth>14.49</azimuth>
+      <filter>OIII</filter>
+      <exposure unit="s">30</exposure>
+      <frames>40</frames>
+      <seeing unit="arcsec">1.9</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.88</moonIllumination>
+      <quality>3</quality>
+      <notes>Aurora reported low on the northern horizon; no effect at this altitude.</notes>
+    </observation>
+    <observation id="KR-2026-0058" night="2026-02-18" observer="ob07" instrument="t-aquila">
+      <target class="planet">Jupiter</target>
+      <constellation>Tau</constellation>
+      <start>2026-02-18T21:16:00Z</start>
+      <altitude>56.68</altitude>
+      <azimuth>300.98</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">60</exposure>
+      <frames>60</frames>
+      <seeing unit="arcsec">2.2</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.88</moonIllumination>
+      <quality>3</quality>
+      <notes>Satellite trail on frame 7; kept, rejected in stacking.</notes>
+    </observation>
+    <observation id="KR-2026-0059" night="2026-02-20" observer="ob04" instrument="t-aquila">
+      <target class="supernova-remnant" catalogue="M1">Crab Nebula</target>
+      <constellation>Tau</constellation>
+      <start>2026-02-20T19:44:00Z</start>
+      <altitude>56.10</altitude>
+      <azimuth>251.67</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">30</exposure>
+      <frames>39</frames>
+      <seeing unit="arcsec">2.5</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.75</moonIllumination>
+      <quality>2</quality>
+      <notes>Collimation touched up before starting; star test clean.</notes>
+    </observation>
+    <observation id="KR-2026-0060" night="2026-02-20" observer="ob04" instrument="t-aquila">
+      <target class="galaxy" catalogue="M51">Whirlpool Galaxy</target>
+      <constellation>CVn</constellation>
+      <start>2026-02-20T20:34:00Z</start>
+      <altitude>67.28</altitude>
+      <azimuth>58.37</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">120</exposure>
+      <frames>40</frames>
+      <seeing unit="arcsec">2.8</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.75</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0061" night="2026-02-20" observer="ob04" instrument="t-aquila">
+      <target class="planetary-nebula" catalogue="M27">Dumbbell Nebula</target>
+      <constellation>Vul</constellation>
+      <start>2026-02-20T21:54:00Z</start>
+      <altitude>37.21</altitude>
+      <azimuth>186.43</azimuth>
+      <filter>OIII</filter>
+      <exposure unit="s">30</exposure>
+      <frames>20</frames>
+      <seeing unit="arcsec">2.6</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.75</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0062" night="2026-02-24" observer="ob01" instrument="t-merlin">
+      <target class="moon">Moon</target>
+      <constellation>Leo</constellation>
+      <start>2026-02-24T19:35:00Z</start>
+      <altitude>51.38</altitude>
+      <azimuth>232.83</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">60</exposure>
+      <frames>12</frames>
+      <seeing unit="arcsec">1.5</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.48</moonIllumination>
+      <quality>5</quality>
+    </observation>
+    <observation id="KR-2026-0063" night="2026-02-24" observer="ob01" instrument="t-merlin">
+      <target class="variable-star">Betelgeuse</target>
+      <constellation>Ori</constellation>
+      <start>2026-02-24T21:07:00Z</start>
+      <altitude>29.56</altitude>
+      <azimuth>255.24</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">180</exposure>
+      <frames>57</frames>
+      <seeing unit="arcsec">1.2</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.48</moonIllumination>
+      <quality>5</quality>
+    </observation>
+    <observation id="KR-2026-0064" night="2026-02-24" observer="ob01" instrument="t-merlin">
+      <target class="galaxy" catalogue="M33">Triangulum Galaxy</target>
+      <constellation>Tri</constellation>
+      <start>2026-02-24T21:32:00Z</start>
+      <altitude>23.95</altitude>
+      <azimuth>159.27</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">30</exposure>
+      <frames>44</frames>
+      <seeing unit="arcsec">1.0</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.48</moonIllumination>
+      <quality>5</quality>
+    </observation>
+    <observation id="KR-2026-0065" night="2026-02-24" observer="ob01" instrument="t-merlin">
+      <target class="supernova-remnant" catalogue="M1">Crab Nebula</target>
+      <constellation>Tau</constellation>
+      <start>2026-02-24T22:56:00Z</start>
+      <altitude>29.41</altitude>
+      <azimuth>241.82</azimuth>
+      <filter>OIII</filter>
+      <exposure unit="s">60</exposure>
+      <frames>26</frames>
+      <seeing unit="arcsec">1.3</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.48</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0066" night="2026-02-25" observer="ob07" instrument="t-merlin">
+      <target class="galaxy" catalogue="M31">Andromeda Galaxy</target>
+      <constellation>And</constellation>
+      <start>2026-02-25T19:49:00Z</start>
+      <altitude>53.11</altitude>
+      <azimuth>267.56</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">300</exposure>
+      <frames>59</frames>
+      <seeing unit="arcsec">2.1</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.41</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0067" night="2026-02-25" observer="ob07" instrument="t-merlin">
+      <target class="planet">Jupiter</target>
+      <constellation>Tau</constellation>
+      <start>2026-02-25T20:22:00Z</start>
+      <altitude>32.05</altitude>
+      <azimuth>221.69</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">180</exposure>
+      <frames>14</frames>
+      <seeing unit="arcsec">2.3</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.41</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0068" night="2026-02-25" observer="ob07" instrument="t-merlin">
+      <target class="emission-nebula" catalogue="M42">Orion Nebula</target>
+      <constellation>Ori</constellation>
+      <start>2026-02-25T21:39:00Z</start>
+      <altitude>31.20</altitude>
+      <azimuth>53.88</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">300</exposure>
+      <frames>50</frames>
+      <seeing unit="arcsec">2.4</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.41</moonIllumination>
+      <quality>3</quality>
+      <notes>Focus drifted with falling temperature; autofocus rerun every 40 minutes.</notes>
+    </observation>
+    <observation id="KR-2026-0069" night="2026-02-26" observer="ob02" instrument="t-wren">
+      <target class="globular-cluster" catalogue="M3">M3</target>
+      <constellation>CVn</constellation>
+      <start>2026-02-26T19:08:00Z</start>
+      <altitude>64.35</altitude>
+      <azimuth>204.48</azimuth>
+      <filter>visual</filter>
+      <magnification>220</magnification>
+      <seeing unit="arcsec">1.7</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.34</moonIllumination>
+      <quality>4</quality>
+      <notes>Excellent steadiness. Spiral structure visible on single subframes.</notes>
+    </observation>
+    <observation id="KR-2026-0070" night="2026-02-26" observer="ob02" instrument="t-wren">
+      <target class="galaxy" catalogue="M33">Triangulum Galaxy</target>
+      <constellation>Tri</constellation>
+      <start>2026-02-26T19:39:00Z</start>
+      <altitude>80.28</altitude>
+      <azimuth>139.92</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">1.7</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.34</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0071" night="2026-03-02" observer="ob01" instrument="t-wren">
+      <target class="emission-nebula" catalogue="M8">Lagoon Nebula</target>
+      <constellation>Sgr</constellation>
+      <start>2026-03-02T19:20:00Z</start>
+      <altitude>72.61</altitude>
+      <azimuth>13.55</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">2.6</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.07</moonIllumination>
+      <quality>2</quality>
+      <notes>Satellite trail on frame 7; kept, rejected in stacking.</notes>
+    </observation>
+    <observation id="KR-2026-0072" night="2026-03-02" observer="ob01" instrument="t-wren">
+      <target class="galaxy" catalogue="M82">Cigar Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-03-02T20:51:00Z</start>
+      <altitude>23.46</altitude>
+      <azimuth>341.45</azimuth>
+      <filter>visual</filter>
+      <magnification>96</magnification>
+      <seeing unit="arcsec">2.2</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.07</moonIllumination>
+      <quality>2</quality>
+      <notes>Dew heater on the secondary failed briefly; refocused at the half-way point.</notes>
+    </observation>
+    <observation id="KR-2026-0073" night="2026-03-04" observer="ob06" instrument="t-aquila">
+      <target class="open-cluster" catalogue="M44">Beehive Cluster</target>
+      <constellation>Cnc</constellation>
+      <start>2026-03-04T19:12:00Z</start>
+      <altitude>41.32</altitude>
+      <azimuth>225.48</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">180</exposure>
+      <frames>13</frames>
+      <seeing unit="arcsec">2.2</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.06</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0074" night="2026-03-04" observer="ob06" instrument="t-aquila">
+      <target class="emission-nebula" catalogue="M42">Orion Nebula</target>
+      <constellation>Ori</constellation>
+      <start>2026-03-04T19:51:00Z</start>
+      <altitude>78.33</altitude>
+      <azimuth>39.60</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">600</exposure>
+      <frames>9</frames>
+      <seeing unit="arcsec">2.1</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.06</moonIllumination>
+      <quality>1</quality>
+      <notes>Faint outer halo detected for the first time this season.</notes>
+    </observation>
+    <observation id="KR-2026-0075" night="2026-03-04" observer="ob06" instrument="t-aquila">
+      <target class="open-cluster" catalogue="M35">M35</target>
+      <constellation>Gem</constellation>
+      <start>2026-03-04T20:39:00Z</start>
+      <altitude>73.55</altitude>
+      <azimuth>292.15</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">60</exposure>
+      <frames>24</frames>
+      <seeing unit="arcsec">2.5</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.06</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0076" night="2026-03-04" observer="ob06" instrument="t-aquila">
+      <target class="galaxy" catalogue="M101">Pinwheel Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-03-04T22:00:00Z</start>
+      <altitude>54.25</altitude>
+      <azimuth>91.62</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">180</exposure>
+      <frames>60</frames>
+      <seeing unit="arcsec">2.5</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.06</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0077" night="2026-03-05" observer="ob04" instrument="t-aquila">
+      <target class="galaxy" catalogue="M81">Bode's Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-03-05T19:36:00Z</start>
+      <altitude>41.67</altitude>
+      <azimuth>335.80</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">300</exposure>
+      <frames>29</frames>
+      <seeing unit="arcsec">3.2</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.13</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0078" night="2026-03-05" observer="ob04" instrument="t-aquila">
+      <target class="planetary-nebula" catalogue="M27">Dumbbell Nebula</target>
+      <constellation>Vul</constellation>
+      <start>2026-03-05T20:02:00Z</start>
+      <altitude>78.35</altitude>
+      <azimuth>279.36</azimuth>
+      <filter>OIII</filter>
+      <exposure unit="s">600</exposure>
+      <frames>43</frames>
+      <seeing unit="arcsec">3.1</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.13</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0079" night="2026-03-05" observer="ob04" instrument="t-aquila">
+      <target class="globular-cluster" catalogue="M13">Great Hercules Cluster</target>
+      <constellation>Her</constellation>
+      <start>2026-03-05T20:38:00Z</start>
+      <altitude>63.65</altitude>
+      <azimuth>29.72</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">600</exposure>
+      <frames>13</frames>
+      <seeing unit="arcsec">3.5</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.13</moonIllumination>
+      <quality>2</quality>
+      <notes>Colour balance checked against a G2 star in the same field.</notes>
+    </observation>
+    <observation id="KR-2026-0080" night="2026-03-05" observer="ob04" instrument="t-aquila">
+      <target class="planet">Saturn</target>
+      <constellation>Aqr</constellation>
+      <start>2026-03-05T21:43:00Z</start>
+      <altitude>49.87</altitude>
+      <azimuth>314.04</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">30</exposure>
+      <frames>32</frames>
+      <seeing unit="arcsec">3.4</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.13</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0081" night="2026-03-06" observer="ob03" instrument="t-aquila">
+      <target class="planet">Saturn</target>
+      <constellation>Aqr</constellation>
+      <start>2026-03-06T19:42:00Z</start>
+      <altitude>47.00</altitude>
+      <azimuth>243.93</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">600</exposure>
+      <frames>39</frames>
+      <seeing unit="arcsec">1.3</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.2</moonIllumination>
+      <quality>5</quality>
+    </observation>
+    <observation id="KR-2026-0082" night="2026-03-06" observer="ob03" instrument="t-aquila">
+      <target class="galaxy" catalogue="M82">Cigar Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-03-06T21:07:00Z</start>
+      <altitude>33.26</altitude>
+      <azimuth>271.27</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">120</exposure>
+      <frames>45</frames>
+      <seeing unit="arcsec">1.3</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.2</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0083" night="2026-03-06" observer="ob03" instrument="t-aquila">
+      <target class="double-star">Albireo</target>
+      <constellation>Cyg</constellation>
+      <start>2026-03-06T22:01:00Z</start>
+      <altitude>29.06</altitude>
+      <azimuth>317.61</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">600</exposure>
+      <frames>43</frames>
+      <seeing unit="arcsec">1.4</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.2</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0084" night="2026-03-07" observer="ob03" instrument="t-aquila">
+      <target class="double-star">Albireo</target>
+      <constellation>Cyg</constellation>
+      <start>2026-03-07T19:10:00Z</start>
+      <altitude>78.54</altitude>
+      <azimuth>316.55</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">180</exposure>
+      <frames>27</frames>
+      <seeing unit="arcsec">3.3</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.27</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0085" night="2026-03-07" observer="ob03" instrument="t-aquila">
+      <target class="globular-cluster" catalogue="M13">Great Hercules Cluster</target>
+      <constellation>Her</constellation>
+      <start>2026-03-07T20:02:00Z</start>
+      <altitude>68.46</altitude>
+      <azimuth>336.88</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">180</exposure>
+      <frames>22</frames>
+      <seeing unit="arcsec">3.3</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.27</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0086" night="2026-03-07" observer="ob03" instrument="t-aquila">
+      <target class="variable-star">Betelgeuse</target>
+      <constellation>Ori</constellation>
+      <start>2026-03-07T20:45:00Z</start>
+      <altitude>44.19</altitude>
+      <azimuth>175.14</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">120</exposure>
+      <frames>49</frames>
+      <seeing unit="arcsec">3.3</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.27</moonIllumination>
+      <quality>3</quality>
+      <notes>Faint outer halo detected for the first time this season.</notes>
+    </observation>
+    <observation id="KR-2026-0087" night="2026-03-07" observer="ob03" instrument="t-aquila">
+      <target class="open-cluster" catalogue="M45">Pleiades</target>
+      <constellation>Tau</constellation>
+      <start>2026-03-07T21:26:00Z</start>
+      <altitude>42.75</altitude>
+      <azimuth>143.79</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">180</exposure>
+      <frames>50</frames>
+      <seeing unit="arcsec">2.8</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.27</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0088" night="2026-03-08" observer="ob03" instrument="t-merlin">
+      <target class="galaxy" catalogue="M31">Andromeda Galaxy</target>
+      <constellation>And</constellation>
+      <start>2026-03-08T19:16:00Z</start>
+      <altitude>27.10</altitude>
+      <azimuth>170.04</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">60</exposure>
+      <frames>8</frames>
+      <seeing unit="arcsec">1.3</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.33</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0089" night="2026-03-08" observer="ob03" instrument="t-merlin">
+      <target class="double-star">Mizar and Alcor</target>
+      <constellation>UMa</constellation>
+      <start>2026-03-08T20:07:00Z</start>
+      <altitude>77.02</altitude>
+      <azimuth>55.07</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">30</exposure>
+      <frames>12</frames>
+      <seeing unit="arcsec">1.5</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.33</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0090" night="2026-03-12" observer="ob07" instrument="t-merlin">
+      <target class="emission-nebula" catalogue="M8">Lagoon Nebula</target>
+      <constellation>Sgr</constellation>
+      <start>2026-03-12T19:19:00Z</start>
+      <altitude>29.64</altitude>
+      <azimuth>36.86</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">600</exposure>
+      <frames>25</frames>
+      <seeing unit="arcsec">3.3</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.61</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0091" night="2026-03-12" observer="ob07" instrument="t-merlin">
+      <target class="planetary-nebula" catalogue="M27">Dumbbell Nebula</target>
+      <constellation>Vul</constellation>
+      <start>2026-03-12T20:12:00Z</start>
+      <altitude>37.17</altitude>
+      <azimuth>142.26</azimuth>
+      <filter>OIII</filter>
+      <exposure unit="s">600</exposure>
+      <frames>25</frames>
+      <seeing unit="arcsec">2.8</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.61</moonIllumination>
+      <quality>1</quality>
+      <notes>Wind gusting to 30 km/h; guiding RMS above 1.2 arcsec for ten minutes.</notes>
+    </observation>
+    <observation id="KR-2026-0092" night="2026-03-14" observer="ob02" instrument="t-wren">
+      <target class="double-star">Mizar and Alcor</target>
+      <constellation>UMa</constellation>
+      <start>2026-03-14T19:36:00Z</start>
+      <altitude>38.11</altitude>
+      <azimuth>206.50</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">2.0</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.74</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0093" night="2026-03-14" observer="ob02" instrument="t-wren">
+      <target class="planet">Saturn</target>
+      <constellation>Aqr</constellation>
+      <start>2026-03-14T21:03:00Z</start>
+      <altitude>67.11</altitude>
+      <azimuth>261.68</azimuth>
+      <filter>visual</filter>
+      <magnification>48</magnification>
+      <seeing unit="arcsec">1.9</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.74</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0094" night="2026-03-14" observer="ob02" instrument="t-wren">
+      <target class="galaxy" catalogue="M82">Cigar Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-03-14T22:01:00Z</start>
+      <altitude>43.54</altitude>
+      <azimuth>311.79</azimuth>
+      <filter>visual</filter>
+      <magnification>96</magnification>
+      <seeing unit="arcsec">2.1</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.74</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0095" night="2026-03-14" observer="ob02" instrument="t-wren">
+      <target class="open-cluster" catalogue="M44">Beehive Cluster</target>
+      <constellation>Cnc</constellation>
+      <start>2026-03-14T23:12:00Z</start>
+      <altitude>80.22</altitude>
+      <azimuth>94.26</azimuth>
+      <filter>visual</filter>
+      <magnification>48</magnification>
+      <seeing unit="arcsec">1.9</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.74</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0096" night="2026-03-15" observer="ob06" instrument="t-wren">
+      <target class="emission-nebula" catalogue="M42">Orion Nebula</target>
+      <constellation>Ori</constellation>
+      <start>2026-03-15T19:47:00Z</start>
+      <altitude>44.57</altitude>
+      <azimuth>149.93</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">3.0</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.81</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0097" night="2026-03-15" observer="ob06" instrument="t-wren">
+      <target class="open-cluster" catalogue="M44">Beehive Cluster</target>
+      <constellation>Cnc</constellation>
+      <start>2026-03-15T20:49:00Z</start>
+      <altitude>34.98</altitude>
+      <azimuth>133.69</azimuth>
+      <filter>visual</filter>
+      <magnification>48</magnification>
+      <seeing unit="arcsec">3.3</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.81</moonIllumination>
+      <quality>2</quality>
+      <notes>Moon rising behind the ridge; gradient on the last third of frames.</notes>
+    </observation>
+    <observation id="KR-2026-0098" night="2026-03-15" observer="ob06" instrument="t-wren">
+      <target class="variable-star">Algol</target>
+      <constellation>Per</constellation>
+      <start>2026-03-15T22:11:00Z</start>
+      <altitude>72.20</altitude>
+      <azimuth>247.61</azimuth>
+      <filter>visual</filter>
+      <magnification>220</magnification>
+      <seeing unit="arcsec">3.1</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.81</moonIllumination>
+      <quality>3</quality>
+      <notes>Satellite trail on frame 7; kept, rejected in stacking.</notes>
+    </observation>
+    <observation id="KR-2026-0099" night="2026-03-15" observer="ob06" instrument="t-wren">
+      <target class="galaxy" catalogue="M81">Bode's Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-03-15T23:13:00Z</start>
+      <altitude>26.34</altitude>
+      <azimuth>262.77</azimuth>
+      <filter>visual</filter>
+      <magnification>220</magnification>
+      <seeing unit="arcsec">2.9</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.81</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0100" night="2026-03-16" observer="ob05" instrument="t-merlin">
+      <target class="emission-nebula" catalogue="M8">Lagoon Nebula</target>
+      <constellation>Sgr</constellation>
+      <start>2026-03-16T19:33:00Z</start>
+      <altitude>66.74</altitude>
+      <azimuth>152.38</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">120</exposure>
+      <frames>36</frames>
+      <seeing unit="arcsec">3.1</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.88</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0101" night="2026-03-16" observer="ob05" instrument="t-merlin">
+      <target class="galaxy" catalogue="M101">Pinwheel Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-03-16T20:44:00Z</start>
+      <altitude>25.41</altitude>
+      <azimuth>307.13</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">120</exposure>
+      <frames>24</frames>
+      <seeing unit="arcsec">2.7</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.88</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0102" night="2026-03-18" observer="ob06" instrument="t-wren">
+      <target class="open-cluster" catalogue="M45">Pleiades</target>
+      <constellation>Tau</constellation>
+      <start>2026-03-18T19:21:00Z</start>
+      <altitude>75.68</altitude>
+      <azimuth>346.06</azimuth>
+      <filter>visual</filter>
+      <magnification>220</magnification>
+      <seeing unit="arcsec">3.6</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.99</moonIllumination>
+      <quality>1</quality>
+      <notes>Satellite trail on frame 7; kept, rejected in stacking.</notes>
+    </observation>
+    <observation id="KR-2026-0103" night="2026-03-18" observer="ob06" instrument="t-wren">
+      <target class="emission-nebula" catalogue="M8">Lagoon Nebula</target>
+      <constellation>Sgr</constellation>
+      <start>2026-03-18T19:57:00Z</start>
+      <altitude>29.24</altitude>
+      <azimuth>172.44</azimuth>
+      <filter>visual</filter>
+      <magnification>48</magnification>
+      <seeing unit="arcsec">3.3</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.99</moonIllumination>
+      <quality>1</quality>
+      <notes>Moon rising behind the ridge; gradient on the last third of frames.</notes>
+    </observation>
+    <observation id="KR-2026-0104" night="2026-03-19" observer="ob03" instrument="t-wren">
+      <target class="supernova-remnant" catalogue="M1">Crab Nebula</target>
+      <constellation>Tau</constellation>
+      <start>2026-03-19T19:40:00Z</start>
+      <altitude>56.47</altitude>
+      <azimuth>276.40</azimuth>
+      <filter>visual</filter>
+      <magnification>96</magnification>
+      <seeing unit="arcsec">0.9</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.92</moonIllumination>
+      <quality>5</quality>
+    </observation>
+    <observation id="KR-2026-0105" night="2026-03-19" observer="ob03" instrument="t-wren">
+      <target class="variable-star">Betelgeuse</target>
+      <constellation>Ori</constellation>
+      <start>2026-03-19T20:30:00Z</start>
+      <altitude>24.19</altitude>
+      <azimuth>264.77</azimuth>
+      <filter>visual</filter>
+      <magnification>96</magnification>
+      <seeing unit="arcsec">1.0</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.92</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0106" night="2026-03-19" observer="ob03" instrument="t-wren">
+      <target class="moon">Moon</target>
+      <constellation>Leo</constellation>
+      <start>2026-03-19T21:27:00Z</start>
+      <altitude>64.98</altitude>
+      <azimuth>48.98</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">1.6</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.92</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0107" night="2026-03-19" observer="ob03" instrument="t-wren">
+      <target class="galaxy" catalogue="M31">Andromeda Galaxy</target>
+      <constellation>And</constellation>
+      <start>2026-03-19T22:10:00Z</start>
+      <altitude>38.62</altitude>
+      <azimuth>168.54</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">1.4</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.92</moonIllumination>
+      <quality>5</quality>
+    </observation>
+    <observation id="KR-2026-0108" night="2026-03-22" observer="ob04" instrument="t-aquila">
+      <target class="galaxy" catalogue="M51">Whirlpool Galaxy</target>
+      <constellation>CVn</constellation>
+      <start>2026-03-22T19:27:00Z</start>
+      <altitude>72.38</altitude>
+      <azimuth>237.24</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">180</exposure>
+      <frames>40</frames>
+      <seeing unit="arcsec">2.1</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.72</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0109" night="2026-03-22" observer="ob04" instrument="t-aquila">
+      <target class="variable-star">Betelgeuse</target>
+      <constellation>Ori</constellation>
+      <start>2026-03-22T20:31:00Z</start>
+      <altitude>67.20</altitude>
+      <azimuth>332.20</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">30</exposure>
+      <frames>49</frames>
+      <seeing unit="arcsec">2.1</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.72</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0110" night="2026-03-22" observer="ob04" instrument="t-aquila">
+      <target class="planetary-nebula" catalogue="M27">Dumbbell Nebula</target>
+      <constellation>Vul</constellation>
+      <start>2026-03-22T21:00:00Z</start>
+      <altitude>30.42</altitude>
+      <azimuth>112.59</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">60</exposure>
+      <frames>18</frames>
+      <seeing unit="arcsec">2.2</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.72</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0111" night="2026-03-22" observer="ob04" instrument="t-aquila">
+      <target class="supernova-remnant" catalogue="M1">Crab Nebula</target>
+      <constellation>Tau</constellation>
+      <start>2026-03-22T21:32:00Z</start>
+      <altitude>31.97</altitude>
+      <azimuth>117.65</azimuth>
+      <filter>OIII</filter>
+      <exposure unit="s">120</exposure>
+      <frames>30</frames>
+      <seeing unit="arcsec">2.5</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.72</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0112" night="2026-03-25" observer="ob01" instrument="t-aquila">
+      <target class="planet">Jupiter</target>
+      <constellation>Tau</constellation>
+      <start>2026-03-25T19:47:00Z</start>
+      <altitude>63.71</altitude>
+      <azimuth>177.32</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">600</exposure>
+      <frames>31</frames>
+      <seeing unit="arcsec">1.6</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.51</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0113" night="2026-03-25" observer="ob01" instrument="t-aquila">
+      <target class="emission-nebula" catalogue="M16">Eagle Nebula</target>
+      <constellation>Ser</constellation>
+      <start>2026-03-25T20:59:00Z</start>
+      <altitude>60.01</altitude>
+      <azimuth>211.40</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">120</exposure>
+      <frames>57</frames>
+      <seeing unit="arcsec">1.6</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.51</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0114" night="2026-03-25" observer="ob01" instrument="t-aquila">
+      <target class="galaxy" catalogue="M81">Bode's Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-03-25T21:29:00Z</start>
+      <altitude>34.70</altitude>
+      <azimuth>97.84</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">300</exposure>
+      <frames>12</frames>
+      <seeing unit="arcsec">1.7</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.51</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0115" night="2026-03-29" observer="ob08" instrument="t-wren">
+      <target class="variable-star">Betelgeuse</target>
+      <constellation>Ori</constellation>
+      <start>2026-03-29T19:50:00Z</start>
+      <altitude>72.52</altitude>
+      <azimuth>204.01</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">3.0</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.24</moonIllumination>
+      <quality>1</quality>
+      <notes>Faint outer halo detected for the first time this season.</notes>
+    </observation>
+    <observation id="KR-2026-0116" night="2026-03-29" observer="ob08" instrument="t-wren">
+      <target class="galaxy" catalogue="M82">Cigar Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-03-29T20:17:00Z</start>
+      <altitude>64.16</altitude>
+      <azimuth>35.19</azimuth>
+      <filter>visual</filter>
+      <magnification>48</magnification>
+      <seeing unit="arcsec">2.6</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.24</moonIllumination>
+      <quality>1</quality>
+      <notes>Moon rising behind the ridge; gradient on the last third of frames.</notes>
+    </observation>
+    <observation id="KR-2026-0117" night="2026-04-01" observer="ob06" instrument="t-wren">
+      <target class="star">Vega</target>
+      <constellation>Lyr</constellation>
+      <start>2026-04-01T19:18:00Z</start>
+      <altitude>44.24</altitude>
+      <azimuth>273.40</azimuth>
+      <filter>visual</filter>
+      <magnification>96</magnification>
+      <seeing unit="arcsec">2.9</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.04</moonIllumination>
+      <quality>3</quality>
+      <notes>Excellent steadiness. Spiral structure visible on single subframes.</notes>
+    </observation>
+    <observation id="KR-2026-0118" night="2026-04-01" observer="ob06" instrument="t-wren">
+      <target class="galaxy" catalogue="M82">Cigar Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-04-01T20:39:00Z</start>
+      <altitude>70.26</altitude>
+      <azimuth>41.97</azimuth>
+      <filter>visual</filter>
+      <magnification>48</magnification>
+      <seeing unit="arcsec">2.7</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.04</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0119" night="2026-04-01" observer="ob06" instrument="t-wren">
+      <target class="variable-star">Betelgeuse</target>
+      <constellation>Ori</constellation>
+      <start>2026-04-01T21:17:00Z</start>
+      <altitude>53.05</altitude>
+      <azimuth>252.87</azimuth>
+      <filter>visual</filter>
+      <magnification>48</magnification>
+      <seeing unit="arcsec">2.8</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.04</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0120" night="2026-04-01" observer="ob06" instrument="t-wren">
+      <target class="open-cluster" catalogue="M45">Pleiades</target>
+      <constellation>Tau</constellation>
+      <start>2026-04-01T22:32:00Z</start>
+      <altitude>69.01</altitude>
+      <azimuth>201.98</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">2.8</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.04</moonIllumination>
+      <quality>3</quality>
+      <notes>Student session: framing practice and flats at dawn.</notes>
+    </observation>
+    <observation id="KR-2026-0121" night="2026-04-05" observer="ob01" instrument="t-aquila">
+      <target class="variable-star">Algol</target>
+      <constellation>Per</constellation>
+      <start>2026-04-05T19:19:00Z</start>
+      <altitude>49.94</altitude>
+      <azimuth>61.13</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">300</exposure>
+      <frames>15</frames>
+      <seeing unit="arcsec">2.5</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.23</moonIllumination>
+      <quality>3</quality>
+      <notes>Colour balance checked against a G2 star in the same field.</notes>
+    </observation>
+    <observation id="KR-2026-0122" night="2026-04-05" observer="ob01" instrument="t-aquila">
+      <target class="galaxy" catalogue="M31">Andromeda Galaxy</target>
+      <constellation>And</constellation>
+      <start>2026-04-05T20:05:00Z</start>
+      <altitude>65.68</altitude>
+      <azimuth>89.04</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">60</exposure>
+      <frames>39</frames>
+      <seeing unit="arcsec">2.5</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.23</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0123" night="2026-04-05" observer="ob01" instrument="t-aquila">
+      <target class="open-cluster" catalogue="M44">Beehive Cluster</target>
+      <constellation>Cnc</constellation>
+      <start>2026-04-05T21:39:00Z</start>
+      <altitude>36.61</altitude>
+      <azimuth>218.58</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">30</exposure>
+      <frames>36</frames>
+      <seeing unit="arcsec">3.0</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.23</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0124" night="2026-04-05" observer="ob01" instrument="t-aquila">
+      <target class="planet">Saturn</target>
+      <constellation>Aqr</constellation>
+      <start>2026-04-05T22:53:00Z</start>
+      <altitude>79.18</altitude>
+      <azimuth>8.50</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">30</exposure>
+      <frames>31</frames>
+      <seeing unit="arcsec">2.4</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.23</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0125" night="2026-04-06" observer="ob07" instrument="t-merlin">
+      <target class="galaxy" catalogue="M31">Andromeda Galaxy</target>
+      <constellation>And</constellation>
+      <start>2026-04-06T19:42:00Z</start>
+      <altitude>66.91</altitude>
+      <azimuth>183.26</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">180</exposure>
+      <frames>34</frames>
+      <seeing unit="arcsec">2.4</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.3</moonIllumination>
+      <quality>3</quality>
+      <notes>Wind gusting to 30 km/h; guiding RMS above 1.2 arcsec for ten minutes.</notes>
+    </observation>
+    <observation id="KR-2026-0126" night="2026-04-06" observer="ob07" instrument="t-merlin">
+      <target class="galaxy" catalogue="M31">Andromeda Galaxy</target>
+      <constellation>And</constellation>
+      <start>2026-04-06T20:31:00Z</start>
+      <altitude>70.76</altitude>
+      <azimuth>103.43</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">120</exposure>
+      <frames>35</frames>
+      <seeing unit="arcsec">2.1</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.3</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0127" night="2026-04-07" observer="ob05" instrument="t-merlin">
+      <target class="open-cluster" catalogue="M45">Pleiades</target>
+      <constellation>Tau</constellation>
+      <start>2026-04-07T19:15:00Z</start>
+      <altitude>37.43</altitude>
+      <azimuth>256.72</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">600</exposure>
+      <frames>51</frames>
+      <seeing unit="arcsec">2.7</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.37</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0128" night="2026-04-07" observer="ob05" instrument="t-merlin">
+      <target class="supernova-remnant" catalogue="M1">Crab Nebula</target>
+      <constellation>Tau</constellation>
+      <start>2026-04-07T20:34:00Z</start>
+      <altitude>70.01</altitude>
+      <azimuth>144.95</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">600</exposure>
+      <frames>24</frames>
+      <seeing unit="arcsec">2.8</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.37</moonIllumination>
+      <quality>2</quality>
+      <notes>Excellent steadiness. Spiral structure visible on single subframes.</notes>
+    </observation>
+    <observation id="KR-2026-0129" night="2026-04-07" observer="ob05" instrument="t-merlin">
+      <target class="emission-nebula" catalogue="M42">Orion Nebula</target>
+      <constellation>Ori</constellation>
+      <start>2026-04-07T21:59:00Z</start>
+      <altitude>32.82</altitude>
+      <azimuth>100.40</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">60</exposure>
+      <frames>18</frames>
+      <seeing unit="arcsec">2.6</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.37</moonIllumination>
+      <quality>2</quality>
+      <notes>Focus drifted with falling temperature; autofocus rerun every 40 minutes.</notes>
+    </observation>
+    <observation id="KR-2026-0130" night="2026-04-11" observer="ob07" instrument="t-merlin">
+      <target class="globular-cluster" catalogue="M13">Great Hercules Cluster</target>
+      <constellation>Her</constellation>
+      <start>2026-04-11T19:50:00Z</start>
+      <altitude>66.27</altitude>
+      <azimuth>11.29</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">300</exposure>
+      <frames>9</frames>
+      <seeing unit="arcsec">2.5</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.64</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0131" night="2026-04-11" observer="ob07" instrument="t-merlin">
+      <target class="galaxy" catalogue="M33">Triangulum Galaxy</target>
+      <constellation>Tri</constellation>
+      <start>2026-04-11T20:42:00Z</start>
+      <altitude>67.46</altitude>
+      <azimuth>54.45</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">120</exposure>
+      <frames>25</frames>
+      <seeing unit="arcsec">2.2</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.64</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0132" night="2026-04-11" observer="ob07" instrument="t-merlin">
+      <target class="galaxy" catalogue="M101">Pinwheel Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-04-11T21:37:00Z</start>
+      <altitude>28.00</altitude>
+      <azimuth>89.36</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">30</exposure>
+      <frames>56</frames>
+      <seeing unit="arcsec">2.7</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.64</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0133" night="2026-04-11" observer="ob07" instrument="t-merlin">
+      <target class="emission-nebula" catalogue="M8">Lagoon Nebula</target>
+      <constellation>Sgr</constellation>
+      <start>2026-04-11T22:41:00Z</start>
+      <altitude>56.54</altitude>
+      <azimuth>85.33</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">30</exposure>
+      <frames>20</frames>
+      <seeing unit="arcsec">2.4</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.64</moonIllumination>
+      <quality>1</quality>
+      <notes>Dew heater on the secondary failed briefly; refocused at the half-way point.</notes>
+    </observation>
+    <observation id="KR-2026-0134" night="2026-04-15" observer="ob05" instrument="t-merlin">
+      <target class="star">Vega</target>
+      <constellation>Lyr</constellation>
+      <start>2026-04-15T19:09:00Z</start>
+      <altitude>44.05</altitude>
+      <azimuth>136.67</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">600</exposure>
+      <frames>21</frames>
+      <seeing unit="arcsec">1.4</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.91</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0135" night="2026-04-15" observer="ob05" instrument="t-merlin">
+      <target class="galaxy" catalogue="M82">Cigar Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-04-15T20:44:00Z</start>
+      <altitude>73.89</altitude>
+      <azimuth>179.61</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">60</exposure>
+      <frames>11</frames>
+      <seeing unit="arcsec">2.0</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.91</moonIllumination>
+      <quality>2</quality>
+      <notes>Faint outer halo detected for the first time this season.</notes>
+    </observation>
+    <observation id="KR-2026-0136" night="2026-04-17" observer="ob02" instrument="t-aquila">
+      <target class="galaxy" catalogue="M33">Triangulum Galaxy</target>
+      <constellation>Tri</constellation>
+      <start>2026-04-17T19:46:00Z</start>
+      <altitude>47.51</altitude>
+      <azimuth>83.06</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">180</exposure>
+      <frames>43</frames>
+      <seeing unit="arcsec">2.6</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.96</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0137" night="2026-04-17" observer="ob02" instrument="t-aquila">
+      <target class="variable-star">Betelgeuse</target>
+      <constellation>Ori</constellation>
+      <start>2026-04-17T20:43:00Z</start>
+      <altitude>71.73</altitude>
+      <azimuth>344.34</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">600</exposure>
+      <frames>38</frames>
+      <seeing unit="arcsec">2.4</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.96</moonIllumination>
+      <quality>3</quality>
+      <notes>Colour balance checked against a G2 star in the same field.</notes>
+    </observation>
+    <observation id="KR-2026-0138" night="2026-04-18" observer="ob01" instrument="t-merlin">
+      <target class="open-cluster" catalogue="M35">M35</target>
+      <constellation>Gem</constellation>
+      <start>2026-04-18T19:09:00Z</start>
+      <altitude>26.76</altitude>
+      <azimuth>49.08</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">60</exposure>
+      <frames>39</frames>
+      <seeing unit="arcsec">3.6</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.89</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0139" night="2026-04-18" observer="ob01" instrument="t-merlin">
+      <target class="supernova-remnant" catalogue="M1">Crab Nebula</target>
+      <constellation>Tau</constellation>
+      <start>2026-04-18T20:04:00Z</start>
+      <altitude>49.04</altitude>
+      <azimuth>177.44</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">30</exposure>
+      <frames>34</frames>
+      <seeing unit="arcsec">3.2</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.89</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0140" night="2026-04-18" observer="ob01" instrument="t-merlin">
+      <target class="planet">Saturn</target>
+      <constellation>Aqr</constellation>
+      <start>2026-04-18T21:20:00Z</start>
+      <altitude>47.05</altitude>
+      <azimuth>301.04</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">600</exposure>
+      <frames>19</frames>
+      <seeing unit="arcsec">3.5</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.89</moonIllumination>
+      <quality>1</quality>
+      <notes>Faint outer halo detected for the first time this season.</notes>
+    </observation>
+    <observation id="KR-2026-0141" night="2026-04-18" observer="ob01" instrument="t-merlin">
+      <target class="emission-nebula" catalogue="M16">Eagle Nebula</target>
+      <constellation>Ser</constellation>
+      <start>2026-04-18T22:12:00Z</start>
+      <altitude>74.86</altitude>
+      <azimuth>323.72</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">180</exposure>
+      <frames>52</frames>
+      <seeing unit="arcsec">3.4</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.89</moonIllumination>
+      <quality>1</quality>
+      <notes>Faint outer halo detected for the first time this season.</notes>
+    </observation>
+    <observation id="KR-2026-0142" night="2026-04-19" observer="ob07" instrument="t-merlin">
+      <target class="globular-cluster" catalogue="M13">Great Hercules Cluster</target>
+      <constellation>Her</constellation>
+      <start>2026-04-19T19:37:00Z</start>
+      <altitude>72.53</altitude>
+      <azimuth>105.86</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">600</exposure>
+      <frames>55</frames>
+      <seeing unit="arcsec">1.7</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.82</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0143" night="2026-04-19" observer="ob07" instrument="t-merlin">
+      <target class="galaxy" catalogue="M33">Triangulum Galaxy</target>
+      <constellation>Tri</constellation>
+      <start>2026-04-19T20:15:00Z</start>
+      <altitude>34.76</altitude>
+      <azimuth>101.03</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">600</exposure>
+      <frames>27</frames>
+      <seeing unit="arcsec">1.8</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.82</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0144" night="2026-04-19" observer="ob07" instrument="t-merlin">
+      <target class="globular-cluster" catalogue="M13">Great Hercules Cluster</target>
+      <constellation>Her</constellation>
+      <start>2026-04-19T21:15:00Z</start>
+      <altitude>33.58</altitude>
+      <azimuth>330.02</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">180</exposure>
+      <frames>36</frames>
+      <seeing unit="arcsec">1.8</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.82</moonIllumination>
+      <quality>1</quality>
+      <notes>Moon rising behind the ridge; gradient on the last third of frames.</notes>
+    </observation>
+    <observation id="KR-2026-0145" night="2026-04-22" observer="ob05" instrument="t-aquila">
+      <target class="galaxy" catalogue="M33">Triangulum Galaxy</target>
+      <constellation>Tri</constellation>
+      <start>2026-04-22T19:39:00Z</start>
+      <altitude>55.09</altitude>
+      <azimuth>321.04</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">30</exposure>
+      <frames>51</frames>
+      <seeing unit="arcsec">3.0</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.62</moonIllumination>
+      <quality>2</quality>
+      <notes>Faint outer halo detected for the first time this season.</notes>
+    </observation>
+    <observation id="KR-2026-0146" night="2026-04-22" observer="ob05" instrument="t-aquila">
+      <target class="emission-nebula" catalogue="M42">Orion Nebula</target>
+      <constellation>Ori</constellation>
+      <start>2026-04-22T20:54:00Z</start>
+      <altitude>65.33</altitude>
+      <azimuth>210.47</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">30</exposure>
+      <frames>9</frames>
+      <seeing unit="arcsec">2.8</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.62</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0147" night="2026-04-22" observer="ob05" instrument="t-aquila">
+      <target class="double-star">Mizar and Alcor</target>
+      <constellation>UMa</constellation>
+      <start>2026-04-22T22:26:00Z</start>
+      <altitude>39.60</altitude>
+      <azimuth>142.05</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">300</exposure>
+      <frames>58</frames>
+      <seeing unit="arcsec">2.5</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.62</moonIllumination>
+      <quality>2</quality>
+      <notes>Thin cirrus drifting through from the west after 23:00; later frames discarded.</notes>
+    </observation>
+    <observation id="KR-2026-0148" night="2026-04-22" observer="ob05" instrument="t-aquila">
+      <target class="open-cluster" catalogue="M45">Pleiades</target>
+      <constellation>Tau</constellation>
+      <start>2026-04-22T23:54:00Z</start>
+      <altitude>35.89</altitude>
+      <azimuth>319.01</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">180</exposure>
+      <frames>44</frames>
+      <seeing unit="arcsec">2.6</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.62</moonIllumination>
+      <quality>2</quality>
+      <notes>Faint outer halo detected for the first time this season.</notes>
+    </observation>
+    <observation id="KR-2026-0149" night="2026-04-26" observer="ob08" instrument="t-wren">
+      <target class="planetary-nebula" catalogue="M57">Ring Nebula</target>
+      <constellation>Lyr</constellation>
+      <start>2026-04-26T19:18:00Z</start>
+      <altitude>68.93</altitude>
+      <azimuth>56.33</azimuth>
+      <filter>visual</filter>
+      <magnification>220</magnification>
+      <seeing unit="arcsec">2.0</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.35</moonIllumination>
+      <quality>4</quality>
+      <notes>Moon rising behind the ridge; gradient on the last third of frames.</notes>
+    </observation>
+    <observation id="KR-2026-0150" night="2026-04-26" observer="ob08" instrument="t-wren">
+      <target class="open-cluster" catalogue="M44">Beehive Cluster</target>
+      <constellation>Cnc</constellation>
+      <start>2026-04-26T20:44:00Z</start>
+      <altitude>41.51</altitude>
+      <azimuth>261.34</azimuth>
+      <filter>visual</filter>
+      <magnification>96</magnification>
+      <seeing unit="arcsec">1.5</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.35</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0151" night="2026-04-26" observer="ob08" instrument="t-wren">
+      <target class="variable-star">Algol</target>
+      <constellation>Per</constellation>
+      <start>2026-04-26T21:51:00Z</start>
+      <altitude>59.17</altitude>
+      <azimuth>5.58</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">1.9</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.35</moonIllumination>
+      <quality>4</quality>
+      <notes>Aurora reported low on the northern horizon; no effect at this altitude.</notes>
+    </observation>
+    <observation id="KR-2026-0152" night="2026-04-26" observer="ob08" instrument="t-wren">
+      <target class="moon">Moon</target>
+      <constellation>Leo</constellation>
+      <start>2026-04-26T22:22:00Z</start>
+      <altitude>77.55</altitude>
+      <azimuth>235.45</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">1.9</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.35</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0153" night="2026-04-27" observer="ob01" instrument="t-merlin">
+      <target class="open-cluster" catalogue="M44">Beehive Cluster</target>
+      <constellation>Cnc</constellation>
+      <start>2026-04-27T19:18:00Z</start>
+      <altitude>61.60</altitude>
+      <azimuth>305.07</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">180</exposure>
+      <frames>10</frames>
+      <seeing unit="arcsec">2.8</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.28</moonIllumination>
+      <quality>2</quality>
+      <notes>Wind gusting to 30 km/h; guiding RMS above 1.2 arcsec for ten minutes.</notes>
+    </observation>
+    <observation id="KR-2026-0154" night="2026-04-27" observer="ob01" instrument="t-merlin">
+      <target class="double-star">Mizar and Alcor</target>
+      <constellation>UMa</constellation>
+      <start>2026-04-27T20:20:00Z</start>
+      <altitude>59.25</altitude>
+      <azimuth>140.73</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">180</exposure>
+      <frames>44</frames>
+      <seeing unit="arcsec">2.2</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.28</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0155" night="2026-04-27" observer="ob01" instrument="t-merlin">
+      <target class="planet">Jupiter</target>
+      <constellation>Tau</constellation>
+      <start>2026-04-27T21:10:00Z</start>
+      <altitude>70.76</altitude>
+      <azimuth>188.93</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">300</exposure>
+      <frames>27</frames>
+      <seeing unit="arcsec">2.8</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.28</moonIllumination>
+      <quality>2</quality>
+    </observation>
+    <observation id="KR-2026-0156" night="2026-04-29" observer="ob04" instrument="t-merlin">
+      <target class="globular-cluster" catalogue="M13">Great Hercules Cluster</target>
+      <constellation>Her</constellation>
+      <start>2026-04-29T19:07:00Z</start>
+      <altitude>73.48</altitude>
+      <azimuth>200.67</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">60</exposure>
+      <frames>58</frames>
+      <seeing unit="arcsec">2.2</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.14</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0157" night="2026-04-29" observer="ob04" instrument="t-merlin">
+      <target class="emission-nebula" catalogue="M8">Lagoon Nebula</target>
+      <constellation>Sgr</constellation>
+      <start>2026-04-29T20:13:00Z</start>
+      <altitude>71.85</altitude>
+      <azimuth>212.39</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">180</exposure>
+      <frames>40</frames>
+      <seeing unit="arcsec">2.3</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.14</moonIllumination>
+      <quality>3</quality>
+      <notes>Excellent steadiness. Spiral structure visible on single subframes.</notes>
+    </observation>
+    <observation id="KR-2026-0158" night="2026-05-02" observer="ob02" instrument="t-aquila">
+      <target class="variable-star">Betelgeuse</target>
+      <constellation>Ori</constellation>
+      <start>2026-05-02T19:37:00Z</start>
+      <altitude>78.15</altitude>
+      <azimuth>142.94</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">30</exposure>
+      <frames>32</frames>
+      <seeing unit="arcsec">2.6</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.06</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0159" night="2026-05-02" observer="ob02" instrument="t-aquila">
+      <target class="galaxy" catalogue="M31">Andromeda Galaxy</target>
+      <constellation>And</constellation>
+      <start>2026-05-02T21:06:00Z</start>
+      <altitude>34.32</altitude>
+      <azimuth>192.30</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">60</exposure>
+      <frames>50</frames>
+      <seeing unit="arcsec">3.0</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.06</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0160" night="2026-05-06" observer="ob08" instrument="t-aquila">
+      <target class="galaxy" catalogue="M81">Bode's Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-05-06T19:42:00Z</start>
+      <altitude>81.45</altitude>
+      <azimuth>296.40</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">120</exposure>
+      <frames>10</frames>
+      <seeing unit="arcsec">2.9</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.33</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0161" night="2026-05-06" observer="ob08" instrument="t-aquila">
+      <target class="globular-cluster" catalogue="M3">M3</target>
+      <constellation>CVn</constellation>
+      <start>2026-05-06T20:15:00Z</start>
+      <altitude>35.11</altitude>
+      <azimuth>133.64</azimuth>
+      <filter>B</filter>
+      <exposure unit="s">300</exposure>
+      <frames>58</frames>
+      <seeing unit="arcsec">3.4</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.33</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0162" night="2026-05-06" observer="ob08" instrument="t-aquila">
+      <target class="emission-nebula" catalogue="M16">Eagle Nebula</target>
+      <constellation>Ser</constellation>
+      <start>2026-05-06T21:23:00Z</start>
+      <altitude>59.48</altitude>
+      <azimuth>54.68</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">180</exposure>
+      <frames>59</frames>
+      <seeing unit="arcsec">2.7</seeing>
+      <transparency>poor</transparency>
+      <moonIllumination>0.33</moonIllumination>
+      <quality>1</quality>
+    </observation>
+    <observation id="KR-2026-0163" night="2026-05-07" observer="ob02" instrument="t-wren">
+      <target class="variable-star">Algol</target>
+      <constellation>Per</constellation>
+      <start>2026-05-07T19:08:00Z</start>
+      <altitude>28.49</altitude>
+      <azimuth>277.16</azimuth>
+      <filter>visual</filter>
+      <magnification>96</magnification>
+      <seeing unit="arcsec">3.0</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.4</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0164" night="2026-05-07" observer="ob02" instrument="t-wren">
+      <target class="double-star">Mizar and Alcor</target>
+      <constellation>UMa</constellation>
+      <start>2026-05-07T20:04:00Z</start>
+      <altitude>57.78</altitude>
+      <azimuth>7.95</azimuth>
+      <filter>visual</filter>
+      <magnification>220</magnification>
+      <seeing unit="arcsec">2.8</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.4</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0165" night="2026-05-07" observer="ob02" instrument="t-wren">
+      <target class="variable-star">Algol</target>
+      <constellation>Per</constellation>
+      <start>2026-05-07T21:04:00Z</start>
+      <altitude>54.74</altitude>
+      <azimuth>236.28</azimuth>
+      <filter>visual</filter>
+      <magnification>150</magnification>
+      <seeing unit="arcsec">2.7</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.4</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0166" night="2026-05-07" observer="ob02" instrument="t-wren">
+      <target class="galaxy" catalogue="M33">Triangulum Galaxy</target>
+      <constellation>Tri</constellation>
+      <start>2026-05-07T22:03:00Z</start>
+      <altitude>70.41</altitude>
+      <azimuth>324.04</azimuth>
+      <filter>visual</filter>
+      <magnification>48</magnification>
+      <seeing unit="arcsec">2.4</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.4</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0167" night="2026-05-10" observer="ob02" instrument="t-merlin">
+      <target class="double-star">Mizar and Alcor</target>
+      <constellation>UMa</constellation>
+      <start>2026-05-10T19:38:00Z</start>
+      <altitude>70.29</altitude>
+      <azimuth>139.48</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">600</exposure>
+      <frames>45</frames>
+      <seeing unit="arcsec">1.9</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.6</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0168" night="2026-05-10" observer="ob02" instrument="t-merlin">
+      <target class="double-star">Albireo</target>
+      <constellation>Cyg</constellation>
+      <start>2026-05-10T21:08:00Z</start>
+      <altitude>25.55</altitude>
+      <azimuth>270.75</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">30</exposure>
+      <frames>53</frames>
+      <seeing unit="arcsec">1.8</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.6</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0169" night="2026-05-12" observer="ob06" instrument="t-merlin">
+      <target class="star">Vega</target>
+      <constellation>Lyr</constellation>
+      <start>2026-05-12T19:32:00Z</start>
+      <altitude>65.74</altitude>
+      <azimuth>37.44</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">180</exposure>
+      <frames>20</frames>
+      <seeing unit="arcsec">1.8</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.74</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0170" night="2026-05-12" observer="ob06" instrument="t-merlin">
+      <target class="planet">Saturn</target>
+      <constellation>Aqr</constellation>
+      <start>2026-05-12T20:15:00Z</start>
+      <altitude>34.90</altitude>
+      <azimuth>160.96</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">180</exposure>
+      <frames>50</frames>
+      <seeing unit="arcsec">2.3</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.74</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0171" night="2026-05-12" observer="ob06" instrument="t-merlin">
+      <target class="emission-nebula" catalogue="M42">Orion Nebula</target>
+      <constellation>Ori</constellation>
+      <start>2026-05-12T20:45:00Z</start>
+      <altitude>46.39</altitude>
+      <azimuth>182.56</azimuth>
+      <filter>OIII</filter>
+      <exposure unit="s">600</exposure>
+      <frames>10</frames>
+      <seeing unit="arcsec">2.1</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.74</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0172" night="2026-05-16" observer="ob04" instrument="t-aquila">
+      <target class="open-cluster" catalogue="M45">Pleiades</target>
+      <constellation>Tau</constellation>
+      <start>2026-05-16T19:31:00Z</start>
+      <altitude>44.08</altitude>
+      <azimuth>345.32</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">60</exposure>
+      <frames>49</frames>
+      <seeing unit="arcsec">1.7</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.99</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0173" night="2026-05-16" observer="ob04" instrument="t-aquila">
+      <target class="open-cluster" catalogue="M44">Beehive Cluster</target>
+      <constellation>Cnc</constellation>
+      <start>2026-05-16T20:20:00Z</start>
+      <altitude>67.07</altitude>
+      <azimuth>298.51</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">30</exposure>
+      <frames>39</frames>
+      <seeing unit="arcsec">2.0</seeing>
+      <transparency>good</transparency>
+      <moonIllumination>0.99</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0174" night="2026-05-18" observer="ob07" instrument="t-merlin">
+      <target class="galaxy" catalogue="M81">Bode's Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-05-18T19:10:00Z</start>
+      <altitude>49.93</altitude>
+      <azimuth>13.12</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">30</exposure>
+      <frames>33</frames>
+      <seeing unit="arcsec">1.9</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.86</moonIllumination>
+      <quality>3</quality>
+      <notes>Wind gusting to 30 km/h; guiding RMS above 1.2 arcsec for ten minutes.</notes>
+    </observation>
+    <observation id="KR-2026-0175" night="2026-05-18" observer="ob07" instrument="t-merlin">
+      <target class="planetary-nebula" catalogue="M27">Dumbbell Nebula</target>
+      <constellation>Vul</constellation>
+      <start>2026-05-18T20:41:00Z</start>
+      <altitude>43.74</altitude>
+      <azimuth>323.97</azimuth>
+      <filter>OIII</filter>
+      <exposure unit="s">300</exposure>
+      <frames>18</frames>
+      <seeing unit="arcsec">1.8</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.86</moonIllumination>
+      <quality>4</quality>
+      <notes>Wind gusting to 30 km/h; guiding RMS above 1.2 arcsec for ten minutes.</notes>
+    </observation>
+    <observation id="KR-2026-0176" night="2026-05-19" observer="ob03" instrument="t-aquila">
+      <target class="globular-cluster" catalogue="M13">Great Hercules Cluster</target>
+      <constellation>Her</constellation>
+      <start>2026-05-19T19:44:00Z</start>
+      <altitude>36.01</altitude>
+      <azimuth>23.58</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">120</exposure>
+      <frames>41</frames>
+      <seeing unit="arcsec">1.3</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.79</moonIllumination>
+      <quality>3</quality>
+      <notes>Faint outer halo detected for the first time this season.</notes>
+    </observation>
+    <observation id="KR-2026-0177" night="2026-05-19" observer="ob03" instrument="t-aquila">
+      <target class="globular-cluster" catalogue="M3">M3</target>
+      <constellation>CVn</constellation>
+      <start>2026-05-19T21:08:00Z</start>
+      <altitude>33.88</altitude>
+      <azimuth>255.05</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">60</exposure>
+      <frames>53</frames>
+      <seeing unit="arcsec">1.5</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.79</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0178" night="2026-05-20" observer="ob07" instrument="t-aquila">
+      <target class="galaxy" catalogue="M101">Pinwheel Galaxy</target>
+      <constellation>UMa</constellation>
+      <start>2026-05-20T19:06:00Z</start>
+      <altitude>31.86</altitude>
+      <azimuth>306.76</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">300</exposure>
+      <frames>41</frames>
+      <seeing unit="arcsec">1.6</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.72</moonIllumination>
+      <quality>3</quality>
+      <notes>Moon rising behind the ridge; gradient on the last third of frames.</notes>
+    </observation>
+    <observation id="KR-2026-0179" night="2026-05-20" observer="ob07" instrument="t-aquila">
+      <target class="planetary-nebula" catalogue="M27">Dumbbell Nebula</target>
+      <constellation>Vul</constellation>
+      <start>2026-05-20T19:54:00Z</start>
+      <altitude>70.59</altitude>
+      <azimuth>115.47</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">120</exposure>
+      <frames>19</frames>
+      <seeing unit="arcsec">1.5</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.72</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0180" night="2026-05-20" observer="ob07" instrument="t-aquila">
+      <target class="emission-nebula" catalogue="M8">Lagoon Nebula</target>
+      <constellation>Sgr</constellation>
+      <start>2026-05-20T20:28:00Z</start>
+      <altitude>43.00</altitude>
+      <azimuth>347.60</azimuth>
+      <filter>OIII</filter>
+      <exposure unit="s">120</exposure>
+      <frames>37</frames>
+      <seeing unit="arcsec">2.0</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.72</moonIllumination>
+      <quality>2</quality>
+      <notes>Dew heater on the secondary failed briefly; refocused at the half-way point.</notes>
+    </observation>
+    <observation id="KR-2026-0181" night="2026-05-20" observer="ob07" instrument="t-aquila">
+      <target class="variable-star">Betelgeuse</target>
+      <constellation>Ori</constellation>
+      <start>2026-05-20T21:53:00Z</start>
+      <altitude>79.40</altitude>
+      <azimuth>72.40</azimuth>
+      <filter>R</filter>
+      <exposure unit="s">300</exposure>
+      <frames>8</frames>
+      <seeing unit="arcsec">2.0</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.72</moonIllumination>
+      <quality>3</quality>
+    </observation>
+    <observation id="KR-2026-0182" night="2026-05-21" observer="ob03" instrument="t-aquila">
+      <target class="globular-cluster" catalogue="M3">M3</target>
+      <constellation>CVn</constellation>
+      <start>2026-05-21T19:16:00Z</start>
+      <altitude>42.05</altitude>
+      <azimuth>296.62</azimuth>
+      <filter>L</filter>
+      <exposure unit="s">180</exposure>
+      <frames>13</frames>
+      <seeing unit="arcsec">2.0</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.65</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0183" night="2026-05-21" observer="ob03" instrument="t-aquila">
+      <target class="globular-cluster" catalogue="M13">Great Hercules Cluster</target>
+      <constellation>Her</constellation>
+      <start>2026-05-21T20:12:00Z</start>
+      <altitude>22.12</altitude>
+      <azimuth>262.89</azimuth>
+      <filter>G</filter>
+      <exposure unit="s">300</exposure>
+      <frames>38</frames>
+      <seeing unit="arcsec">1.6</seeing>
+      <transparency>excellent</transparency>
+      <moonIllumination>0.65</moonIllumination>
+      <quality>4</quality>
+    </observation>
+    <observation id="KR-2026-0184" night="2026-05-23" observer="ob07" instrument="t-merlin">
+      <target class="emission-nebula" catalogue="M8">Lagoon Nebula</target>
+      <constellation>Sgr</constellation>
+      <start>2026-05-23T19:13:00Z</start>
+      <altitude>42.45</altitude>
+      <azimuth>196.33</azimuth>
+      <filter>OIII</filter>
+      <exposure unit="s">600</exposure>
+      <frames>34</frames>
+      <seeing unit="arcsec">2.6</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.52</moonIllumination>
+      <quality>2</quality>
+      <notes>Collimation touched up before starting; star test clean.</notes>
+    </observation>
+    <observation id="KR-2026-0185" night="2026-05-23" observer="ob07" instrument="t-merlin">
+      <target class="emission-nebula" catalogue="M42">Orion Nebula</target>
+      <constellation>Ori</constellation>
+      <start>2026-05-23T20:18:00Z</start>
+      <altitude>67.27</altitude>
+      <azimuth>3.67</azimuth>
+      <filter>Ha</filter>
+      <exposure unit="s">600</exposure>
+      <frames>16</frames>
+      <seeing unit="arcsec">2.4</seeing>
+      <transparency>fair</transparency>
+      <moonIllumination>0.52</moonIllumination>
+      <quality>2</quality>
+    </observation>
+  </observations>
+</observingLog>

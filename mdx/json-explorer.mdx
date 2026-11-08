@@ -1,0 +1,94 @@
+---
+title: Meridian billing service — configuration reference
+reflow:
+  profile: reflow-mdx
+  version: 1
+---
+
+# Billing service — configuration reference
+
+The billing service turns settled payments into merchant invoices. Its configuration lives in one JSON document per environment.
+
+## Production configuration
+
+Open `limits`, then `regions`, to see where the service runs.
+
+<JsonExplorer>
+
+```json
+{
+  "service": "billing",
+  "version": "4.12.0",
+  "replicas": 3,
+  "public": false,
+  "owner": null,
+  "limits": { "cpu": 2, "memory": "4Gi", "regions": ["eu-west", "us-east", "ap-south"] },
+  "routes": [
+    { "path": "/invoices", "methods": ["GET", "POST"], "auth": "service-token" },
+    { "path": "/health", "methods": ["GET"], "auth": null }
+  ]
+}
+```
+
+</JsonExplorer>
+
+## The package manifest
+
+<JsonExplorer>
+
+```json title="package.json"
+{ "name": "@meridian-example/billing", "private": true, "scripts": { "start": "node server.js", "test": "node --test" } }
+```
+
+</JsonExplorer>
+
+## Invoice sequence numbers
+
+Each region reserves fifty invoice numbers at a time.
+
+<JsonExplorer>
+
+```json
+{ "reserved": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49] }
+```
+
+</JsonExplorer>
+
+## Minimal staging configuration
+
+```json
+{ "service": "billing", "replicas": 3 }
+```
+
+## Annotated example
+
+The annotated copy in the runbook carries comments, so it is shown as written:
+
+<JsonExplorer>
+
+```json
+{
+  "service": "billing", // one per environment
+  "replicas": 3
+}
+```
+
+</JsonExplorer>
+
+<JsonExplorer>
+
+The legacy configuration was a set of environment variables and has no JSON form.
+
+</JsonExplorer>
+
+## Keys are data, not markup
+
+Merchant-supplied labels are stored as plain text, whatever they contain:
+
+<JsonExplorer>
+
+```json
+{ "<script>alert(1)</script>": "<img src=x onerror=alert(1)>", "<b>not bold</b>": true }
+```
+
+</JsonExplorer>

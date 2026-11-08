@@ -1,0 +1,306 @@
+payout_id,merchant,city,currency,gross,fees,net,status,settled_on,notes
+po_00001,Fjällstuga Outdoor,Tromsø,NOK,7994.15,168.13,7826.02,settled,2026-02-02,
+po_00002,Ōkami Ramen Bar,Osaka,JPY,1322674,23147,1299527,pending,,FX at 0.56 spread
+po_00003,Reykjavík Wool Works,Reykjavík,ISK,206696,3617,203079,settled,2026-02-03,partial: 3 of 4 batches
+po_00004,Harbor Coffee Roasters,Malmö,SEK,7582.70,132.95,7449.75,settled,2026-02-03,réglé après vérification
+po_00005,"Blue Heron Bikes, Inc.",Portland,USD,898.01,19.11,878.90,settled,2026-02-03,partial: 3 of 4 batches
+po_00006,Ōkami Ramen Bar,Osaka,JPY,1069988,14980,1055008,settled,2026-02-04,réglé après vérification
+po_00007,Reykjavík Wool Works,Reykjavík,ISK,632139,13275,618864,settled,2026-02-04,réglé après vérification
+po_00008,Fjällstuga Outdoor,Tromsø,NOK,1289.56,22.82,,failed,2026-02-04,réglé après vérification
+po_00009,Casa Açaí,São Paulo,BRL,4122.98,57.97,4065.01,settled,2026-02-04,
+po_00010,Dünenhaus Ferien,Westerland,EUR,7220.31,68.84,7151.47,settled,2026-02-05,"IBAN updated, verified"
+po_00011,Lantern & Loom Studio,Kraków,PLN,9255.11,194.61,9060.50,settled,2026-02-05,"holiday cut-off, paid next day"
+po_00012,Dünenhaus Ferien,Westerland,EUR,4434.99,93.38,4341.61,pending,,partial: 3 of 4 batches
+po_00013,Fjällstuga Outdoor,Tromsø,NOK,5818.43,122.44,5695.99,settled,2026-02-06,"chargeback offset, 1 item"
+po_00014,Dünenhaus Ferien,Westerland,EUR,4233.77,40.47,4193.30,held,,
+po_00015,"Blue Heron Bikes, Inc.",Portland,USD,2167.34,20.84,2146.50,settled,2026-02-06,FX at 0.51 spread
+po_00016,Lantern & Loom Studio,Kraków,PLN,3466.10,33.18,3432.92,pending,,"chargeback offset, 1 item"
+po_00017,"Northwind Books, Ltd.",Leeds,GBP,2798.89,59.03,2739.86,settled,2026-02-07,split across 2 bank days
+po_00018,Mosaic Ceramics,Ljubljana,EUR,5692.77,54.33,5638.44,settled,2026-02-07,split across 2 bank days
+po_00019,Ōkami Ramen Bar,Osaka,JPY,160408,3369,157039,pending,,"manual review, see case MR-7940"
+po_00020,Fjällstuga Outdoor,Tromsø,NOK,4578.98,96.41,4482.57,settled,2026-02-08,"bank returned: ""account closed"""
+po_00021,Harbor Coffee Roasters,Malmö,SEK,6253.76,131.58,6122.18,held,,"IBAN updated, verified"
+po_00022,"Kettle ""Small Batch"" Teas",Dublin,EUR,2515.70,35.47,2480.23,settled,2026-02-08,
+po_00023,"Blue Heron Bikes, Inc.",Portland,USD,577.06,5.73,571.33,settled,2026-02-09,"chargeback offset, 1 item"
+po_00024,Ōkami Ramen Bar,Osaka,JPY,832338,11653,820685,settled,2026-02-09,split across 2 bank days
+po_00025,Saguaro Supply Co.,Tucson,USD,8993.67,189.12,8804.55,settled,2026-02-09,split across 2 bank days
+po_00026,Lantern & Loom Studio,Kraków,PLN,8143.03,77.61,8065.42,settled,2026-02-10,FX at 0.22 spread
+po_00027,Fjällstuga Outdoor,Tromsø,NOK,4837.96,46.21,4791.75,pending,,partial: 3 of 4 batches
+po_00028,Fjällstuga Outdoor,Tromsø,NOK,7471.18,131.00,,failed,2026-02-10,
+po_00029,"Blue Heron Bikes, Inc.",Portland,USD,2291.96,48.38,2243.58,settled,2026-02-10,réglé après vérification
+po_00030,"Kettle ""Small Batch"" Teas",Dublin,EUR,8185.46,172.14,8013.32,settled,2026-02-11,"chargeback offset, 1 item"
+po_00031,Ōkami Ramen Bar,Osaka,JPY,662885,9280,653605,pending,,"chargeback offset, 1 item"
+po_00032,Lantern & Loom Studio,Kraków,PLN,5351.21,75.17,5276.04,settled,2026-02-11,FX at 0.47 spread
+po_00033,Zürcher Papeterie,Zürich,CHF,6990.51,98.12,6892.39,settled,2026-02-11,
+po_00034,Mosaic Ceramics,Ljubljana,EUR,2481.51,52.36,2429.15,settled,2026-02-12,"chargeback offset, 1 item"
+po_00035,Reykjavík Wool Works,Reykjavík,ISK,1145683,10884,,failed,2026-02-12,split across 2 bank days
+po_00036,"Kettle ""Small Batch"" Teas",Dublin,EUR,4451.84,78.16,4373.68,settled,2026-02-12,
+po_00037,Dünenhaus Ferien,Westerland,EUR,9382.43,131.60,9250.83,settled,2026-02-13,"chargeback offset, 1 item"
+po_00038,Fjällstuga Outdoor,Tromsø,NOK,4412.66,77.47,4335.19,settled,2026-02-13,split across 2 bank days
+po_00039,Tidepool Tickets,Porto,EUR,1447.23,30.64,1416.59,settled,2026-02-13,partial: 3 of 4 batches
+po_00040,"Blue Heron Bikes, Inc.",Portland,USD,3150.78,44.36,3106.42,pending,,réglé après vérification
+po_00041,Tidepool Tickets,Porto,EUR,9264.66,129.96,9134.70,settled,2026-02-14,
+po_00042,Ōkami Ramen Bar,Osaka,JPY,534762,5080,529682,settled,2026-02-14,
+po_00043,Tidepool Tickets,Porto,EUR,3561.81,62.58,3499.23,pending,,"manual review, see case MR-6930"
+po_00044,Harbor Coffee Roasters,Malmö,SEK,2851.85,50.16,2801.69,settled,2026-02-15,"holiday cut-off, paid next day"
+po_00045,Casa Açaí,São Paulo,BRL,1582.54,15.28,1567.26,settled,2026-02-15,
+po_00046,"Northwind Books, Ltd.",Leeds,GBP,3103.68,29.73,3073.95,settled,2026-02-15,"manual review, see case MR-4408"
+po_00047,Zürcher Papeterie,Zürich,CHF,2629.84,25.23,2604.61,settled,2026-02-16,FX at 0.35 spread
+po_00048,Café Brûlée,Lyon,EUR,69.71,1.71,68.00,settled,2026-02-16,FX at 0.24 spread
+po_00049,Lantern & Loom Studio,Kraków,PLN,6222.50,109.14,6113.36,settled,2026-02-16,split across 2 bank days
+po_00050,"Kettle ""Small Batch"" Teas",Dublin,EUR,7755.61,163.12,7592.49,settled,2026-02-16,"manual review, see case MR-7638"
+po_00051,Lantern & Loom Studio,Kraków,PLN,9371.05,131.44,9239.61,settled,2026-02-17,FX at 0.16 spread
+po_00052,Lantern & Loom Studio,Kraków,PLN,5820.27,122.48,5697.79,settled,2026-02-17,"IBAN updated, verified"
+po_00053,Fjällstuga Outdoor,Tromsø,NOK,3393.55,59.64,3333.91,settled,2026-02-17,
+po_00054,Casa Açaí,São Paulo,BRL,1418.93,25.08,1393.85,pending,,FX at 0.32 spread
+po_00055,"Northwind Books, Ltd.",Leeds,GBP,7903.96,75.34,7828.62,pending,,rolling reserve 5%
+po_00056,Reykjavík Wool Works,Reykjavík,ISK,958131,16767,941364,settled,2026-02-18,"IBAN updated, verified"
+po_00057,"Northwind Books, Ltd.",Leeds,GBP,9027.38,189.82,8837.56,settled,2026-02-19,"IBAN updated, verified"
+po_00058,Saguaro Supply Co.,Tucson,USD,8132.30,142.57,7989.73,settled,2026-02-19,FX at 0.50 spread
+po_00059,"Kettle ""Small Batch"" Teas",Dublin,EUR,6140.64,58.59,6082.05,pending,,FX at 0.49 spread
+po_00060,Mosaic Ceramics,Ljubljana,EUR,8661.35,82.53,8578.82,settled,2026-02-19,split across 2 bank days
+po_00061,"Blue Heron Bikes, Inc.",Portland,USD,8446.09,80.49,8365.60,settled,2026-02-20,
+po_00062,Casa Açaí,São Paulo,BRL,7728.90,162.56,7566.34,settled,2026-02-20,
+po_00063,Fjällstuga Outdoor,Tromsø,NOK,1531.38,27.05,1504.33,pending,,
+po_00064,Casa Açaí,São Paulo,BRL,631.91,9.10,622.81,settled,2026-02-20,"bank returned: ""account closed"""
+po_00065,Casa Açaí,São Paulo,BRL,1410.37,20.00,1390.37,settled,2026-02-21,"chargeback offset, 1 item"
+po_00066,"Blue Heron Bikes, Inc.",Portland,USD,1784.29,25.23,1759.06,settled,2026-02-21,"chargeback offset, 1 item"
+po_00067,Café Brûlée,Lyon,EUR,5376.97,51.33,5325.64,settled,2026-02-21,
+po_00068,Zürcher Papeterie,Zürich,CHF,7029.15,123.26,6905.89,settled,2026-02-22,"bank returned: ""account closed"""
+po_00069,Zürcher Papeterie,Zürich,CHF,3701.75,52.07,3649.68,settled,2026-02-22,
+po_00070,Tidepool Tickets,Porto,EUR,8959.73,157.05,8802.68,settled,2026-02-22,"holiday cut-off, paid next day"
+po_00071,Reykjavík Wool Works,Reykjavík,ISK,525430,11034,514396,settled,2026-02-23,
+po_00072,Fjällstuga Outdoor,Tromsø,NOK,691.10,12.34,678.76,settled,2026-02-23,
+po_00073,Dünenhaus Ferien,Westerland,EUR,7526.37,131.96,7394.41,settled,2026-02-23,"bank returned: ""account closed"""
+po_00074,Zürcher Papeterie,Zürich,CHF,72.24,0.94,71.30,settled,2026-02-23,réglé après vérification
+po_00075,Tidepool Tickets,Porto,EUR,1258.94,26.69,1232.25,settled,2026-02-24,"bank returned: ""account closed"""
+po_00076,Lantern & Loom Studio,Kraków,PLN,4411.28,42.16,4369.12,settled,2026-02-24,"IBAN updated, verified"
+po_00077,"Kettle ""Small Batch"" Teas",Dublin,EUR,8213.65,143.99,,failed,2026-02-24,
+po_00078,Harbor Coffee Roasters,Malmö,SEK,8667.58,182.27,8485.31,settled,2026-02-25,"IBAN updated, verified"
+po_00079,"Kettle ""Small Batch"" Teas",Dublin,EUR,3003.68,42.30,2961.38,pending,,"bank returned: ""account closed"""
+po_00080,Harbor Coffee Roasters,Malmö,SEK,9321.37,88.80,9232.57,pending,,
+po_00081,"Blue Heron Bikes, Inc.",Portland,USD,2229.50,47.07,2182.43,settled,2026-02-26,split across 2 bank days
+po_00082,Fjällstuga Outdoor,Tromsø,NOK,9355.14,89.12,9266.02,settled,2026-02-26,rolling reserve 5%
+po_00083,Mosaic Ceramics,Ljubljana,EUR,4365.39,41.72,4323.67,settled,2026-02-26,"bank returned: ""account closed"""
+po_00084,Zürcher Papeterie,Zürich,CHF,3964.62,69.63,3894.99,settled,2026-02-26,
+po_00085,"Kettle ""Small Batch"" Teas",Dublin,EUR,3886.04,81.86,3804.18,settled,2026-02-27,rolling reserve 5%
+po_00086,"Kettle ""Small Batch"" Teas",Dublin,EUR,2584.56,45.48,2539.08,settled,2026-02-27,
+po_00087,"Northwind Books, Ltd.",Leeds,GBP,8802.87,83.88,8718.99,settled,2026-02-27,
+po_00088,"Northwind Books, Ltd.",Leeds,GBP,1453.06,25.68,1427.38,settled,2026-02-27,FX at 0.60 spread
+po_00089,Reykjavík Wool Works,Reykjavík,ISK,85329,1493,83836,settled,2026-02-28,"manual review, see case MR-6038"
+po_00090,Café Brûlée,Lyon,EUR,9322.96,88.82,9234.14,settled,2026-02-28,partial: 3 of 4 batches
+po_00091,"Kettle ""Small Batch"" Teas",Dublin,EUR,1786.17,17.22,1768.95,settled,2026-02-28,partial: 3 of 4 batches
+po_00092,Dünenhaus Ferien,Westerland,EUR,1708.81,24.17,1684.64,settled,2026-03-01,"chargeback offset, 1 item"
+po_00093,"Kettle ""Small Batch"" Teas",Dublin,EUR,3473.05,48.87,3424.18,settled,2026-03-01,
+po_00094,Fjällstuga Outdoor,Tromsø,NOK,4709.76,44.99,4664.77,settled,2026-03-01,"IBAN updated, verified"
+po_00095,"Blue Heron Bikes, Inc.",Portland,USD,3497.96,61.46,3436.50,settled,2026-03-02,"bank returned: ""account closed"""
+po_00096,Harbor Coffee Roasters,Malmö,SEK,7799.18,74.34,7724.84,settled,2026-03-02,"bank returned: ""account closed"""
+po_00097,"Northwind Books, Ltd.",Leeds,GBP,8922.69,187.63,8735.06,settled,2026-03-02,split across 2 bank days
+po_00098,"Kettle ""Small Batch"" Teas",Dublin,EUR,7681.89,107.80,7574.09,settled,2026-03-02,
+po_00099,Harbor Coffee Roasters,Malmö,SEK,7291.15,102.33,7188.82,settled,2026-03-03,"holiday cut-off, paid next day"
+po_00100,Café Brûlée,Lyon,EUR,2887.01,50.77,2836.24,pending,,
+po_00101,"Blue Heron Bikes, Inc.",Portland,USD,2206.17,46.58,2159.59,settled,2026-03-03,
+po_00102,"Northwind Books, Ltd.",Leeds,GBP,3057.88,53.76,3004.12,pending,,"manual review, see case MR-9675"
+po_00103,Ōkami Ramen Bar,Osaka,JPY,1077766,15089,1062677,held,,
+po_00104,"Blue Heron Bikes, Inc.",Portland,USD,1664.03,35.19,1628.84,pending,,
+po_00105,"Northwind Books, Ltd.",Leeds,GBP,3145.98,55.30,3090.68,settled,2026-03-05,"IBAN updated, verified"
+po_00106,Casa Açaí,São Paulo,BRL,4912.77,69.03,4843.74,settled,2026-03-05,rolling reserve 5%
+po_00107,Lantern & Loom Studio,Kraków,PLN,5973.28,104.78,5868.50,settled,2026-03-05,split across 2 bank days
+po_00108,Dünenhaus Ferien,Westerland,EUR,1366.50,19.38,1347.12,settled,2026-03-05,
+po_00109,Dünenhaus Ferien,Westerland,EUR,8536.19,119.76,8416.43,settled,2026-03-06,
+po_00110,Mosaic Ceramics,Ljubljana,EUR,8230.08,115.47,8114.61,pending,,"chargeback offset, 1 item"
+po_00111,Fjällstuga Outdoor,Tromsø,NOK,6168.61,108.20,6060.41,settled,2026-03-06,"holiday cut-off, paid next day"
+po_00112,Tidepool Tickets,Porto,EUR,8442.31,80.45,8361.86,settled,2026-03-07,réglé après vérification
+po_00113,Saguaro Supply Co.,Tucson,USD,2962.49,52.09,2910.40,settled,2026-03-07,
+po_00114,"Blue Heron Bikes, Inc.",Portland,USD,3004.32,52.83,2951.49,settled,2026-03-07,partial: 3 of 4 batches
+po_00115,Zürcher Papeterie,Zürich,CHF,4487.05,94.48,4392.57,settled,2026-03-07,
+po_00116,Dünenhaus Ferien,Westerland,EUR,5494.87,77.18,5417.69,pending,,"chargeback offset, 1 item"
+po_00117,Harbor Coffee Roasters,Malmö,SEK,1375.42,13.32,1362.10,settled,2026-03-08,"manual review, see case MR-9552"
+po_00118,Harbor Coffee Roasters,Malmö,SEK,8998.94,157.73,8841.21,held,,"manual review, see case MR-6496"
+po_00119,Harbor Coffee Roasters,Malmö,SEK,3775.26,79.53,3695.73,settled,2026-03-09,
+po_00120,Dünenhaus Ferien,Westerland,EUR,5437.77,95.41,5342.36,settled,2026-03-09,"holiday cut-off, paid next day"
+po_00121,Mosaic Ceramics,Ljubljana,EUR,6861.69,96.31,6765.38,pending,,
+po_00122,Mosaic Ceramics,Ljubljana,EUR,4222.69,88.93,4133.76,pending,,réglé après vérification
+po_00123,Zürcher Papeterie,Zürich,CHF,8240.22,115.61,8124.61,settled,2026-03-10,
+po_00124,Tidepool Tickets,Porto,EUR,6878.84,96.55,6782.29,held,,
+po_00125,Casa Açaí,São Paulo,BRL,6889.36,96.70,6792.66,settled,2026-03-10,partial: 3 of 4 batches
+po_00126,Ōkami Ramen Bar,Osaka,JPY,204130,3572,200558,settled,2026-03-11,
+po_00127,Reykjavík Wool Works,Reykjavík,ISK,1299679,12347,1287332,settled,2026-03-11,FX at 0.57 spread
+po_00128,Harbor Coffee Roasters,Malmö,SEK,4126.73,39.45,4087.28,settled,2026-03-11,"bank returned: ""account closed"""
+po_00129,Dünenhaus Ferien,Westerland,EUR,3843.34,36.76,3806.58,pending,,
+po_00130,"Kettle ""Small Batch"" Teas",Dublin,EUR,973.89,20.70,953.19,settled,2026-03-12,
+po_00131,"Blue Heron Bikes, Inc.",Portland,USD,8126.41,170.90,7955.51,settled,2026-03-12,FX at 0.11 spread
+po_00132,"Blue Heron Bikes, Inc.",Portland,USD,5186.48,109.17,5077.31,settled,2026-03-12,
+po_00133,Zürcher Papeterie,Zürich,CHF,9088.79,127.49,8961.30,settled,2026-03-13,
+po_00134,Casa Açaí,São Paulo,BRL,4080.52,71.66,4008.86,pending,,
+po_00135,Café Brûlée,Lyon,EUR,7323.05,128.40,7194.65,settled,2026-03-13,rolling reserve 5%
+po_00136,Reykjavík Wool Works,Reykjavík,ISK,219848,2089,217759,settled,2026-03-14,"manual review, see case MR-7858"
+po_00137,Tidepool Tickets,Porto,EUR,6811.05,64.95,6746.10,settled,2026-03-14,"chargeback offset, 1 item"
+po_00138,Saguaro Supply Co.,Tucson,USD,934.60,16.61,917.99,settled,2026-03-14,
+po_00139,"Northwind Books, Ltd.",Leeds,GBP,5578.45,97.87,5480.58,held,,
+po_00140,Ōkami Ramen Bar,Osaka,JPY,187495,3281,184214,settled,2026-03-15,FX at 0.45 spread
+po_00141,"Kettle ""Small Batch"" Teas",Dublin,EUR,3817.58,53.70,3763.88,pending,,rolling reserve 5%
+po_00142,Café Brûlée,Lyon,EUR,9394.02,131.77,9262.25,pending,,"chargeback offset, 1 item"
+po_00143,Harbor Coffee Roasters,Malmö,SEK,9372.53,197.07,9175.46,settled,2026-03-16,"IBAN updated, verified"
+po_00144,Lantern & Loom Studio,Kraków,PLN,4373.27,61.48,4311.79,settled,2026-03-16,"chargeback offset, 1 item"
+po_00145,Ōkami Ramen Bar,Osaka,JPY,789172,7497,781675,settled,2026-03-16,
+po_00146,Reykjavík Wool Works,Reykjavík,ISK,1283303,12191,1271112,held,,"manual review, see case MR-4911"
+po_00147,Mosaic Ceramics,Ljubljana,EUR,2778.72,26.65,2752.07,settled,2026-03-17,réglé après vérification
+po_00148,Casa Açaí,São Paulo,BRL,576.61,10.34,566.27,settled,2026-03-17,rolling reserve 5%
+po_00149,Tidepool Tickets,Porto,EUR,7077.59,99.34,6978.25,settled,2026-03-17,"chargeback offset, 1 item"
+po_00150,Harbor Coffee Roasters,Malmö,SEK,9228.07,161.74,9066.33,settled,2026-03-18,
+po_00151,"Blue Heron Bikes, Inc.",Portland,USD,2171.76,30.65,2141.11,settled,2026-03-18,partial: 3 of 4 batches
+po_00152,Mosaic Ceramics,Ljubljana,EUR,7625.53,72.69,7552.84,pending,,partial: 3 of 4 batches
+po_00153,Harbor Coffee Roasters,Malmö,SEK,2936.39,41.36,2895.03,settled,2026-03-19,"chargeback offset, 1 item"
+po_00154,"Northwind Books, Ltd.",Leeds,GBP,2178.85,20.95,2157.90,settled,2026-03-19,FX at 0.18 spread
+po_00155,Ōkami Ramen Bar,Osaka,JPY,18218,319,17899,settled,2026-03-19,"holiday cut-off, paid next day"
+po_00156,Reykjavík Wool Works,Reykjavík,ISK,482117,8437,473680,pending,,
+po_00157,Tidepool Tickets,Porto,EUR,4594.70,80.66,4514.04,settled,2026-03-20,
+po_00158,Reykjavík Wool Works,Reykjavík,ISK,6665,93,6572,settled,2026-03-20,"chargeback offset, 1 item"
+po_00159,Dünenhaus Ferien,Westerland,EUR,283.75,5.22,278.53,settled,2026-03-20,"manual review, see case MR-4260"
+po_00160,"Northwind Books, Ltd.",Leeds,GBP,7874.61,75.06,7799.55,settled,2026-03-21,
+po_00161,Lantern & Loom Studio,Kraków,PLN,212.20,3.96,208.24,pending,,
+po_00162,Café Brûlée,Lyon,EUR,1951.68,27.57,1924.11,held,,FX at 0.24 spread
+po_00163,Dünenhaus Ferien,Westerland,EUR,1995.67,19.21,1976.46,pending,,rolling reserve 5%
+po_00164,Dünenhaus Ferien,Westerland,EUR,7104.72,99.72,7005.00,pending,,réglé après vérification
+po_00165,Dünenhaus Ferien,Westerland,EUR,1215.91,25.78,1190.13,pending,,réglé après vérification
+po_00166,"Blue Heron Bikes, Inc.",Portland,USD,7790.81,109.32,7681.49,settled,2026-03-22,
+po_00167,Café Brûlée,Lyon,EUR,1694.69,29.91,1664.78,settled,2026-03-22,réglé après vérification
+po_00168,Casa Açaí,São Paulo,BRL,2429.87,23.33,2406.54,settled,2026-03-23,split across 2 bank days
+po_00169,"Blue Heron Bikes, Inc.",Portland,USD,3323.96,70.05,3253.91,settled,2026-03-23,"IBAN updated, verified"
+po_00170,Lantern & Loom Studio,Kraków,PLN,6443.76,61.47,6382.29,settled,2026-03-23,
+po_00171,Dünenhaus Ferien,Westerland,EUR,6563.49,62.60,6500.89,settled,2026-03-24,"IBAN updated, verified"
+po_00172,Dünenhaus Ferien,Westerland,EUR,7710.58,135.19,7575.39,pending,,"chargeback offset, 1 item"
+po_00173,Café Brûlée,Lyon,EUR,9173.13,87.39,9085.74,pending,,rolling reserve 5%
+po_00174,Zürcher Papeterie,Zürich,CHF,5011.63,87.95,4923.68,settled,2026-03-25,"bank returned: ""account closed"""
+po_00175,Mosaic Ceramics,Ljubljana,EUR,4457.35,62.65,4394.70,settled,2026-03-25,partial: 3 of 4 batches
+po_00176,"Kettle ""Small Batch"" Teas",Dublin,EUR,2768.67,48.70,2719.97,settled,2026-03-25,
+po_00177,"Northwind Books, Ltd.",Leeds,GBP,2419.82,23.24,2396.58,settled,2026-03-26,
+po_00178,Café Brûlée,Lyon,EUR,2173.18,45.89,2127.29,settled,2026-03-26,"holiday cut-off, paid next day"
+po_00179,Lantern & Loom Studio,Kraków,PLN,8967.73,85.44,8882.29,pending,,split across 2 bank days
+po_00180,"Blue Heron Bikes, Inc.",Portland,USD,4787.70,67.28,4720.42,settled,2026-03-26,split across 2 bank days
+po_00181,Harbor Coffee Roasters,Malmö,SEK,2426.39,42.71,2383.68,settled,2026-03-27,FX at 0.59 spread
+po_00182,Tidepool Tickets,Porto,EUR,5724.73,100.43,5624.30,settled,2026-03-27,rolling reserve 5%
+po_00183,Saguaro Supply Co.,Tucson,USD,8675.41,82.67,8592.74,settled,2026-03-27,FX at 0.28 spread
+po_00184,Zürcher Papeterie,Zürich,CHF,5441.11,95.47,5345.64,settled,2026-03-27,FX at 0.47 spread
+po_00185,Saguaro Supply Co.,Tucson,USD,611.47,6.06,605.41,settled,2026-03-28,"holiday cut-off, paid next day"
+po_00186,"Kettle ""Small Batch"" Teas",Dublin,EUR,2238.97,21.52,2217.45,held,,"chargeback offset, 1 item"
+po_00187,Lantern & Loom Studio,Kraków,PLN,9318.34,195.94,9122.40,settled,2026-03-28,
+po_00188,Zürcher Papeterie,Zürich,CHF,7124.33,149.86,6974.47,settled,2026-03-29,
+po_00189,Café Brûlée,Lyon,EUR,2677.88,47.11,2630.77,settled,2026-03-29,"bank returned: ""account closed"""
+po_00190,Harbor Coffee Roasters,Malmö,SEK,2224.57,39.18,2185.39,settled,2026-03-29,
+po_00191,Zürcher Papeterie,Zürich,CHF,2319.36,48.96,2270.40,settled,2026-03-29,"manual review, see case MR-9098"
+po_00192,Reykjavík Wool Works,Reykjavík,ISK,1139911,23938,1115973,settled,2026-03-30,réglé après vérification
+po_00193,Mosaic Ceramics,Ljubljana,EUR,8107.20,77.27,,failed,2026-03-30,
+po_00194,Café Brûlée,Lyon,EUR,8512.85,179.02,8333.83,settled,2026-03-30,
+po_00195,"Kettle ""Small Batch"" Teas",Dublin,EUR,4055.61,57.03,3998.58,settled,2026-03-31,
+po_00196,Reykjavík Wool Works,Reykjavík,ISK,182827,3839,178988,settled,2026-03-31,"bank returned: ""account closed"""
+po_00197,"Blue Heron Bikes, Inc.",Portland,USD,5249.03,110.48,5138.55,settled,2026-03-31,réglé après vérification
+po_00198,Saguaro Supply Co.,Tucson,USD,1389.88,19.71,1370.17,settled,2026-04-01,"bank returned: ""account closed"""
+po_00199,"Kettle ""Small Batch"" Teas",Dublin,EUR,7518.04,158.13,7359.91,settled,2026-04-01,
+po_00200,Zürcher Papeterie,Zürich,CHF,9225.70,129.41,9096.29,settled,2026-04-01,
+po_00201,Ōkami Ramen Bar,Osaka,JPY,650839,11390,639449,settled,2026-04-02,
+po_00202,Harbor Coffee Roasters,Malmö,SEK,4608.34,64.77,4543.57,settled,2026-04-02,partial: 3 of 4 batches
+po_00203,Lantern & Loom Studio,Kraków,PLN,8767.52,123.00,8644.52,settled,2026-04-02,partial: 3 of 4 batches
+po_00204,Zürcher Papeterie,Zürich,CHF,3239.75,68.28,3171.47,settled,2026-04-02,FX at 0.52 spread
+po_00205,Tidepool Tickets,Porto,EUR,4412.20,77.46,4334.74,settled,2026-04-03,"bank returned: ""account closed"""
+po_00206,"Blue Heron Bikes, Inc.",Portland,USD,5516.07,96.78,5419.29,settled,2026-04-03,"chargeback offset, 1 item"
+po_00207,"Kettle ""Small Batch"" Teas",Dublin,EUR,7935.36,139.12,7796.24,settled,2026-04-03,rolling reserve 5%
+po_00208,Lantern & Loom Studio,Kraków,PLN,8616.22,181.19,8435.03,settled,2026-04-03,
+po_00209,Lantern & Loom Studio,Kraków,PLN,4277.32,60.13,4217.19,settled,2026-04-04,
+po_00210,Fjällstuga Outdoor,Tromsø,NOK,2919.05,41.12,2877.93,settled,2026-04-04,
+po_00211,Tidepool Tickets,Porto,EUR,6884.11,96.63,6787.48,pending,,"manual review, see case MR-3561"
+po_00212,"Northwind Books, Ltd.",Leeds,GBP,2926.63,51.47,2875.16,settled,2026-04-05,"chargeback offset, 1 item"
+po_00213,Reykjavík Wool Works,Reykjavík,ISK,961015,16818,944197,settled,2026-04-05,rolling reserve 5%
+po_00214,Mosaic Ceramics,Ljubljana,EUR,6197.17,108.70,6088.47,settled,2026-04-05,
+po_00215,Saguaro Supply Co.,Tucson,USD,6836.23,95.96,6740.27,settled,2026-04-06,"IBAN updated, verified"
+po_00216,Fjällstuga Outdoor,Tromsø,NOK,6578.57,92.35,6486.22,settled,2026-04-06,rolling reserve 5%
+po_00217,Café Brûlée,Lyon,EUR,4805.53,67.53,4738.00,settled,2026-04-06,
+po_00218,"Blue Heron Bikes, Inc.",Portland,USD,5216.13,73.28,5142.85,settled,2026-04-07,FX at 0.52 spread
+po_00219,Mosaic Ceramics,Ljubljana,EUR,3315.71,58.27,3257.44,pending,,
+po_00220,Dünenhaus Ferien,Westerland,EUR,6666.14,140.24,6525.90,settled,2026-04-07,"chargeback offset, 1 item"
+po_00221,Reykjavík Wool Works,Reykjavík,ISK,215845,2051,213794,settled,2026-04-07,FX at 0.49 spread
+po_00222,Harbor Coffee Roasters,Malmö,SEK,9261.94,162.33,9099.61,settled,2026-04-08,rolling reserve 5%
+po_00223,Lantern & Loom Studio,Kraków,PLN,3055.65,29.28,3026.37,settled,2026-04-08,split across 2 bank days
+po_00224,Harbor Coffee Roasters,Malmö,SEK,3790.46,36.26,3754.20,settled,2026-04-08,
+po_00225,Reykjavík Wool Works,Reykjavík,ISK,1026131,14366,1011765,settled,2026-04-09,"holiday cut-off, paid next day"
+po_00226,Tidepool Tickets,Porto,EUR,6023.01,105.65,5917.36,settled,2026-04-09,
+po_00227,"Kettle ""Small Batch"" Teas",Dublin,EUR,8380.01,117.57,8262.44,pending,,"chargeback offset, 1 item"
+po_00228,"Kettle ""Small Batch"" Teas",Dublin,EUR,6580.72,115.41,6465.31,pending,,
+po_00229,Saguaro Supply Co.,Tucson,USD,1777.70,31.36,1746.34,settled,2026-04-10,"bank returned: ""account closed"""
+po_00230,Fjällstuga Outdoor,Tromsø,NOK,8432.70,147.82,8284.88,settled,2026-04-10,
+po_00231,Harbor Coffee Roasters,Malmö,SEK,626.04,9.01,617.03,pending,,réglé après vérification
+po_00232,"Northwind Books, Ltd.",Leeds,GBP,2358.49,22.66,2335.83,settled,2026-04-11,"manual review, see case MR-7666"
+po_00233,Harbor Coffee Roasters,Malmö,SEK,7938.09,75.66,7862.43,settled,2026-04-11,"chargeback offset, 1 item"
+po_00234,Zürcher Papeterie,Zürich,CHF,7016.20,98.48,6917.72,settled,2026-04-11,"chargeback offset, 1 item"
+po_00235,Fjällstuga Outdoor,Tromsø,NOK,7649.48,107.34,7542.14,settled,2026-04-12,"holiday cut-off, paid next day"
+po_00236,Dünenhaus Ferien,Westerland,EUR,9454.84,198.80,9256.04,settled,2026-04-12,"IBAN updated, verified"
+po_00237,Harbor Coffee Roasters,Malmö,SEK,4053.20,38.76,4014.44,settled,2026-04-12,FX at 0.53 spread
+po_00238,Zürcher Papeterie,Zürich,CHF,5634.14,98.85,5535.29,settled,2026-04-12,FX at 0.45 spread
+po_00239,Dünenhaus Ferien,Westerland,EUR,6700.87,140.97,6559.90,settled,2026-04-13,"manual review, see case MR-7290"
+po_00240,Fjällstuga Outdoor,Tromsø,NOK,7602.64,133.30,7469.34,settled,2026-04-13,"manual review, see case MR-4283"
+po_00241,Tidepool Tickets,Porto,EUR,8475.56,118.91,8356.65,pending,,"manual review, see case MR-6709"
+po_00242,Zürcher Papeterie,Zürich,CHF,8204.85,115.12,8089.73,settled,2026-04-14,FX at 0.58 spread
+po_00243,"Northwind Books, Ltd.",Leeds,GBP,3483.91,49.02,3434.89,settled,2026-04-14,
+po_00244,Casa Açaí,São Paulo,BRL,7928.37,75.57,7852.80,settled,2026-04-14,
+po_00245,Casa Açaí,São Paulo,BRL,7479.59,71.31,7408.28,pending,,
+po_00246,Lantern & Loom Studio,Kraków,PLN,8603.83,81.99,8521.84,pending,,"holiday cut-off, paid next day"
+po_00247,Ōkami Ramen Bar,Osaka,JPY,561369,11789,549580,pending,,réglé après vérification
+po_00248,Tidepool Tickets,Porto,EUR,6976.29,97.92,6878.37,settled,2026-04-15,"chargeback offset, 1 item"
+po_00249,"Blue Heron Bikes, Inc.",Portland,USD,1774.15,25.09,1749.06,settled,2026-04-15,FX at 0.29 spread
+po_00250,Saguaro Supply Co.,Tucson,USD,1522.14,21.56,1500.58,held,,"chargeback offset, 1 item"
+po_00251,Lantern & Loom Studio,Kraków,PLN,7537.17,158.53,7378.64,settled,2026-04-16,
+po_00252,Tidepool Tickets,Porto,EUR,1797.58,25.42,1772.16,settled,2026-04-16,
+po_00253,Zürcher Papeterie,Zürich,CHF,2303.30,48.62,2254.68,settled,2026-04-17,split across 2 bank days
+po_00254,"Northwind Books, Ltd.",Leeds,GBP,5286.73,92.77,5193.96,settled,2026-04-17,"manual review, see case MR-2497"
+po_00255,Casa Açaí,São Paulo,BRL,8188.25,143.54,8044.71,settled,2026-04-17,"bank returned: ""account closed"""
+po_00256,Fjällstuga Outdoor,Tromsø,NOK,6251.43,87.77,6163.66,pending,,"holiday cut-off, paid next day"
+po_00257,Casa Açaí,São Paulo,BRL,4013.45,38.38,3975.07,settled,2026-04-18,"chargeback offset, 1 item"
+po_00258,Tidepool Tickets,Porto,EUR,3952.23,55.58,,failed,2026-04-18,
+po_00259,Tidepool Tickets,Porto,EUR,8522.37,119.56,,failed,2026-04-18,split across 2 bank days
+po_00260,Ōkami Ramen Bar,Osaka,JPY,1122787,19649,1103138,pending,,
+po_00261,Casa Açaí,São Paulo,BRL,7236.22,126.88,7109.34,settled,2026-04-19,
+po_00262,"Blue Heron Bikes, Inc.",Portland,USD,7121.48,124.88,6996.60,pending,,"bank returned: ""account closed"""
+po_00263,Saguaro Supply Co.,Tucson,USD,1567.27,27.68,1539.59,settled,2026-04-20,rolling reserve 5%
+po_00264,Lantern & Loom Studio,Kraków,PLN,3013.75,63.54,2950.21,settled,2026-04-20,
+po_00265,"Kettle ""Small Batch"" Teas",Dublin,EUR,5561.73,53.09,5508.64,settled,2026-04-20,"IBAN updated, verified"
+po_00266,Mosaic Ceramics,Ljubljana,EUR,6100.50,58.20,6042.30,settled,2026-04-21,"bank returned: ""account closed"""
+po_00267,Reykjavík Wool Works,Reykjavík,ISK,1260206,22054,1238152,settled,2026-04-21,"IBAN updated, verified"
+po_00268,Lantern & Loom Studio,Kraków,PLN,5539.49,77.80,5461.69,settled,2026-04-21,"IBAN updated, verified"
+po_00269,Dünenhaus Ferien,Westerland,EUR,4184.66,88.13,4096.53,settled,2026-04-21,rolling reserve 5%
+po_00270,Zürcher Papeterie,Zürich,CHF,9456.15,90.08,9366.07,settled,2026-04-22,FX at 0.15 spread
+po_00271,Reykjavík Wool Works,Reykjavík,ISK,104112,1822,102290,pending,,partial: 3 of 4 batches
+po_00272,"Blue Heron Bikes, Inc.",Portland,USD,4879.62,46.61,4833.01,settled,2026-04-22,rolling reserve 5%
+po_00273,Tidepool Tickets,Porto,EUR,4046.58,85.23,3961.35,pending,,
+po_00274,Ōkami Ramen Bar,Osaka,JPY,746099,13057,733042,held,,split across 2 bank days
+po_00275,"Northwind Books, Ltd.",Leeds,GBP,2127.47,20.46,2107.01,settled,2026-04-23,"holiday cut-off, paid next day"
+po_00276,Dünenhaus Ferien,Westerland,EUR,5660.47,119.12,5541.35,settled,2026-04-23,
+po_00277,Ōkami Ramen Bar,Osaka,JPY,918623,16076,902547,settled,2026-04-24,
+po_00278,Harbor Coffee Roasters,Malmö,SEK,3915.18,37.44,3877.74,settled,2026-04-24,"IBAN updated, verified"
+po_00279,Tidepool Tickets,Porto,EUR,5330.03,112.18,5217.85,settled,2026-04-24,"holiday cut-off, paid next day"
+po_00280,Reykjavík Wool Works,Reykjavík,ISK,993996,17395,976601,settled,2026-04-25,partial: 3 of 4 batches
+po_00281,Ōkami Ramen Bar,Osaka,JPY,767099,7287,759812,settled,2026-04-25,
+po_00282,Saguaro Supply Co.,Tucson,USD,773.68,11.08,762.60,settled,2026-04-25,
+po_00283,"Kettle ""Small Batch"" Teas",Dublin,EUR,4343.74,91.47,4252.27,held,,réglé après vérification
+po_00284,Dünenhaus Ferien,Westerland,EUR,5690.92,119.76,5571.16,settled,2026-04-26,"IBAN updated, verified"
+po_00285,Dünenhaus Ferien,Westerland,EUR,5577.70,53.24,5524.46,pending,,FX at 0.16 spread
+po_00286,Café Brûlée,Lyon,EUR,6704.40,94.11,6610.29,settled,2026-04-26,"manual review, see case MR-8739"
+po_00287,Dünenhaus Ferien,Westerland,EUR,1021.57,14.55,1007.02,pending,,"bank returned: ""account closed"""
+po_00288,Dünenhaus Ferien,Westerland,EUR,5511.96,116.00,5395.96,settled,2026-04-27,FX at 0.39 spread
+po_00289,Dünenhaus Ferien,Westerland,EUR,1968.55,18.95,1949.60,pending,,
+po_00290,Mosaic Ceramics,Ljubljana,EUR,8314.78,145.76,8169.02,settled,2026-04-28,"bank returned: ""account closed"""
+po_00291,"Northwind Books, Ltd.",Leeds,GBP,9303.37,195.62,9107.75,settled,2026-04-28,réglé après vérification
+po_00292,Ōkami Ramen Bar,Osaka,JPY,76899,1346,75553,settled,2026-04-28,
+po_00293,Zürcher Papeterie,Zürich,CHF,8779.95,83.66,8696.29,held,,
+po_00294,Lantern & Loom Studio,Kraków,PLN,3424.90,32.79,3392.11,settled,2026-04-29,"chargeback offset, 1 item"
+po_00295,Mosaic Ceramics,Ljubljana,EUR,3108.14,29.78,,failed,2026-04-29,FX at 0.35 spread
+po_00296,Café Brûlée,Lyon,EUR,6074.80,57.96,6016.84,pending,,
+po_00297,Mosaic Ceramics,Ljubljana,EUR,3352.11,47.18,3304.93,settled,2026-04-29,réglé après vérification
+po_00298,Casa Açaí,São Paulo,BRL,5133.71,90.09,5043.62,settled,2026-04-30,"chargeback offset, 1 item"
+po_00299,"Kettle ""Small Batch"" Teas",Dublin,EUR,7332.45,154.23,7178.22,settled,2026-04-30,
+po_00300,Tidepool Tickets,Porto,EUR,6365.68,133.93,6231.75,settled,2026-04-30,
+po_00301,Casa Açaí,São Paulo,BRL,8865.29,186.42,8678.87,pending,,
+po_00302,Café Brûlée,Lyon,EUR,3175.15,30.41,3144.74,settled,2026-05-01,FX at 0.60 spread
+po_00303,"Blue Heron Bikes, Inc.",Portland,USD,4431.42,77.80,4353.62,settled,2026-05-01,"IBAN updated, verified"
+po_00304,"Blue Heron Bikes, Inc.",Portland,USD,2771.41,26.58,2744.83,settled,2026-05-01,
+po_00305,Zürcher Papeterie,Zürich,CHF,9386.47,131.66,9254.81,settled,2026-05-02,rolling reserve 5%

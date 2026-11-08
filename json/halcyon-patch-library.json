@@ -1,0 +1,4568 @@
+{
+  "library": "Coastline & Machinery",
+  "publisher": "Halcyon Instruments (fictional)",
+  "version": "1.3.0",
+  "released": "2026-10-01",
+  "licence": "CC0-1.0",
+  "description": "Eighteen patches for the Vesper and Lantern synthesizers, in six banks: slow coastal pads, sub-heavy basses, singing leads, intimate rooms, mechanical sequences and late-night keys. Every patch follows halcyon-patch/2.1.",
+  "schema": "halcyon-patch.schema.json",
+  "stats": {
+    "patches": 18,
+    "byCategory": {
+      "bass": 4,
+      "bell": 2,
+      "keys": 1,
+      "lead": 5,
+      "pad": 2,
+      "sequence": 2,
+      "texture": 2
+    },
+    "byEngine": {
+      "analog": 17,
+      "wavetable": 19,
+      "fm": 4,
+      "sample": 2
+    }
+  },
+  "banks": [
+    {
+      "bank": "A",
+      "title": "Coastline",
+      "patches": [
+        {
+          "slot": "A01",
+          "format": "halcyon-patch/2.1",
+          "name": "Paper Organ",
+          "category": "texture",
+          "tags": [
+            "glassy",
+            "dark",
+            "warm"
+          ],
+          "author": {
+            "handle": "nightbus"
+          },
+          "created": "2026-06-22",
+          "instrument": {
+            "model": "lantern",
+            "firmware": "2.4.2"
+          },
+          "tempo": 110,
+          "layerMode": "stack",
+          "layers": [
+            {
+              "name": "Low",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": 1,
+                    "semitones": 7,
+                    "cents": -7.54
+                  },
+                  "level": 0.66,
+                  "table": "Tidal Formants",
+                  "position": 0.0,
+                  "interpolation": "spectral"
+                }
+              ],
+              "filter": {
+                "model": "diode",
+                "mode": "lowpass",
+                "cutoff": 2503,
+                "resonance": 0.26,
+                "drive": 0.35,
+                "keyTrack": 0.91,
+                "envelopeDepth": 0.17
+              },
+              "filterEnvelope": {
+                "segments": [
+                  {
+                    "to": 0.43,
+                    "time": 2.06,
+                    "bend": 0.72
+                  },
+                  {
+                    "to": 0.99,
+                    "time": 0.25,
+                    "bend": 0.55
+                  },
+                  {
+                    "to": 0.99,
+                    "time": 3.14,
+                    "bend": 0.77
+                  },
+                  {
+                    "to": 0.1,
+                    "time": 1.91,
+                    "bend": 0.52
+                  },
+                  {
+                    "to": 0.5,
+                    "time": 3.28,
+                    "bend": 0.61
+                  }
+                ],
+                "sustainAt": 2,
+                "loopFrom": 1
+              },
+              "amp": {
+                "envelope": {
+                  "segments": [
+                    {
+                      "to": 0.81,
+                      "time": 2.62,
+                      "bend": 0.46
+                    },
+                    {
+                      "to": 0.36,
+                      "time": 1.24,
+                      "bend": 0.65
+                    },
+                    {
+                      "to": 0.15,
+                      "time": 0.24,
+                      "bend": 0.74
+                    },
+                    {
+                      "to": 0.39,
+                      "time": 0.59,
+                      "bend": 0.46
+                    }
+                  ],
+                  "sustainAt": 2,
+                  "loopFrom": 1
+                },
+                "level": -3.25,
+                "velocity": 0.23
+              },
+              "lfos": [
+                {
+                  "id": "flutter1",
+                  "shape": "sample-and-hold",
+                  "rate": 5.89,
+                  "fadeIn": 0.66,
+                  "retrigger": "free"
+                }
+              ],
+              "voicing": {
+                "mode": "poly",
+                "voices": 12
+              }
+            },
+            {
+              "name": "High",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": -2,
+                    "semitones": 12,
+                    "cents": -4.6
+                  },
+                  "level": 0.56,
+                  "table": "Vocal Ahs",
+                  "position": 0.68,
+                  "interpolation": "spectral",
+                  "warp": {
+                    "mode": "bend",
+                    "amount": 0.43
+                  }
+                }
+              ],
+              "filter": {
+                "model": "ladder-24",
+                "mode": "bandpass",
+                "cutoff": 4247,
+                "resonance": 0.5,
+                "drive": 0.29,
+                "keyTrack": 0.03,
+                "envelopeDepth": 0.3
+              },
+              "filterEnvelope": {
+                "segments": [
+                  {
+                    "to": 0.71,
+                    "time": 3.03,
+                    "bend": -0.43
+                  },
+                  {
+                    "to": 0.43,
+                    "time": 2.71,
+                    "bend": 0.34
+                  },
+                  {
+                    "to": 0.07,
+                    "time": 0.29,
+                    "bend": 0.18
+                  },
+                  {
+                    "to": 0.24,
+                    "time": 1.44,
+                    "bend": -0.47
+                  },
+                  {
+                    "to": 0.45,
+                    "time": 2.97,
+                    "bend": 0.79
+                  }
+                ],
+                "sustainAt": 2,
+                "loopFrom": 1
+              },
+              "amp": {
+                "envelope": {
+                  "segments": [
+                    {
+                      "to": 0.42,
+                      "time": 0.38,
+                      "bend": 0.2
+                    },
+                    {
+                      "to": 0.62,
+                      "time": 3.49,
+                      "bend": -0.74
+                    },
+                    {
+                      "to": 0.98,
+                      "time": 2.58,
+                      "bend": 0.55
+                    },
+                    {
+                      "to": 0.35,
+                      "time": 2.7,
+                      "bend": -0.61
+                    },
+                    {
+                      "to": 0.07,
+                      "time": 1.64,
+                      "bend": -0.0
+                    }
+                  ],
+                  "sustainAt": 2,
+                  "loopFrom": 1
+                },
+                "level": -4.08,
+                "velocity": 0.69
+              },
+              "lfos": [
+                {
+                  "id": "flutter1",
+                  "shape": "sample-and-hold",
+                  "rate": {
+                    "division": "1/16",
+                    "modifier": "straight"
+                  },
+                  "fadeIn": 0.7,
+                  "retrigger": "per-note"
+                }
+              ],
+              "voicing": {
+                "mode": "poly",
+                "voices": 16
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "age",
+              "label": "AGE",
+              "value": 0.18
+            },
+            {
+              "id": "space",
+              "label": "SPACE",
+              "value": 0.37
+            },
+            {
+              "id": "bloom",
+              "label": "BLOOM",
+              "value": 0.57
+            },
+            {
+              "id": "motion",
+              "label": "MOTION",
+              "value": 0.45
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.age",
+                "target": "osc1.position",
+                "amount": 0.7
+              },
+              {
+                "source": "macro.space",
+                "target": "osc1.level",
+                "amount": 0.44
+              },
+              {
+                "source": "macro.bloom",
+                "target": "osc1.level",
+                "amount": 0.73
+              },
+              {
+                "source": "macro.motion",
+                "target": "filter.cutoff",
+                "amount": 0.56
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "key",
+                    "target": "amp.level",
+                    "amount": 0.5
+                  },
+                  {
+                    "source": "aftertouch",
+                    "target": "osc1.position",
+                    "amount": -0.72,
+                    "curve": "exponential"
+                  },
+                  {
+                    "source": "lfo.flutter1",
+                    "target": "filter.resonance",
+                    "amount": -0.65,
+                    "curve": "exponential"
+                  },
+                  {
+                    "source": "lfo.flutter1",
+                    "target": "osc1.position",
+                    "amount": -0.38
+                  }
+                ]
+              },
+              {
+                "name": "Movement",
+                "muted": true,
+                "children": [
+                  {
+                    "source": "aftertouch",
+                    "target": "osc1.position",
+                    "amount": -0.6
+                  },
+                  {
+                    "source": "key",
+                    "target": "amp.level",
+                    "amount": -0.7
+                  },
+                  {
+                    "name": "Slow drift",
+                    "children": [
+                      {
+                        "source": "key",
+                        "target": "filter.cutoff",
+                        "amount": 0.1
+                      },
+                      {
+                        "source": "aftertouch",
+                        "target": "amp.level",
+                        "amount": -0.54,
+                        "via": "mod-wheel",
+                        "curve": "exponential"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "chorus",
+              "voices": 3,
+              "rate": 0.44,
+              "depth": 0.72,
+              "mix": 0.44
+            },
+            {
+              "type": "drive",
+              "mix": 0.51
+            },
+            {
+              "type": "reverb",
+              "space": "cathedral",
+              "size": 0.02,
+              "decay": 5.11,
+              "predelay": 0.072,
+              "damping": 0.54,
+              "mix": 0.25
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 2,
+            "mpe": true,
+            "aftertouch": "channel"
+          },
+          "notes": "A looping multi-segment envelope makes it breathe on its own; hold one key."
+        },
+        {
+          "slot": "A02",
+          "format": "halcyon-patch/2.1",
+          "name": "Hollow Organ",
+          "category": "texture",
+          "tags": [
+            "punchy",
+            "dark",
+            "warm"
+          ],
+          "author": {
+            "handle": "vantablue"
+          },
+          "created": "2026-01-14",
+          "instrument": {
+            "model": "vesper",
+            "firmware": "2.4.1"
+          },
+          "tempo": 110,
+          "layerMode": "single",
+          "layers": [
+            {
+              "name": "Main",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": -2,
+                    "semitones": 0,
+                    "cents": 3.85
+                  },
+                  "level": 0.72,
+                  "waveform": "triangle",
+                  "drift": 0.26
+                },
+                {
+                  "id": "osc2",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": 5,
+                    "cents": -0.23
+                  },
+                  "level": 0.76,
+                  "table": "Bowed Metal",
+                  "position": 0.04,
+                  "interpolation": "linear"
+                }
+              ],
+              "filter": {
+                "model": "comb",
+                "mode": "lowpass",
+                "cutoff": 4410,
+                "resonance": 0.13,
+                "drive": 0.42,
+                "keyTrack": 0.28,
+                "envelopeDepth": 0.73
+              },
+              "filterEnvelope": {
+                "segments": [
+                  {
+                    "to": 0.47,
+                    "time": 0.58,
+                    "bend": 0.71
+                  },
+                  {
+                    "to": 0.36,
+                    "time": 1.62,
+                    "bend": 0.09
+                  },
+                  {
+                    "to": 0.59,
+                    "time": 3.91,
+                    "bend": 0.79
+                  },
+                  {
+                    "to": 0.46,
+                    "time": 1.28,
+                    "bend": 0.74
+                  },
+                  {
+                    "to": 0.72,
+                    "time": 1.81,
+                    "bend": 0.08
+                  },
+                  {
+                    "to": 0.39,
+                    "time": 0.35,
+                    "bend": -0.48
+                  },
+                  {
+                    "to": 0.8,
+                    "time": 2.36,
+                    "bend": 0.28
+                  }
+                ],
+                "sustainAt": 2,
+                "loopFrom": 1
+              },
+              "amp": {
+                "envelope": {
+                  "segments": [
+                    {
+                      "to": 0.33,
+                      "time": 2.1,
+                      "bend": -0.43
+                    },
+                    {
+                      "to": 0.52,
+                      "time": 1.99,
+                      "bend": 0.59
+                    },
+                    {
+                      "to": 0.79,
+                      "time": 2.13,
+                      "bend": -0.02
+                    },
+                    {
+                      "to": 0.13,
+                      "time": 0.9,
+                      "bend": -0.41
+                    },
+                    {
+                      "to": 0.15,
+                      "time": 2.73,
+                      "bend": 0.35
+                    },
+                    {
+                      "to": 0.79,
+                      "time": 2.74,
+                      "bend": -0.42
+                    },
+                    {
+                      "to": 0.11,
+                      "time": 2.61,
+                      "bend": 0.79
+                    }
+                  ],
+                  "sustainAt": 2,
+                  "loopFrom": 1
+                },
+                "level": -8.91,
+                "velocity": 0.63
+              },
+              "lfos": [
+                {
+                  "id": "shimmer1",
+                  "shape": "triangle",
+                  "rate": 6.51,
+                  "fadeIn": 1.36,
+                  "retrigger": "free"
+                }
+              ],
+              "voicing": {
+                "mode": "poly",
+                "voices": 8
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "motion",
+              "label": "MOTION",
+              "value": 0.42
+            },
+            {
+              "id": "grit",
+              "label": "GRIT",
+              "value": 0.51
+            },
+            {
+              "id": "bloom",
+              "label": "BLOOM",
+              "value": 0.26
+            },
+            {
+              "id": "space",
+              "label": "SPACE",
+              "value": 0.42
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.motion",
+                "target": "osc2.level",
+                "amount": 0.49
+              },
+              {
+                "source": "macro.grit",
+                "target": "filter.resonance",
+                "amount": 0.58
+              },
+              {
+                "source": "macro.bloom",
+                "target": "osc1.level",
+                "amount": 0.67
+              },
+              {
+                "source": "macro.space",
+                "target": "filter.resonance",
+                "amount": 0.76
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "velocity",
+                    "target": "filter.resonance",
+                    "amount": 0.46,
+                    "via": "aftertouch"
+                  },
+                  {
+                    "source": "lfo.shimmer1",
+                    "target": "osc1.level",
+                    "amount": 0.29,
+                    "via": "mod-wheel"
+                  }
+                ]
+              },
+              {
+                "name": "Movement",
+                "muted": true,
+                "children": [
+                  {
+                    "source": "velocity",
+                    "target": "osc2.position",
+                    "amount": 0.24
+                  },
+                  {
+                    "source": "random-per-note",
+                    "target": "osc2.position",
+                    "amount": 0.7
+                  },
+                  {
+                    "name": "Slow drift",
+                    "children": [
+                      {
+                        "source": "aftertouch",
+                        "target": "osc2.level",
+                        "amount": -0.04,
+                        "via": "aftertouch"
+                      },
+                      {
+                        "source": "random-per-note",
+                        "target": "filter.resonance",
+                        "amount": 0.55,
+                        "via": "aftertouch"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "drive",
+              "mix": 0.93
+            },
+            {
+              "type": "chorus",
+              "voices": 2,
+              "rate": 0.93,
+              "depth": 0.99,
+              "mix": 0.3
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 2,
+            "mpe": false,
+            "aftertouch": "channel"
+          },
+          "notes": "A looping multi-segment envelope makes it breathe on its own; hold one key."
+        },
+        {
+          "slot": "A03",
+          "format": "halcyon-patch/2.1",
+          "name": "Saffron Dust",
+          "category": "pad",
+          "tags": [
+            "airy",
+            "wide",
+            "soft"
+          ],
+          "author": {
+            "handle": "hollowbody"
+          },
+          "created": "2026-02-04",
+          "instrument": {
+            "model": "lantern",
+            "firmware": "2.3.0"
+          },
+          "tempo": 84,
+          "layerMode": "single",
+          "layers": [
+            {
+              "name": "Main",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": -12,
+                    "cents": 2.55
+                  },
+                  "level": 0.77,
+                  "waveform": "triangle",
+                  "drift": 0.1
+                }
+              ],
+              "filter": {
+                "model": "formant",
+                "cutoff": 900,
+                "resonance": 0.4,
+                "vowel": "o"
+              },
+              "filterEnvelope": {
+                "attack": 2.088,
+                "decay": 0.809,
+                "sustain": 0.63,
+                "release": 8.968,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 1.82,
+                  "decay": 1.747,
+                  "sustain": 0.73,
+                  "release": 2.57,
+                  "curve": "analogue"
+                },
+                "level": -5.24,
+                "velocity": 0.45
+              },
+              "lfos": [
+                {
+                  "id": "wobble1",
+                  "shape": "sine",
+                  "rate": {
+                    "division": "1/2",
+                    "modifier": "triplet"
+                  },
+                  "fadeIn": 0.36,
+                  "retrigger": "free"
+                }
+              ],
+              "voicing": {
+                "mode": "poly",
+                "voices": 16
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "tone",
+              "label": "TONE",
+              "value": 0.86
+            },
+            {
+              "id": "space",
+              "label": "SPACE",
+              "value": 0.43
+            },
+            {
+              "id": "age",
+              "label": "AGE",
+              "value": 0.1
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.tone",
+                "target": "filter.cutoff",
+                "amount": 0.59
+              },
+              {
+                "source": "macro.space",
+                "target": "filter.resonance",
+                "amount": 0.48
+              },
+              {
+                "source": "macro.age",
+                "target": "filter.resonance",
+                "amount": 0.85
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "velocity",
+                    "target": "amp.level",
+                    "amount": -0.71
+                  },
+                  {
+                    "source": "lfo.wobble1",
+                    "target": "filter.resonance",
+                    "amount": 0.55
+                  },
+                  {
+                    "source": "random-per-note",
+                    "target": "amp.level",
+                    "amount": -0.56,
+                    "via": "aftertouch"
+                  }
+                ]
+              },
+              {
+                "name": "Movement",
+                "muted": false,
+                "children": [
+                  {
+                    "source": "mod-wheel",
+                    "target": "amp.level",
+                    "amount": 0.04,
+                    "curve": "exponential"
+                  },
+                  {
+                    "source": "random-per-note",
+                    "target": "osc1.level",
+                    "amount": -0.6,
+                    "curve": "s-curve"
+                  },
+                  {
+                    "name": "Slow drift",
+                    "children": [
+                      {
+                        "source": "velocity",
+                        "target": "osc1.level",
+                        "amount": -0.03
+                      },
+                      {
+                        "source": "lfo.wobble1",
+                        "target": "osc1.level",
+                        "amount": -0.62,
+                        "curve": "s-curve"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "eq",
+              "bands": [
+                {
+                  "frequency": 900,
+                  "gain": -3.01,
+                  "q": 1.96
+                },
+                {
+                  "frequency": 2800,
+                  "gain": -5.09,
+                  "q": 0.82
+                },
+                {
+                  "frequency": 7500,
+                  "gain": 0.64,
+                  "q": 2.0
+                }
+              ]
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 7,
+            "mpe": false,
+            "aftertouch": "off"
+          },
+          "notes": "Hold chords and let the macro slowly sweep. Sounds best under sparse melodies."
+        }
+      ]
+    },
+    {
+      "bank": "B",
+      "title": "Low End",
+      "patches": [
+        {
+          "slot": "B01",
+          "format": "halcyon-patch/2.1",
+          "name": "Pylon Bloom",
+          "category": "bass",
+          "tags": [
+            "glassy",
+            "dusty",
+            "wide"
+          ],
+          "author": {
+            "handle": "studio-ash"
+          },
+          "created": "2026-09-01",
+          "instrument": {
+            "model": "vesper",
+            "firmware": "2.4.1"
+          },
+          "tempo": 110,
+          "layerMode": "velocity-switch",
+          "layers": [
+            {
+              "name": "Soft",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": -2,
+                    "semitones": 7,
+                    "cents": -2.74
+                  },
+                  "level": 0.52,
+                  "waveform": "saw",
+                  "drift": 0.17
+                },
+                {
+                  "id": "osc2",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": -2,
+                    "semitones": 7,
+                    "cents": -2.15
+                  },
+                  "level": 0.78,
+                  "table": "Glass Harmonics",
+                  "position": 0.3,
+                  "interpolation": "linear"
+                }
+              ],
+              "filter": {
+                "model": "ladder-24",
+                "mode": "highpass",
+                "cutoff": 3354,
+                "resonance": 0.54,
+                "drive": 0.41,
+                "keyTrack": 0.18,
+                "envelopeDepth": -0.14
+              },
+              "filterEnvelope": {
+                "attack": 0.003,
+                "decay": 0.278,
+                "sustain": 0.54,
+                "release": 0.186,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0.001,
+                  "decay": 0.561,
+                  "sustain": 0.8,
+                  "release": 0.255,
+                  "curve": "analogue"
+                },
+                "level": -3.01,
+                "velocity": 0.79
+              },
+              "lfos": [
+                {
+                  "id": "shimmer1",
+                  "shape": "sample-and-hold",
+                  "rate": {
+                    "division": "1/16",
+                    "modifier": "dotted"
+                  },
+                  "fadeIn": 1.43,
+                  "retrigger": "per-note"
+                }
+              ],
+              "voicing": {
+                "mode": "mono",
+                "voices": 1,
+                "glide": 0.047
+              },
+              "velocityRange": [
+                1,
+                89
+              ]
+            },
+            {
+              "name": "Hard",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "fm",
+                  "tune": {
+                    "octave": -2,
+                    "semitones": 7,
+                    "cents": 3.13
+                  },
+                  "level": 0.58,
+                  "algorithm": 10,
+                  "feedback": 0.4,
+                  "operators": [
+                    {
+                      "ratio": 3,
+                      "level": 0.92,
+                      "envelope": {
+                        "attack": 0.016,
+                        "decay": 0.212,
+                        "sustain": 0.24,
+                        "release": 2.774,
+                        "curve": "analogue"
+                      }
+                    },
+                    {
+                      "ratio": 3.5,
+                      "level": 0.4,
+                      "envelope": {
+                        "attack": 0.018,
+                        "decay": 2.007,
+                        "sustain": 0.54,
+                        "release": 2.429,
+                        "curve": "analogue"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "osc2",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": -2,
+                    "semitones": 7,
+                    "cents": 7.97
+                  },
+                  "level": 0.46,
+                  "waveform": "saw",
+                  "drift": 0.31
+                }
+              ],
+              "filter": {
+                "model": "comb",
+                "mode": "bandpass",
+                "cutoff": 3130,
+                "resonance": 0.17,
+                "drive": 0.06,
+                "keyTrack": 0.43,
+                "envelopeDepth": 0.02
+              },
+              "filterEnvelope": {
+                "attack": 0.005,
+                "decay": 0.215,
+                "sustain": 0.41,
+                "release": 0.245,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0.004,
+                  "decay": 0.341,
+                  "sustain": 0.39,
+                  "release": 0.177,
+                  "curve": "analogue"
+                },
+                "level": -2.34,
+                "velocity": 0.26
+              },
+              "lfos": [
+                {
+                  "id": "breath1",
+                  "shape": "sample-and-hold",
+                  "rate": 5.37,
+                  "fadeIn": 1.52,
+                  "retrigger": "free"
+                },
+                {
+                  "id": "flutter2",
+                  "shape": "sample-and-hold",
+                  "rate": {
+                    "division": "1/4",
+                    "modifier": "triplet"
+                  },
+                  "fadeIn": 1.42,
+                  "retrigger": "per-note"
+                },
+                {
+                  "id": "tide3",
+                  "shape": "sine",
+                  "rate": {
+                    "division": "1/16",
+                    "modifier": "straight"
+                  },
+                  "fadeIn": 1.46,
+                  "retrigger": "per-note"
+                }
+              ],
+              "voicing": {
+                "mode": "mono",
+                "voices": 1,
+                "glide": 0.247
+              },
+              "velocityRange": [
+                90,
+                127
+              ]
+            }
+          ],
+          "macros": [
+            {
+              "id": "age",
+              "label": "AGE",
+              "value": 0.14
+            },
+            {
+              "id": "tone",
+              "label": "TONE",
+              "value": 0.12
+            },
+            {
+              "id": "space",
+              "label": "SPACE",
+              "value": 0.53
+            },
+            {
+              "id": "width",
+              "label": "WIDTH",
+              "value": 0.28
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.age",
+                "target": "osc2.level",
+                "amount": 0.81
+              },
+              {
+                "source": "macro.tone",
+                "target": "filter.resonance",
+                "amount": 0.71
+              },
+              {
+                "source": "macro.space",
+                "target": "amp.level",
+                "amount": 0.46
+              },
+              {
+                "source": "macro.width",
+                "target": "filter.resonance",
+                "amount": 0.6
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "key",
+                    "target": "amp.level",
+                    "amount": 0.82,
+                    "curve": "s-curve"
+                  },
+                  {
+                    "source": "lfo.flutter2",
+                    "target": "osc2.position",
+                    "amount": 0.87
+                  },
+                  {
+                    "source": "lfo.breath1",
+                    "target": "osc2.level",
+                    "amount": -0.23,
+                    "via": "aftertouch",
+                    "curve": "exponential"
+                  }
+                ]
+              },
+              {
+                "name": "Movement",
+                "muted": true,
+                "children": [
+                  {
+                    "source": "velocity",
+                    "target": "filter.resonance",
+                    "amount": 0.57
+                  },
+                  {
+                    "source": "lfo.flutter2",
+                    "target": "filter.cutoff",
+                    "amount": -0.76
+                  },
+                  {
+                    "name": "Slow drift",
+                    "children": [
+                      {
+                        "source": "velocity",
+                        "target": "filter.resonance",
+                        "amount": -0.44
+                      },
+                      {
+                        "source": "mod-wheel",
+                        "target": "amp.level",
+                        "amount": -0.24
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "chorus",
+              "voices": 2,
+              "rate": 0.96,
+              "depth": 0.73,
+              "mix": 0.24
+            },
+            {
+              "type": "eq",
+              "bands": [
+                {
+                  "frequency": 80,
+                  "gain": 2.56,
+                  "q": 0.64
+                },
+                {
+                  "frequency": 900,
+                  "gain": 3.02,
+                  "q": 0.79
+                },
+                {
+                  "frequency": 2800,
+                  "gain": -3.37,
+                  "q": 1.36
+                }
+              ]
+            },
+            {
+              "type": "delay",
+              "time": {
+                "division": "1/8",
+                "modifier": "straight"
+              },
+              "feedback": 0.36,
+              "pingPong": true,
+              "mix": 0.29
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 7,
+            "mpe": false,
+            "aftertouch": "off"
+          },
+          "notes": "Play it low and short. The mod wheel opens the filter; aftertouch adds grit."
+        },
+        {
+          "slot": "B02",
+          "format": "halcyon-patch/2.1",
+          "name": "Juniper Dust",
+          "category": "bass",
+          "tags": [
+            "vintage",
+            "warm",
+            "bright"
+          ],
+          "author": {
+            "handle": "hollowbody"
+          },
+          "created": "2026-05-08",
+          "instrument": {
+            "model": "vesper",
+            "firmware": "2.4.1"
+          },
+          "tempo": 96,
+          "layerMode": "single",
+          "layers": [
+            {
+              "name": "Main",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": -1,
+                    "semitones": 12,
+                    "cents": -5.59
+                  },
+                  "level": 0.5,
+                  "waveform": "saw",
+                  "drift": 0.29
+                },
+                {
+                  "id": "osc2",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": -2,
+                    "semitones": 0,
+                    "cents": 7.96
+                  },
+                  "level": 0.48,
+                  "waveform": "square",
+                  "drift": 0.03
+                }
+              ],
+              "filter": {
+                "model": "diode",
+                "mode": "lowpass",
+                "cutoff": 3685,
+                "resonance": 0.55,
+                "drive": 0.42,
+                "keyTrack": 0.08,
+                "envelopeDepth": 0.5
+              },
+              "filterEnvelope": {
+                "attack": 0.003,
+                "decay": 0.436,
+                "sustain": 0.42,
+                "release": 0.287,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0.002,
+                  "decay": 0.485,
+                  "sustain": 0.42,
+                  "release": 0.119,
+                  "curve": "analogue"
+                },
+                "level": -8.39,
+                "velocity": 0.39
+              },
+              "lfos": [
+                {
+                  "id": "tide1",
+                  "shape": "sine",
+                  "rate": 2.94,
+                  "fadeIn": 0.57,
+                  "retrigger": "free"
+                },
+                {
+                  "id": "shimmer2",
+                  "shape": "sine",
+                  "rate": 3.5,
+                  "fadeIn": 0.18,
+                  "retrigger": "free"
+                }
+              ],
+              "voicing": {
+                "mode": "mono",
+                "voices": 1,
+                "glide": 0.141
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "bloom",
+              "label": "BLOOM",
+              "value": 0.51
+            },
+            {
+              "id": "width",
+              "label": "WIDTH",
+              "value": 0.79
+            },
+            {
+              "id": "age",
+              "label": "AGE",
+              "value": 0.27
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.bloom",
+                "target": "osc2.level",
+                "amount": 0.28
+              },
+              {
+                "source": "macro.width",
+                "target": "osc1.level",
+                "amount": 0.64
+              },
+              {
+                "source": "macro.age",
+                "target": "filter.resonance",
+                "amount": 0.45
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "key",
+                    "target": "filter.resonance",
+                    "amount": 0.15
+                  },
+                  {
+                    "source": "lfo.tide1",
+                    "target": "amp.level",
+                    "amount": 0.76,
+                    "via": "velocity"
+                  },
+                  {
+                    "source": "aftertouch",
+                    "target": "filter.resonance",
+                    "amount": -0.5
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "drive",
+              "mix": 0.28
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 2,
+            "mpe": false,
+            "aftertouch": "polyphonic"
+          },
+          "notes": "Play it low and short. The mod wheel opens the filter; aftertouch adds grit."
+        },
+        {
+          "slot": "B03",
+          "format": "halcyon-patch/2.1",
+          "name": "Rust Ritual",
+          "category": "bass",
+          "tags": [
+            "wide",
+            "bright",
+            "glassy"
+          ],
+          "author": {
+            "handle": "paperplanes"
+          },
+          "created": "2026-03-10",
+          "instrument": {
+            "model": "vesper",
+            "firmware": "2.4.1"
+          },
+          "tempo": 110,
+          "layerMode": "single",
+          "layers": [
+            {
+              "name": "Main",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": -2,
+                    "semitones": 0,
+                    "cents": 5.22
+                  },
+                  "level": 0.78,
+                  "table": "Bowed Metal",
+                  "position": 0.78,
+                  "interpolation": "spectral",
+                  "warp": {
+                    "mode": "mirror",
+                    "amount": 0.44
+                  }
+                },
+                {
+                  "id": "osc2",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": -2,
+                    "semitones": 5,
+                    "cents": 0.03
+                  },
+                  "level": 0.94,
+                  "waveform": "pulse",
+                  "pulseWidth": 0.29,
+                  "drift": 0.32
+                },
+                {
+                  "id": "osc3",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": -2,
+                    "semitones": 0,
+                    "cents": -4.8
+                  },
+                  "level": 0.54,
+                  "waveform": "saw",
+                  "drift": 0.13
+                }
+              ],
+              "filter": {
+                "model": "comb",
+                "mode": "highpass",
+                "cutoff": 5103,
+                "resonance": 0.19,
+                "drive": 0.12,
+                "keyTrack": 0.28,
+                "envelopeDepth": -0.16
+              },
+              "filterEnvelope": {
+                "attack": 0.006,
+                "decay": 0.584,
+                "sustain": 0.34,
+                "release": 0.087,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0.001,
+                  "decay": 0.184,
+                  "sustain": 0.43,
+                  "release": 0.247,
+                  "curve": "analogue"
+                },
+                "level": -3.6,
+                "velocity": 0.57
+              },
+              "lfos": [
+                {
+                  "id": "breath1",
+                  "shape": "sample-and-hold",
+                  "rate": 1.68,
+                  "fadeIn": 1.85,
+                  "retrigger": "free"
+                },
+                {
+                  "id": "shimmer2",
+                  "shape": "sine",
+                  "rate": 0.92,
+                  "fadeIn": 0.69,
+                  "retrigger": "free"
+                },
+                {
+                  "id": "flutter3",
+                  "shape": "sample-and-hold",
+                  "rate": {
+                    "division": "1/2",
+                    "modifier": "straight"
+                  },
+                  "fadeIn": 0.6,
+                  "retrigger": "free"
+                }
+              ],
+              "voicing": {
+                "mode": "mono",
+                "voices": 1,
+                "glide": 0.05
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "motion",
+              "label": "MOTION",
+              "value": 0.54
+            },
+            {
+              "id": "grit",
+              "label": "GRIT",
+              "value": 0.79
+            },
+            {
+              "id": "width",
+              "label": "WIDTH",
+              "value": 0.01
+            },
+            {
+              "id": "tone",
+              "label": "TONE",
+              "value": 0.74
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.motion",
+                "target": "filter.resonance",
+                "amount": 0.38
+              },
+              {
+                "source": "macro.grit",
+                "target": "amp.level",
+                "amount": 0.52
+              },
+              {
+                "source": "macro.width",
+                "target": "osc3.level",
+                "amount": 0.32
+              },
+              {
+                "source": "macro.tone",
+                "target": "osc2.pulseWidth",
+                "amount": 0.51
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "random-per-note",
+                    "target": "osc1.level",
+                    "amount": 0.58,
+                    "via": "mod-wheel",
+                    "curve": "s-curve"
+                  },
+                  {
+                    "source": "velocity",
+                    "target": "osc1.level",
+                    "amount": 0.25
+                  },
+                  {
+                    "source": "lfo.shimmer2",
+                    "target": "osc1.level",
+                    "amount": 0.07,
+                    "curve": "exponential"
+                  },
+                  {
+                    "source": "lfo.shimmer2",
+                    "target": "amp.level",
+                    "amount": 0.02,
+                    "via": "aftertouch"
+                  }
+                ]
+              },
+              {
+                "name": "Movement",
+                "muted": false,
+                "children": [
+                  {
+                    "source": "aftertouch",
+                    "target": "filter.resonance",
+                    "amount": -0.65
+                  },
+                  {
+                    "source": "lfo.breath1",
+                    "target": "osc1.position",
+                    "amount": 0.43,
+                    "curve": "logarithmic"
+                  },
+                  {
+                    "name": "Slow drift",
+                    "children": [
+                      {
+                        "source": "lfo.shimmer2",
+                        "target": "osc1.position",
+                        "amount": 0.89,
+                        "curve": "s-curve"
+                      },
+                      {
+                        "source": "lfo.flutter3",
+                        "target": "osc2.level",
+                        "amount": -0.26,
+                        "via": "velocity"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "reverb",
+              "space": "room",
+              "size": 0.56,
+              "decay": 9.49,
+              "predelay": 0.056,
+              "damping": 0.62,
+              "mix": 0.23
+            },
+            {
+              "type": "chorus",
+              "voices": 4,
+              "rate": 0.53,
+              "depth": 0.76,
+              "mix": 0.42
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 12,
+            "mpe": false,
+            "aftertouch": "polyphonic"
+          },
+          "notes": "Play it low and short. The mod wheel opens the filter; aftertouch adds grit."
+        }
+      ]
+    },
+    {
+      "bank": "C",
+      "title": "Voices of the Wire",
+      "patches": [
+        {
+          "slot": "C01",
+          "format": "halcyon-patch/2.1",
+          "name": "Signal Glass",
+          "category": "lead",
+          "tags": [
+            "wide",
+            "airy",
+            "bright"
+          ],
+          "author": {
+            "handle": "hollowbody"
+          },
+          "created": "2026-03-17",
+          "instrument": {
+            "model": "vesper-desktop",
+            "firmware": "2.3.0"
+          },
+          "tempo": 124,
+          "layerMode": "single",
+          "layers": [
+            {
+              "name": "Main",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "fm",
+                  "tune": {
+                    "octave": -2,
+                    "semitones": 0,
+                    "cents": -8.91
+                  },
+                  "level": 0.79,
+                  "algorithm": 12,
+                  "feedback": 0.07,
+                  "operators": [
+                    {
+                      "ratio": 14,
+                      "level": 0.69,
+                      "envelope": {
+                        "attack": 0.005,
+                        "decay": 0.446,
+                        "sustain": 0.45,
+                        "release": 1.551,
+                        "curve": "analogue"
+                      }
+                    },
+                    {
+                      "ratio": 0.5,
+                      "level": 0.55,
+                      "envelope": {
+                        "attack": 0.012,
+                        "decay": 0.386,
+                        "sustain": 0.57,
+                        "release": 1.146,
+                        "curve": "analogue"
+                      }
+                    },
+                    {
+                      "ratio": 4,
+                      "level": 0.4,
+                      "envelope": {
+                        "attack": 0.015,
+                        "decay": 2.452,
+                        "sustain": 0.01,
+                        "release": 0.449,
+                        "curve": "analogue"
+                      }
+                    },
+                    {
+                      "ratio": 1,
+                      "level": 0.22,
+                      "envelope": {
+                        "attack": 0.007,
+                        "decay": 0.754,
+                        "sustain": 0.41,
+                        "release": 2.868,
+                        "curve": "analogue"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "osc2",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": 1,
+                    "semitones": 0,
+                    "cents": -2.69
+                  },
+                  "level": 0.8,
+                  "table": "Harmonic Ladder",
+                  "position": 0.96,
+                  "interpolation": "linear"
+                }
+              ],
+              "filter": {
+                "model": "ladder-24",
+                "mode": "highpass",
+                "cutoff": 1613,
+                "resonance": 0.3,
+                "drive": 0.04,
+                "keyTrack": 0.66,
+                "envelopeDepth": 0.14
+              },
+              "filterEnvelope": {
+                "attack": 0.022,
+                "decay": 0.489,
+                "sustain": 0.79,
+                "release": 0.542,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0.025,
+                  "decay": 0.38,
+                  "sustain": 0.84,
+                  "release": 0.271,
+                  "curve": "analogue"
+                },
+                "level": -1.34,
+                "velocity": 0.63
+              },
+              "lfos": [
+                {
+                  "id": "breath1",
+                  "shape": "sine",
+                  "rate": {
+                    "division": "1/16",
+                    "modifier": "dotted"
+                  },
+                  "fadeIn": 0.39,
+                  "retrigger": "per-note"
+                }
+              ],
+              "voicing": {
+                "mode": "mono",
+                "voices": 1,
+                "glide": 0.187
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "bloom",
+              "label": "BLOOM",
+              "value": 0.41
+            },
+            {
+              "id": "grit",
+              "label": "GRIT",
+              "value": 0.23
+            },
+            {
+              "id": "motion",
+              "label": "MOTION",
+              "value": 0.49
+            },
+            {
+              "id": "space",
+              "label": "SPACE",
+              "value": 0.35
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.bloom",
+                "target": "filter.cutoff",
+                "amount": 0.4
+              },
+              {
+                "source": "macro.grit",
+                "target": "osc2.level",
+                "amount": 0.71
+              },
+              {
+                "source": "macro.motion",
+                "target": "osc1.level",
+                "amount": 0.66
+              },
+              {
+                "source": "macro.space",
+                "target": "osc2.level",
+                "amount": 0.79
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "velocity",
+                    "target": "osc2.level",
+                    "amount": -0.71,
+                    "curve": "exponential"
+                  },
+                  {
+                    "source": "mod-wheel",
+                    "target": "osc2.level",
+                    "amount": -0.74,
+                    "via": "mod-wheel"
+                  },
+                  {
+                    "source": "aftertouch",
+                    "target": "osc2.level",
+                    "amount": 0.61,
+                    "via": "velocity"
+                  }
+                ]
+              },
+              {
+                "name": "Movement",
+                "muted": false,
+                "children": [
+                  {
+                    "source": "aftertouch",
+                    "target": "osc2.level",
+                    "amount": -0.48
+                  },
+                  {
+                    "source": "velocity",
+                    "target": "amp.level",
+                    "amount": 0.62
+                  },
+                  {
+                    "name": "Slow drift",
+                    "children": [
+                      {
+                        "source": "key",
+                        "target": "filter.resonance",
+                        "amount": -0.32
+                      },
+                      {
+                        "source": "random-per-note",
+                        "target": "filter.resonance",
+                        "amount": 0.05,
+                        "via": "mod-wheel"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "delay",
+              "time": {
+                "division": "1/8",
+                "modifier": "dotted"
+              },
+              "feedback": 0.59,
+              "pingPong": true,
+              "mix": 0.21
+            },
+            {
+              "type": "drive",
+              "mix": 0.21
+            },
+            {
+              "type": "reverb",
+              "space": "plate",
+              "size": 0.17,
+              "decay": 9.15,
+              "predelay": 0.014,
+              "damping": 0.53,
+              "mix": 0.43
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 12,
+            "mpe": true,
+            "aftertouch": "channel"
+          },
+          "notes": "Legato lines glide; lift between notes to retrigger the envelopes."
+        },
+        {
+          "slot": "C02",
+          "format": "halcyon-patch/2.1",
+          "name": "Juniper Bloom",
+          "category": "lead",
+          "tags": [
+            "soft",
+            "bright",
+            "wide"
+          ],
+          "author": {
+            "handle": "nightbus"
+          },
+          "created": "2026-05-17",
+          "instrument": {
+            "model": "vesper-desktop",
+            "firmware": "2.4.1"
+          },
+          "tempo": 84,
+          "layerMode": "single",
+          "layers": [
+            {
+              "name": "Main",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": 7,
+                    "cents": -4.59
+                  },
+                  "level": 0.7,
+                  "table": "Granite Pulse",
+                  "position": 0.26,
+                  "interpolation": "linear"
+                }
+              ],
+              "filter": {
+                "model": "ladder-24",
+                "mode": "bandpass",
+                "cutoff": 3899,
+                "resonance": 0.57,
+                "drive": 0.04,
+                "keyTrack": 0.8,
+                "envelopeDepth": 0.39
+              },
+              "filterEnvelope": {
+                "attack": 0.009,
+                "decay": 0.561,
+                "sustain": 0.68,
+                "release": 0.425,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0.046,
+                  "decay": 0.778,
+                  "sustain": 0.89,
+                  "release": 0.329,
+                  "curve": "analogue"
+                },
+                "level": -4.32,
+                "velocity": 0.64
+              },
+              "lfos": [
+                {
+                  "id": "flutter1",
+                  "shape": "smooth-random",
+                  "rate": 4.48,
+                  "fadeIn": 1.1,
+                  "retrigger": "free"
+                },
+                {
+                  "id": "sway2",
+                  "shape": "triangle",
+                  "rate": 3.99,
+                  "fadeIn": 1.54,
+                  "retrigger": "per-note"
+                }
+              ],
+              "voicing": {
+                "mode": "unison",
+                "voices": 7,
+                "unisonDetune": 0.09,
+                "unisonSpread": 0.79
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "motion",
+              "label": "MOTION",
+              "value": 0.74
+            },
+            {
+              "id": "tone",
+              "label": "TONE",
+              "value": 0.58
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.motion",
+                "target": "osc1.position",
+                "amount": 0.85
+              },
+              {
+                "source": "macro.tone",
+                "target": "filter.resonance",
+                "amount": 0.69
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "key",
+                    "target": "filter.resonance",
+                    "amount": 0.58
+                  },
+                  {
+                    "source": "aftertouch",
+                    "target": "amp.level",
+                    "amount": 0.63,
+                    "curve": "s-curve"
+                  },
+                  {
+                    "source": "velocity",
+                    "target": "filter.cutoff",
+                    "amount": 0.47,
+                    "via": "mod-wheel",
+                    "curve": "s-curve"
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "reverb",
+              "space": "shimmer",
+              "size": 0.43,
+              "decay": 2.84,
+              "predelay": 0.078,
+              "damping": 0.4,
+              "mix": 0.26
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 2,
+            "mpe": false,
+            "aftertouch": "off"
+          },
+          "notes": "Legato lines glide; lift between notes to retrigger the envelopes."
+        },
+        {
+          "slot": "C03",
+          "format": "halcyon-patch/2.1",
+          "name": "Static Bells",
+          "category": "lead",
+          "tags": [
+            "dark",
+            "punchy",
+            "soft"
+          ],
+          "author": {
+            "handle": "studio-ash"
+          },
+          "created": "2026-07-07",
+          "instrument": {
+            "model": "vesper-desktop",
+            "firmware": "2.3.0"
+          },
+          "tempo": 120,
+          "layerMode": "single",
+          "layers": [
+            {
+              "name": "Main",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "sample",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": 0,
+                    "cents": 3.18
+                  },
+                  "level": 0.92,
+                  "sample": {
+                    "file": "felt-piano-c3.wav",
+                    "root": "C3",
+                    "loop": null
+                  },
+                  "startOffset": 0.01
+                },
+                {
+                  "id": "osc2",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": 0,
+                    "cents": 5.56
+                  },
+                  "level": 0.62,
+                  "table": "Granite Pulse",
+                  "position": 0.82,
+                  "interpolation": "linear"
+                }
+              ],
+              "filter": {
+                "model": "comb",
+                "mode": "lowpass",
+                "cutoff": 4483,
+                "resonance": 0.28,
+                "drive": 0.32,
+                "keyTrack": 0.65,
+                "envelopeDepth": 0.74
+              },
+              "filterEnvelope": {
+                "attack": 0.049,
+                "decay": 0.313,
+                "sustain": 0.99,
+                "release": 0.2,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0.0,
+                  "decay": 0.279,
+                  "sustain": 0.63,
+                  "release": 0.38,
+                  "curve": "analogue"
+                },
+                "level": -1.93,
+                "velocity": 0.22
+              },
+              "lfos": [
+                {
+                  "id": "wobble1",
+                  "shape": "sine",
+                  "rate": {
+                    "division": "1/8",
+                    "modifier": "dotted"
+                  },
+                  "fadeIn": 1.84,
+                  "retrigger": "per-note"
+                },
+                {
+                  "id": "flutter2",
+                  "shape": "sample-and-hold",
+                  "rate": {
+                    "division": "1/16",
+                    "modifier": "dotted"
+                  },
+                  "fadeIn": 1.03,
+                  "retrigger": "per-note"
+                },
+                {
+                  "id": "tide3",
+                  "shape": "smooth-random",
+                  "rate": 3.17,
+                  "fadeIn": 1.32,
+                  "retrigger": "free"
+                }
+              ],
+              "voicing": {
+                "mode": "unison",
+                "voices": 3,
+                "unisonDetune": 0.38,
+                "unisonSpread": 0.96
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "space",
+              "label": "SPACE",
+              "value": 0.14
+            },
+            {
+              "id": "tone",
+              "label": "TONE",
+              "value": 0.31
+            },
+            {
+              "id": "age",
+              "label": "AGE",
+              "value": 0.36
+            },
+            {
+              "id": "width",
+              "label": "WIDTH",
+              "value": 0.69
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.space",
+                "target": "osc2.position",
+                "amount": 0.69
+              },
+              {
+                "source": "macro.tone",
+                "target": "filter.resonance",
+                "amount": 0.77
+              },
+              {
+                "source": "macro.age",
+                "target": "amp.level",
+                "amount": 0.76
+              },
+              {
+                "source": "macro.width",
+                "target": "osc1.level",
+                "amount": 0.68
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "lfo.wobble1",
+                    "target": "osc2.level",
+                    "amount": 0.87,
+                    "via": "velocity"
+                  },
+                  {
+                    "source": "key",
+                    "target": "osc2.level",
+                    "amount": -0.39,
+                    "via": "mod-wheel"
+                  },
+                  {
+                    "source": "mod-wheel",
+                    "target": "filter.cutoff",
+                    "amount": -0.49
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "chorus",
+              "voices": 2,
+              "rate": 0.36,
+              "depth": 0.34,
+              "mix": 0.27
+            },
+            {
+              "type": "delay",
+              "time": {
+                "division": "1/8",
+                "modifier": "dotted"
+              },
+              "feedback": 0.28,
+              "pingPong": true,
+              "mix": 0.29
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 2,
+            "mpe": false,
+            "aftertouch": "polyphonic"
+          },
+          "notes": "Legato lines glide; lift between notes to retrigger the envelopes."
+        }
+      ]
+    },
+    {
+      "bank": "D",
+      "title": "Rooms",
+      "patches": [
+        {
+          "slot": "D01",
+          "format": "halcyon-patch/2.1",
+          "name": "Fjord Ritual",
+          "category": "bell",
+          "tags": [
+            "vintage",
+            "punchy",
+            "airy"
+          ],
+          "author": {
+            "handle": "fernwave"
+          },
+          "created": "2026-02-25",
+          "instrument": {
+            "model": "vesper",
+            "firmware": "2.4.2"
+          },
+          "tempo": 96,
+          "layerMode": "single",
+          "layers": [
+            {
+              "name": "Main",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": 1,
+                    "semitones": 12,
+                    "cents": 4.89
+                  },
+                  "level": 0.86,
+                  "table": "Vocal Ahs",
+                  "position": 0.31,
+                  "interpolation": "spectral"
+                },
+                {
+                  "id": "osc2",
+                  "engine": "sample",
+                  "tune": {
+                    "octave": -1,
+                    "semitones": 5,
+                    "cents": 1.84
+                  },
+                  "level": 0.5,
+                  "sample": {
+                    "file": "felt-piano-c3.wav",
+                    "root": "A2",
+                    "loop": null
+                  },
+                  "startOffset": 0.03
+                }
+              ],
+              "filter": {
+                "model": "ladder-24",
+                "mode": "highpass",
+                "cutoff": 6791,
+                "resonance": 0.54,
+                "drive": 0.33,
+                "keyTrack": 0.54,
+                "envelopeDepth": 0.33
+              },
+              "filterEnvelope": {
+                "attack": 0,
+                "decay": 1.796,
+                "sustain": 0,
+                "release": 1.782,
+                "curve": "exponential"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0,
+                  "decay": 3.154,
+                  "sustain": 0,
+                  "release": 1.839,
+                  "curve": "exponential"
+                },
+                "level": -0.47,
+                "velocity": 0.38
+              },
+              "lfos": [
+                {
+                  "id": "flutter1",
+                  "shape": "triangle",
+                  "rate": {
+                    "division": "1/16",
+                    "modifier": "straight"
+                  },
+                  "fadeIn": 0.14,
+                  "retrigger": "free"
+                },
+                {
+                  "id": "shimmer2",
+                  "shape": "sample-and-hold",
+                  "rate": 2.97,
+                  "fadeIn": 1.83,
+                  "retrigger": "per-note"
+                },
+                {
+                  "id": "tide3",
+                  "shape": "sine",
+                  "rate": 4.72,
+                  "fadeIn": 1.75,
+                  "retrigger": "free"
+                }
+              ],
+              "voicing": {
+                "mode": "poly",
+                "voices": 12
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "motion",
+              "label": "MOTION",
+              "value": 0.61
+            },
+            {
+              "id": "width",
+              "label": "WIDTH",
+              "value": 0.46
+            },
+            {
+              "id": "bloom",
+              "label": "BLOOM",
+              "value": 0.28
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.motion",
+                "target": "osc2.level",
+                "amount": 0.39
+              },
+              {
+                "source": "macro.width",
+                "target": "osc1.position",
+                "amount": 0.73
+              },
+              {
+                "source": "macro.bloom",
+                "target": "amp.level",
+                "amount": 0.38
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "velocity",
+                    "target": "osc1.position",
+                    "amount": -0.77,
+                    "via": "velocity"
+                  },
+                  {
+                    "source": "random-per-note",
+                    "target": "osc1.position",
+                    "amount": 0.55
+                  },
+                  {
+                    "source": "mod-wheel",
+                    "target": "filter.resonance",
+                    "amount": 0.8,
+                    "via": "aftertouch"
+                  },
+                  {
+                    "source": "aftertouch",
+                    "target": "filter.resonance",
+                    "amount": 0.57
+                  }
+                ]
+              },
+              {
+                "name": "Movement",
+                "muted": true,
+                "children": [
+                  {
+                    "source": "velocity",
+                    "target": "osc1.position",
+                    "amount": -0.42
+                  },
+                  {
+                    "source": "random-per-note",
+                    "target": "filter.resonance",
+                    "amount": -0.77
+                  },
+                  {
+                    "name": "Slow drift",
+                    "children": [
+                      {
+                        "source": "mod-wheel",
+                        "target": "osc1.position",
+                        "amount": -0.42,
+                        "curve": "logarithmic"
+                      },
+                      {
+                        "source": "random-per-note",
+                        "target": "amp.level",
+                        "amount": -0.38,
+                        "curve": "exponential"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "reverb",
+              "space": "plate",
+              "size": 0.94,
+              "decay": 8.68,
+              "predelay": 0.05,
+              "damping": 0.12,
+              "mix": 0.34
+            },
+            {
+              "type": "delay",
+              "time": {
+                "division": "1/4",
+                "modifier": "dotted"
+              },
+              "feedback": 0.36,
+              "pingPong": false,
+              "mix": 0.29
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 7,
+            "mpe": false,
+            "aftertouch": "polyphonic"
+          },
+          "notes": "Inharmonic and long. Leave room between notes."
+        },
+        {
+          "slot": "D02",
+          "format": "halcyon-patch/2.1",
+          "name": "Nimbus Horn",
+          "category": "pad",
+          "tags": [
+            "dark",
+            "dusty",
+            "punchy"
+          ],
+          "author": {
+            "handle": "vantablue"
+          },
+          "created": "2026-03-21",
+          "instrument": {
+            "model": "lantern",
+            "firmware": "2.4.1"
+          },
+          "tempo": 84,
+          "layerMode": "single",
+          "layers": [
+            {
+              "name": "Main",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": 12,
+                    "cents": -4.52
+                  },
+                  "level": 0.66,
+                  "table": "Glass Harmonics",
+                  "position": 0.42,
+                  "interpolation": "linear"
+                },
+                {
+                  "id": "osc2",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": 0,
+                    "cents": 7.64
+                  },
+                  "level": 0.84,
+                  "waveform": "saw",
+                  "drift": 0.04
+                }
+              ],
+              "filter": {
+                "model": "formant",
+                "cutoff": 900,
+                "resonance": 0.4,
+                "vowel": "i"
+              },
+              "filterEnvelope": {
+                "attack": 3.287,
+                "decay": 1.296,
+                "sustain": 0.61,
+                "release": 2.568,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 2.166,
+                  "decay": 1.582,
+                  "sustain": 0.83,
+                  "release": 3.7,
+                  "curve": "analogue"
+                },
+                "level": -0.81,
+                "velocity": 0.51
+              },
+              "lfos": [
+                {
+                  "id": "wobble1",
+                  "shape": "sine",
+                  "rate": {
+                    "division": "1/4",
+                    "modifier": "dotted"
+                  },
+                  "fadeIn": 1.48,
+                  "retrigger": "per-note"
+                },
+                {
+                  "id": "shimmer2",
+                  "shape": "triangle",
+                  "rate": {
+                    "division": "1/2",
+                    "modifier": "straight"
+                  },
+                  "fadeIn": 1.23,
+                  "retrigger": "free"
+                }
+              ],
+              "voicing": {
+                "mode": "unison",
+                "voices": 7,
+                "unisonDetune": 0.16,
+                "unisonSpread": 0.97
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "age",
+              "label": "AGE",
+              "value": 0.35
+            },
+            {
+              "id": "motion",
+              "label": "MOTION",
+              "value": 0.79
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.age",
+                "target": "filter.resonance",
+                "amount": 0.45
+              },
+              {
+                "source": "macro.motion",
+                "target": "osc2.level",
+                "amount": 0.62
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "lfo.shimmer2",
+                    "target": "osc2.level",
+                    "amount": -0.08,
+                    "curve": "s-curve"
+                  },
+                  {
+                    "source": "key",
+                    "target": "amp.level",
+                    "amount": -0.22
+                  }
+                ]
+              },
+              {
+                "name": "Movement",
+                "muted": false,
+                "children": [
+                  {
+                    "source": "mod-wheel",
+                    "target": "osc1.level",
+                    "amount": -0.41
+                  },
+                  {
+                    "source": "lfo.wobble1",
+                    "target": "osc1.position",
+                    "amount": 0.83,
+                    "via": "velocity"
+                  },
+                  {
+                    "name": "Slow drift",
+                    "children": [
+                      {
+                        "source": "random-per-note",
+                        "target": "osc2.level",
+                        "amount": -0.53
+                      },
+                      {
+                        "source": "lfo.wobble1",
+                        "target": "filter.resonance",
+                        "amount": 0.78
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "drive",
+              "mix": 0.85
+            },
+            {
+              "type": "chorus",
+              "voices": 4,
+              "rate": 0.45,
+              "depth": 0.76,
+              "mix": 0.47
+            },
+            {
+              "type": "reverb",
+              "space": "spring",
+              "size": 0.07,
+              "decay": 11.49,
+              "predelay": 0.08,
+              "damping": 0.34,
+              "mix": 0.25
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 2,
+            "mpe": false,
+            "aftertouch": "polyphonic"
+          },
+          "notes": "Hold chords and let the macro slowly sweep. Sounds best under sparse melodies."
+        },
+        {
+          "slot": "D03",
+          "format": "halcyon-patch/2.1",
+          "name": "Cinder Engine",
+          "category": "bell",
+          "tags": [
+            "cinematic",
+            "wide",
+            "punchy"
+          ],
+          "author": {
+            "handle": "vantablue"
+          },
+          "created": "2026-09-01",
+          "instrument": {
+            "model": "vesper-desktop",
+            "firmware": "2.4.2"
+          },
+          "tempo": 96,
+          "layerMode": "single",
+          "layers": [
+            {
+              "name": "Main",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "fm",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": -12,
+                    "cents": -1.86
+                  },
+                  "level": 0.52,
+                  "algorithm": 22,
+                  "feedback": 0.15,
+                  "operators": [
+                    {
+                      "ratio": 14,
+                      "level": 0.26,
+                      "envelope": {
+                        "attack": 0.009,
+                        "decay": 2.142,
+                        "sustain": 0.05,
+                        "release": 0.715,
+                        "curve": "analogue"
+                      }
+                    },
+                    {
+                      "ratio": 0.5,
+                      "level": 0.56,
+                      "envelope": {
+                        "attack": 0.015,
+                        "decay": 1.179,
+                        "sustain": 0.32,
+                        "release": 1.062,
+                        "curve": "analogue"
+                      }
+                    },
+                    {
+                      "ratio": 2,
+                      "level": 0.3,
+                      "envelope": {
+                        "attack": 0.012,
+                        "decay": 1.381,
+                        "sustain": 0.5,
+                        "release": 1.865,
+                        "curve": "analogue"
+                      }
+                    },
+                    {
+                      "ratio": 4,
+                      "level": 0.45,
+                      "envelope": {
+                        "attack": 0.009,
+                        "decay": 2.387,
+                        "sustain": 0.33,
+                        "release": 0.504,
+                        "curve": "analogue"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "osc2",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": 1,
+                    "semitones": 7,
+                    "cents": 5.81
+                  },
+                  "level": 0.89,
+                  "waveform": "triangle",
+                  "drift": 0.3
+                }
+              ],
+              "filter": {
+                "model": "ladder-24",
+                "mode": "lowpass",
+                "cutoff": 1860,
+                "resonance": 0.31,
+                "drive": 0.18,
+                "keyTrack": 0.29,
+                "envelopeDepth": 0.66
+              },
+              "filterEnvelope": {
+                "attack": 0,
+                "decay": 2.13,
+                "sustain": 0,
+                "release": 3.913,
+                "curve": "exponential"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0,
+                  "decay": 4.09,
+                  "sustain": 0,
+                  "release": 2.746,
+                  "curve": "exponential"
+                },
+                "level": -7.33,
+                "velocity": 0.35
+              },
+              "lfos": [
+                {
+                  "id": "breath1",
+                  "shape": "triangle",
+                  "rate": {
+                    "division": "1/4",
+                    "modifier": "straight"
+                  },
+                  "fadeIn": 1.39,
+                  "retrigger": "per-note"
+                },
+                {
+                  "id": "wobble2",
+                  "shape": "triangle",
+                  "rate": {
+                    "division": "1/2",
+                    "modifier": "straight"
+                  },
+                  "fadeIn": 0.16,
+                  "retrigger": "free"
+                },
+                {
+                  "id": "flutter3",
+                  "shape": "triangle",
+                  "rate": 2.38,
+                  "fadeIn": 0.21,
+                  "retrigger": "free"
+                }
+              ],
+              "voicing": {
+                "mode": "poly",
+                "voices": 16
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "motion",
+              "label": "MOTION",
+              "value": 0.71
+            },
+            {
+              "id": "space",
+              "label": "SPACE",
+              "value": 0.67
+            },
+            {
+              "id": "width",
+              "label": "WIDTH",
+              "value": 0.08
+            },
+            {
+              "id": "grit",
+              "label": "GRIT",
+              "value": 0.49
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.motion",
+                "target": "amp.level",
+                "amount": 0.61
+              },
+              {
+                "source": "macro.space",
+                "target": "amp.level",
+                "amount": 0.43
+              },
+              {
+                "source": "macro.width",
+                "target": "amp.level",
+                "amount": 0.34
+              },
+              {
+                "source": "macro.grit",
+                "target": "filter.cutoff",
+                "amount": 0.2
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "velocity",
+                    "target": "amp.level",
+                    "amount": 0.08,
+                    "curve": "exponential"
+                  },
+                  {
+                    "source": "velocity",
+                    "target": "filter.resonance",
+                    "amount": -0.74
+                  },
+                  {
+                    "source": "key",
+                    "target": "amp.level",
+                    "amount": -0.58
+                  },
+                  {
+                    "source": "lfo.flutter3",
+                    "target": "filter.cutoff",
+                    "amount": 0.17
+                  }
+                ]
+              },
+              {
+                "name": "Movement",
+                "muted": false,
+                "children": [
+                  {
+                    "source": "lfo.wobble2",
+                    "target": "osc2.level",
+                    "amount": -0.16
+                  },
+                  {
+                    "source": "key",
+                    "target": "osc2.level",
+                    "amount": -0.29,
+                    "curve": "exponential"
+                  },
+                  {
+                    "name": "Slow drift",
+                    "children": [
+                      {
+                        "source": "lfo.flutter3",
+                        "target": "filter.resonance",
+                        "amount": 0.73
+                      },
+                      {
+                        "source": "lfo.breath1",
+                        "target": "osc1.level",
+                        "amount": 0.27
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "eq",
+              "bands": [
+                {
+                  "frequency": 80,
+                  "gain": -1.72,
+                  "q": 1.39
+                },
+                {
+                  "frequency": 240,
+                  "gain": -3.16,
+                  "q": 1.36
+                },
+                {
+                  "frequency": 2800,
+                  "gain": -3.71,
+                  "q": 0.54
+                }
+              ]
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 2,
+            "mpe": false,
+            "aftertouch": "channel"
+          },
+          "notes": "Inharmonic and long. Leave room between notes."
+        }
+      ]
+    },
+    {
+      "bank": "E",
+      "title": "Machinery",
+      "patches": [
+        {
+          "slot": "E01",
+          "format": "halcyon-patch/2.1",
+          "name": "Ember Arp",
+          "category": "sequence",
+          "tags": [
+            "bright",
+            "airy",
+            "dusty"
+          ],
+          "author": {
+            "handle": "fernwave"
+          },
+          "created": "2026-08-03",
+          "instrument": {
+            "model": "vesper",
+            "firmware": "2.3.0"
+          },
+          "tempo": 110,
+          "layerMode": "stack",
+          "layers": [
+            {
+              "name": "Low",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": 0,
+                    "cents": -8.67
+                  },
+                  "level": 0.82,
+                  "table": "Basalt",
+                  "position": 0.6,
+                  "interpolation": "spectral",
+                  "warp": {
+                    "mode": "mirror",
+                    "amount": 0.66
+                  }
+                },
+                {
+                  "id": "osc2",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": -12,
+                    "cents": 4.23
+                  },
+                  "level": 0.5,
+                  "table": "Harmonic Ladder",
+                  "position": 0.04,
+                  "interpolation": "linear"
+                }
+              ],
+              "filter": {
+                "model": "diode",
+                "mode": "lowpass",
+                "cutoff": 6496,
+                "resonance": 0.04,
+                "drive": 0.14,
+                "keyTrack": 0.2,
+                "envelopeDepth": 0.55
+              },
+              "filterEnvelope": {
+                "attack": 0,
+                "decay": 0.144,
+                "sustain": 0.27,
+                "release": 0.167,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0,
+                  "decay": 0.222,
+                  "sustain": 0.2,
+                  "release": 0.075,
+                  "curve": "analogue"
+                },
+                "level": -3.2,
+                "velocity": 0.56
+              },
+              "lfos": [
+                {
+                  "id": "wobble1",
+                  "shape": "triangle",
+                  "rate": {
+                    "division": "1/2",
+                    "modifier": "straight"
+                  },
+                  "fadeIn": 0.28,
+                  "retrigger": "free"
+                },
+                {
+                  "id": "sway2",
+                  "shape": "triangle",
+                  "rate": 5.61,
+                  "fadeIn": 0.71,
+                  "retrigger": "free"
+                }
+              ],
+              "voicing": {
+                "mode": "poly",
+                "voices": 16
+              }
+            },
+            {
+              "name": "High",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": 0,
+                    "cents": 6.41
+                  },
+                  "level": 0.61,
+                  "table": "Lantern Bells",
+                  "position": 0.94,
+                  "interpolation": "linear",
+                  "warp": {
+                    "mode": "quantise",
+                    "amount": 0.38
+                  }
+                },
+                {
+                  "id": "osc2",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": 0,
+                    "cents": -6.25
+                  },
+                  "level": 0.53,
+                  "waveform": "saw",
+                  "drift": 0.23
+                },
+                {
+                  "id": "osc3",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": -2,
+                    "semitones": 0,
+                    "cents": 5.61
+                  },
+                  "level": 0.59,
+                  "table": "Lantern Bells",
+                  "position": 0.33,
+                  "interpolation": "spectral",
+                  "warp": {
+                    "mode": "fold",
+                    "amount": 0.5
+                  }
+                }
+              ],
+              "filter": {
+                "model": "state-variable",
+                "mode": "lowpass",
+                "cutoff": 1554,
+                "resonance": 0.52,
+                "drive": 0.06,
+                "keyTrack": 0.73,
+                "envelopeDepth": 0.49
+              },
+              "filterEnvelope": {
+                "attack": 0,
+                "decay": 0.281,
+                "sustain": 0.01,
+                "release": 0.121,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0,
+                  "decay": 0.113,
+                  "sustain": 0.1,
+                  "release": 0.176,
+                  "curve": "analogue"
+                },
+                "level": -4.46,
+                "velocity": 0.62
+              },
+              "lfos": [
+                {
+                  "id": "flutter1",
+                  "shape": "triangle",
+                  "rate": 3.56,
+                  "fadeIn": 1.98,
+                  "retrigger": "free"
+                },
+                {
+                  "id": "breath2",
+                  "shape": "triangle",
+                  "rate": {
+                    "division": "1/4",
+                    "modifier": "straight"
+                  },
+                  "fadeIn": 1.3,
+                  "retrigger": "free"
+                }
+              ],
+              "voicing": {
+                "mode": "poly",
+                "voices": 16
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "width",
+              "label": "WIDTH",
+              "value": 0.14
+            },
+            {
+              "id": "motion",
+              "label": "MOTION",
+              "value": 0.28
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.width",
+                "target": "osc1.position",
+                "amount": 0.36
+              },
+              {
+                "source": "macro.motion",
+                "target": "osc2.position",
+                "amount": 0.26
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "lfo.breath2",
+                    "target": "filter.cutoff",
+                    "amount": -0.53,
+                    "via": "aftertouch"
+                  },
+                  {
+                    "source": "mod-wheel",
+                    "target": "amp.level",
+                    "amount": 0.4,
+                    "via": "mod-wheel"
+                  },
+                  {
+                    "source": "lfo.sway2",
+                    "target": "filter.cutoff",
+                    "amount": -0.48
+                  },
+                  {
+                    "source": "lfo.wobble1",
+                    "target": "osc2.level",
+                    "amount": -0.35,
+                    "via": "aftertouch"
+                  }
+                ]
+              },
+              {
+                "name": "Movement",
+                "muted": true,
+                "children": [
+                  {
+                    "source": "random-per-note",
+                    "target": "amp.level",
+                    "amount": -0.33,
+                    "via": "mod-wheel"
+                  },
+                  {
+                    "source": "aftertouch",
+                    "target": "filter.cutoff",
+                    "amount": 0.59,
+                    "curve": "exponential"
+                  },
+                  {
+                    "name": "Slow drift",
+                    "children": [
+                      {
+                        "source": "mod-wheel",
+                        "target": "filter.resonance",
+                        "amount": -0.49
+                      },
+                      {
+                        "source": "lfo.flutter1",
+                        "target": "osc1.level",
+                        "amount": -0.12,
+                        "via": "mod-wheel"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "eq",
+              "bands": [
+                {
+                  "frequency": 900,
+                  "gain": -1.19,
+                  "q": 1.62
+                },
+                {
+                  "frequency": 2800,
+                  "gain": 3.94,
+                  "q": 1.15
+                },
+                {
+                  "frequency": 7500,
+                  "gain": 0.16,
+                  "q": 1.0
+                }
+              ]
+            },
+            {
+              "type": "chorus",
+              "voices": 3,
+              "rate": 0.95,
+              "depth": 0.43,
+              "mix": 0.48
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 12,
+            "mpe": false,
+            "aftertouch": "channel"
+          },
+          "notes": "Designed for the arpeggiator at 1/16. Macro 1 changes the gate length."
+        },
+        {
+          "slot": "E02",
+          "format": "halcyon-patch/2.1",
+          "name": "Orchard Mist",
+          "category": "bass",
+          "tags": [
+            "evolving",
+            "dark",
+            "airy"
+          ],
+          "author": {
+            "handle": "hollowbody"
+          },
+          "created": "2026-05-16",
+          "instrument": {
+            "model": "vesper",
+            "firmware": "2.3.0"
+          },
+          "tempo": 110,
+          "layerMode": "single",
+          "layers": [
+            {
+              "name": "Main",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": -2,
+                    "semitones": -12,
+                    "cents": 0.96
+                  },
+                  "level": 0.86,
+                  "waveform": "square",
+                  "drift": 0.1,
+                  "sub": {
+                    "octavesDown": 2,
+                    "shape": "square",
+                    "level": 0.59
+                  }
+                },
+                {
+                  "id": "osc2",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": -2,
+                    "semitones": 0,
+                    "cents": 0.33
+                  },
+                  "level": 0.89,
+                  "table": "Lantern Bells",
+                  "position": 1.0,
+                  "interpolation": "linear",
+                  "warp": {
+                    "mode": "quantise",
+                    "amount": 0.17
+                  }
+                }
+              ],
+              "filter": {
+                "model": "state-variable",
+                "mode": "lowpass",
+                "cutoff": 5272,
+                "resonance": 0.25,
+                "drive": 0.03,
+                "keyTrack": 0.33,
+                "envelopeDepth": 0.74
+              },
+              "filterEnvelope": {
+                "attack": 0.006,
+                "decay": 0.312,
+                "sustain": 0.49,
+                "release": 0.111,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0.004,
+                  "decay": 0.443,
+                  "sustain": 0.4,
+                  "release": 0.179,
+                  "curve": "analogue"
+                },
+                "level": -4.19,
+                "velocity": 0.65
+              },
+              "lfos": [
+                {
+                  "id": "breath1",
+                  "shape": "sine",
+                  "rate": {
+                    "division": "1/16",
+                    "modifier": "triplet"
+                  },
+                  "fadeIn": 0.36,
+                  "retrigger": "free"
+                },
+                {
+                  "id": "shimmer2",
+                  "shape": "smooth-random",
+                  "rate": {
+                    "division": "1/16",
+                    "modifier": "dotted"
+                  },
+                  "fadeIn": 1.78,
+                  "retrigger": "per-note"
+                },
+                {
+                  "id": "shimmer3",
+                  "shape": "sine",
+                  "rate": {
+                    "division": "1/2",
+                    "modifier": "dotted"
+                  },
+                  "fadeIn": 1.43,
+                  "retrigger": "free"
+                }
+              ],
+              "voicing": {
+                "mode": "mono",
+                "voices": 1,
+                "glide": 0.045
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "grit",
+              "label": "GRIT",
+              "value": 1.0
+            },
+            {
+              "id": "width",
+              "label": "WIDTH",
+              "value": 0.45
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.grit",
+                "target": "osc2.level",
+                "amount": 0.31
+              },
+              {
+                "source": "macro.width",
+                "target": "osc2.position",
+                "amount": 0.85
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "lfo.breath1",
+                    "target": "osc2.position",
+                    "amount": 0.63,
+                    "via": "aftertouch"
+                  },
+                  {
+                    "source": "aftertouch",
+                    "target": "filter.resonance",
+                    "amount": -0.74
+                  },
+                  {
+                    "source": "mod-wheel",
+                    "target": "filter.resonance",
+                    "amount": 0.54
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "chorus",
+              "voices": 2,
+              "rate": 0.68,
+              "depth": 0.62,
+              "mix": 0.46
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 2,
+            "mpe": true,
+            "aftertouch": "polyphonic"
+          },
+          "notes": "Play it low and short. The mod wheel opens the filter; aftertouch adds grit."
+        },
+        {
+          "slot": "E03",
+          "format": "halcyon-patch/2.1",
+          "name": "Nimbus Pulse",
+          "category": "sequence",
+          "tags": [
+            "airy",
+            "soft",
+            "vintage"
+          ],
+          "author": {
+            "handle": "hollowbody"
+          },
+          "created": "2026-03-02",
+          "instrument": {
+            "model": "vesper",
+            "firmware": "2.4.1"
+          },
+          "tempo": 96,
+          "layerMode": "single",
+          "layers": [
+            {
+              "name": "Main",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "fm",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": 0,
+                    "cents": 3.63
+                  },
+                  "level": 0.53,
+                  "algorithm": 12,
+                  "feedback": 0.43,
+                  "operators": [
+                    {
+                      "ratio": 3.5,
+                      "level": 0.25,
+                      "envelope": {
+                        "attack": 0.016,
+                        "decay": 1.709,
+                        "sustain": 0.5,
+                        "release": 1.604,
+                        "curve": "analogue"
+                      }
+                    },
+                    {
+                      "ratio": 7,
+                      "level": 0.3,
+                      "envelope": {
+                        "attack": 0.002,
+                        "decay": 2.191,
+                        "sustain": 0.08,
+                        "release": 1.326,
+                        "curve": "analogue"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "osc2",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": 5,
+                    "cents": -8.79
+                  },
+                  "level": 0.8,
+                  "waveform": "saw",
+                  "drift": 0.17
+                }
+              ],
+              "filter": {
+                "model": "ladder-24",
+                "mode": "bandpass",
+                "cutoff": 7747,
+                "resonance": 0.29,
+                "drive": 0.3,
+                "keyTrack": 0.54,
+                "envelopeDepth": 0.76
+              },
+              "filterEnvelope": {
+                "attack": 0,
+                "decay": 0.09,
+                "sustain": 0.05,
+                "release": 0.141,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0,
+                  "decay": 0.259,
+                  "sustain": 0.3,
+                  "release": 0.179,
+                  "curve": "analogue"
+                },
+                "level": -2.74,
+                "velocity": 0.45
+              },
+              "lfos": [
+                {
+                  "id": "breath1",
+                  "shape": "triangle",
+                  "rate": 2.14,
+                  "fadeIn": 1.24,
+                  "retrigger": "free"
+                },
+                {
+                  "id": "breath2",
+                  "shape": "sample-and-hold",
+                  "rate": {
+                    "division": "1/8",
+                    "modifier": "dotted"
+                  },
+                  "fadeIn": 1.83,
+                  "retrigger": "free"
+                }
+              ],
+              "voicing": {
+                "mode": "poly",
+                "voices": 12
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "width",
+              "label": "WIDTH",
+              "value": 0.0
+            },
+            {
+              "id": "tone",
+              "label": "TONE",
+              "value": 0.65
+            },
+            {
+              "id": "bloom",
+              "label": "BLOOM",
+              "value": 0.56
+            },
+            {
+              "id": "space",
+              "label": "SPACE",
+              "value": 0.66
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.width",
+                "target": "osc1.level",
+                "amount": 0.83
+              },
+              {
+                "source": "macro.tone",
+                "target": "amp.level",
+                "amount": 0.52
+              },
+              {
+                "source": "macro.bloom",
+                "target": "amp.level",
+                "amount": 0.25
+              },
+              {
+                "source": "macro.space",
+                "target": "filter.resonance",
+                "amount": 0.21
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "velocity",
+                    "target": "filter.resonance",
+                    "amount": 0.33,
+                    "curve": "exponential"
+                  },
+                  {
+                    "source": "random-per-note",
+                    "target": "filter.resonance",
+                    "amount": -0.54
+                  },
+                  {
+                    "source": "velocity",
+                    "target": "filter.cutoff",
+                    "amount": -0.24,
+                    "via": "aftertouch"
+                  },
+                  {
+                    "source": "velocity",
+                    "target": "amp.level",
+                    "amount": -0.41,
+                    "via": "velocity"
+                  }
+                ]
+              },
+              {
+                "name": "Movement",
+                "muted": false,
+                "children": [
+                  {
+                    "source": "velocity",
+                    "target": "osc2.level",
+                    "amount": -0.4,
+                    "via": "mod-wheel",
+                    "curve": "exponential"
+                  },
+                  {
+                    "source": "aftertouch",
+                    "target": "amp.level",
+                    "amount": -0.57,
+                    "via": "mod-wheel"
+                  },
+                  {
+                    "name": "Slow drift",
+                    "children": [
+                      {
+                        "source": "velocity",
+                        "target": "amp.level",
+                        "amount": 0.65
+                      },
+                      {
+                        "source": "lfo.breath2",
+                        "target": "osc2.level",
+                        "amount": 0.63,
+                        "curve": "s-curve"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "drive",
+              "mix": 0.3
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 12,
+            "mpe": true,
+            "aftertouch": "off"
+          },
+          "notes": "Designed for the arpeggiator at 1/16. Macro 1 changes the gate length."
+        }
+      ]
+    },
+    {
+      "bank": "F",
+      "title": "Night Bus",
+      "patches": [
+        {
+          "slot": "F01",
+          "format": "halcyon-patch/2.1",
+          "name": "Moth Strings",
+          "category": "keys",
+          "tags": [
+            "airy",
+            "punchy",
+            "dusty"
+          ],
+          "author": {
+            "handle": "fernwave"
+          },
+          "created": "2026-08-04",
+          "instrument": {
+            "model": "vesper",
+            "firmware": "2.4.2"
+          },
+          "tempo": 120,
+          "layerMode": "split",
+          "layers": [
+            {
+              "name": "Low",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": 1,
+                    "semitones": 5,
+                    "cents": -7.55
+                  },
+                  "level": 0.75,
+                  "waveform": "saw",
+                  "drift": 0.29,
+                  "sub": {
+                    "octavesDown": 1,
+                    "shape": "square",
+                    "level": 0.65
+                  }
+                },
+                {
+                  "id": "osc2",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": -1,
+                    "semitones": 0,
+                    "cents": -3.36
+                  },
+                  "level": 0.79,
+                  "waveform": "saw",
+                  "drift": 0.13
+                }
+              ],
+              "filter": {
+                "model": "ladder-24",
+                "mode": "lowpass",
+                "cutoff": 3936,
+                "resonance": 0.38,
+                "drive": 0.12,
+                "keyTrack": 0.14,
+                "envelopeDepth": 0.36
+              },
+              "filterEnvelope": {
+                "attack": 0.006,
+                "decay": 2.846,
+                "sustain": 0.08,
+                "release": 1.071,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0.001,
+                  "decay": 1.549,
+                  "sustain": 0.06,
+                  "release": 0.778,
+                  "curve": "analogue"
+                },
+                "level": -8.07,
+                "velocity": 0.79
+              },
+              "lfos": [
+                {
+                  "id": "sway1",
+                  "shape": "sine",
+                  "rate": {
+                    "division": "1/16",
+                    "modifier": "triplet"
+                  },
+                  "fadeIn": 1.22,
+                  "retrigger": "per-note"
+                },
+                {
+                  "id": "wobble2",
+                  "shape": "triangle",
+                  "rate": 2.22,
+                  "fadeIn": 0.18,
+                  "retrigger": "per-note"
+                }
+              ],
+              "voicing": {
+                "mode": "poly",
+                "voices": 12
+              },
+              "keyRange": {
+                "low": "C-1",
+                "high": "B2"
+              }
+            },
+            {
+              "name": "High",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": -1,
+                    "semitones": 0,
+                    "cents": 5.37
+                  },
+                  "level": 0.53,
+                  "table": "Breath Noise",
+                  "position": 0.05,
+                  "interpolation": "linear",
+                  "warp": {
+                    "mode": "quantise",
+                    "amount": 0.34
+                  }
+                },
+                {
+                  "id": "osc2",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": 0,
+                    "cents": 4.23
+                  },
+                  "level": 0.88,
+                  "waveform": "square",
+                  "drift": 0.22
+                }
+              ],
+              "filter": {
+                "model": "ladder-24",
+                "mode": "lowpass",
+                "cutoff": 2881,
+                "resonance": 0.34,
+                "drive": 0.42,
+                "keyTrack": 0.5,
+                "envelopeDepth": -0.12
+              },
+              "filterEnvelope": {
+                "attack": 0.003,
+                "decay": 2.564,
+                "sustain": 0.06,
+                "release": 1.027,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0.0,
+                  "decay": 1.105,
+                  "sustain": 0.29,
+                  "release": 0.487,
+                  "curve": "analogue"
+                },
+                "level": -6.22,
+                "velocity": 0.24
+              },
+              "lfos": [
+                {
+                  "id": "flutter1",
+                  "shape": "sample-and-hold",
+                  "rate": {
+                    "division": "1/16",
+                    "modifier": "dotted"
+                  },
+                  "fadeIn": 1.3,
+                  "retrigger": "per-note"
+                },
+                {
+                  "id": "tide2",
+                  "shape": "sine",
+                  "rate": 2.63,
+                  "fadeIn": 1.27,
+                  "retrigger": "free"
+                },
+                {
+                  "id": "wobble3",
+                  "shape": "sine",
+                  "rate": 4.33,
+                  "fadeIn": 0.33,
+                  "retrigger": "per-note"
+                }
+              ],
+              "voicing": {
+                "mode": "poly",
+                "voices": 8
+              },
+              "keyRange": {
+                "low": "C3",
+                "high": "G9"
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "bloom",
+              "label": "BLOOM",
+              "value": 0.87
+            },
+            {
+              "id": "age",
+              "label": "AGE",
+              "value": 0.3
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.bloom",
+                "target": "osc2.level",
+                "amount": 0.27
+              },
+              {
+                "source": "macro.age",
+                "target": "filter.cutoff",
+                "amount": 0.42
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "mod-wheel",
+                    "target": "osc2.level",
+                    "amount": -0.46
+                  },
+                  {
+                    "source": "lfo.flutter1",
+                    "target": "filter.cutoff",
+                    "amount": -0.66,
+                    "via": "aftertouch"
+                  },
+                  {
+                    "source": "aftertouch",
+                    "target": "osc1.level",
+                    "amount": 0.88
+                  }
+                ]
+              },
+              {
+                "name": "Movement",
+                "muted": false,
+                "children": [
+                  {
+                    "source": "velocity",
+                    "target": "filter.resonance",
+                    "amount": 0.01,
+                    "via": "mod-wheel"
+                  },
+                  {
+                    "source": "lfo.tide2",
+                    "target": "amp.level",
+                    "amount": -0.22
+                  },
+                  {
+                    "name": "Slow drift",
+                    "children": [
+                      {
+                        "source": "lfo.tide2",
+                        "target": "amp.level",
+                        "amount": -0.29
+                      },
+                      {
+                        "source": "aftertouch",
+                        "target": "filter.resonance",
+                        "amount": 0.26
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "eq",
+              "bands": [
+                {
+                  "frequency": 80,
+                  "gain": 0.71,
+                  "q": 0.92
+                },
+                {
+                  "frequency": 240,
+                  "gain": -3.31,
+                  "q": 1.03
+                },
+                {
+                  "frequency": 900,
+                  "gain": -0.68,
+                  "q": 1.0
+                }
+              ]
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 2,
+            "mpe": true,
+            "aftertouch": "polyphonic"
+          },
+          "notes": "Velocity shapes both brightness and attack; play softly for a felt-like tone."
+        },
+        {
+          "slot": "F02",
+          "format": "halcyon-patch/2.1",
+          "name": "Marrow Keys",
+          "category": "lead",
+          "tags": [
+            "warm",
+            "bright",
+            "vintage"
+          ],
+          "author": {
+            "handle": "fernwave"
+          },
+          "created": "2026-05-24",
+          "instrument": {
+            "model": "vesper-desktop",
+            "firmware": "2.3.0"
+          },
+          "tempo": 124,
+          "layerMode": "single",
+          "layers": [
+            {
+              "name": "Main",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": -2,
+                    "semitones": 0,
+                    "cents": 0.99
+                  },
+                  "level": 0.95,
+                  "table": "Harmonic Ladder",
+                  "position": 0.56,
+                  "interpolation": "spectral",
+                  "warp": {
+                    "mode": "mirror",
+                    "amount": 0.67
+                  }
+                },
+                {
+                  "id": "osc2",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": 7,
+                    "cents": -5.16
+                  },
+                  "level": 0.8,
+                  "table": "Lantern Bells",
+                  "position": 0.13,
+                  "interpolation": "linear",
+                  "warp": {
+                    "mode": "formant",
+                    "amount": 0.06
+                  }
+                },
+                {
+                  "id": "osc3",
+                  "engine": "analog",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": 0,
+                    "cents": 2.49
+                  },
+                  "level": 0.49,
+                  "waveform": "triangle",
+                  "drift": 0.33
+                }
+              ],
+              "filter": {
+                "model": "state-variable",
+                "mode": "lowpass",
+                "cutoff": 5694,
+                "resonance": 0.14,
+                "drive": 0.29,
+                "keyTrack": 0.47,
+                "envelopeDepth": -0.23
+              },
+              "filterEnvelope": {
+                "attack": 0.035,
+                "decay": 0.233,
+                "sustain": 1.0,
+                "release": 0.43,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0.012,
+                  "decay": 0.641,
+                  "sustain": 0.95,
+                  "release": 0.57,
+                  "curve": "analogue"
+                },
+                "level": -6.96,
+                "velocity": 0.49
+              },
+              "lfos": [
+                {
+                  "id": "breath1",
+                  "shape": "sine",
+                  "rate": {
+                    "division": "1/2",
+                    "modifier": "triplet"
+                  },
+                  "fadeIn": 1.7,
+                  "retrigger": "per-note"
+                }
+              ],
+              "voicing": {
+                "mode": "legato",
+                "voices": 1,
+                "glide": 0.025
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "motion",
+              "label": "MOTION",
+              "value": 1.0
+            },
+            {
+              "id": "grit",
+              "label": "GRIT",
+              "value": 0.29
+            },
+            {
+              "id": "bloom",
+              "label": "BLOOM",
+              "value": 0.36
+            },
+            {
+              "id": "space",
+              "label": "SPACE",
+              "value": 0.77
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.motion",
+                "target": "osc2.position",
+                "amount": 0.33
+              },
+              {
+                "source": "macro.grit",
+                "target": "osc3.level",
+                "amount": 0.68
+              },
+              {
+                "source": "macro.bloom",
+                "target": "osc1.level",
+                "amount": 0.46
+              },
+              {
+                "source": "macro.space",
+                "target": "filter.resonance",
+                "amount": 0.28
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "mod-wheel",
+                    "target": "filter.cutoff",
+                    "amount": -0.5
+                  },
+                  {
+                    "source": "mod-wheel",
+                    "target": "filter.cutoff",
+                    "amount": -0.4
+                  },
+                  {
+                    "source": "random-per-note",
+                    "target": "osc2.position",
+                    "amount": -0.55
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "reverb",
+              "space": "plate",
+              "size": 0.6,
+              "decay": 2.86,
+              "predelay": 0.002,
+              "damping": 0.67,
+              "mix": 0.21
+            },
+            {
+              "type": "chorus",
+              "voices": 3,
+              "rate": 0.73,
+              "depth": 0.17,
+              "mix": 0.43
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 7,
+            "mpe": false,
+            "aftertouch": "off"
+          },
+          "notes": "Legato lines glide; lift between notes to retrigger the envelopes."
+        },
+        {
+          "slot": "F03",
+          "format": "halcyon-patch/2.1",
+          "name": "Glacier Bass",
+          "category": "lead",
+          "tags": [
+            "soft",
+            "evolving",
+            "glassy"
+          ],
+          "author": {
+            "handle": "lowtide_sound"
+          },
+          "created": "2026-04-26",
+          "instrument": {
+            "model": "lantern",
+            "firmware": "2.4.1"
+          },
+          "tempo": 84,
+          "layerMode": "single",
+          "layers": [
+            {
+              "name": "Main",
+              "oscillators": [
+                {
+                  "id": "osc1",
+                  "engine": "wavetable",
+                  "tune": {
+                    "octave": 0,
+                    "semitones": 7,
+                    "cents": -1.75
+                  },
+                  "level": 0.61,
+                  "table": "Harmonic Ladder",
+                  "position": 0.45,
+                  "interpolation": "spectral",
+                  "warp": {
+                    "mode": "formant",
+                    "amount": 0.56
+                  }
+                }
+              ],
+              "filter": {
+                "model": "ladder-24",
+                "mode": "highpass",
+                "cutoff": 5968,
+                "resonance": 0.44,
+                "drive": 0.46,
+                "keyTrack": 0.92,
+                "envelopeDepth": 0.22
+              },
+              "filterEnvelope": {
+                "attack": 0.04,
+                "decay": 0.497,
+                "sustain": 0.89,
+                "release": 0.295,
+                "curve": "analogue"
+              },
+              "amp": {
+                "envelope": {
+                  "attack": 0.04,
+                  "decay": 0.481,
+                  "sustain": 0.66,
+                  "release": 0.112,
+                  "curve": "analogue"
+                },
+                "level": -7.16,
+                "velocity": 0.68
+              },
+              "lfos": [
+                {
+                  "id": "tide1",
+                  "shape": "sample-and-hold",
+                  "rate": {
+                    "division": "1/16",
+                    "modifier": "straight"
+                  },
+                  "fadeIn": 1.67,
+                  "retrigger": "free"
+                }
+              ],
+              "voicing": {
+                "mode": "legato",
+                "voices": 1,
+                "glide": 0.043
+              }
+            }
+          ],
+          "macros": [
+            {
+              "id": "grit",
+              "label": "GRIT",
+              "value": 0.19
+            },
+            {
+              "id": "age",
+              "label": "AGE",
+              "value": 0.52
+            }
+          ],
+          "modulation": {
+            "name": "root",
+            "children": [
+              {
+                "source": "macro.grit",
+                "target": "filter.resonance",
+                "amount": 0.61
+              },
+              {
+                "source": "macro.age",
+                "target": "amp.level",
+                "amount": 0.66
+              },
+              {
+                "name": "Expression",
+                "children": [
+                  {
+                    "source": "aftertouch",
+                    "target": "osc1.position",
+                    "amount": -0.28
+                  },
+                  {
+                    "source": "random-per-note",
+                    "target": "filter.resonance",
+                    "amount": 0.86,
+                    "curve": "logarithmic"
+                  }
+                ]
+              },
+              {
+                "name": "Movement",
+                "muted": true,
+                "children": [
+                  {
+                    "source": "random-per-note",
+                    "target": "filter.cutoff",
+                    "amount": 0.04,
+                    "curve": "s-curve"
+                  },
+                  {
+                    "source": "random-per-note",
+                    "target": "osc1.level",
+                    "amount": 0.7
+                  },
+                  {
+                    "name": "Slow drift",
+                    "children": [
+                      {
+                        "source": "mod-wheel",
+                        "target": "filter.resonance",
+                        "amount": 0.23
+                      },
+                      {
+                        "source": "aftertouch",
+                        "target": "osc1.position",
+                        "amount": -0.5
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "effects": [
+            {
+              "type": "reverb",
+              "space": "cathedral",
+              "size": 0.91,
+              "decay": 10.87,
+              "predelay": 0.051,
+              "damping": 0.61,
+              "mix": 0.22
+            }
+          ],
+          "performance": {
+            "pitchBendRange": 7,
+            "mpe": false,
+            "aftertouch": "polyphonic"
+          },
+          "notes": "Legato lines glide; lift between notes to retrigger the envelopes."
+        }
+      ]
+    }
+  ]
+}

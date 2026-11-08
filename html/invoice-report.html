@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Invoice — Atelier Brun</title>
+<style>
+  :root {
+    --paper: #fbfaf7;
+    --ink: #211f1c;
+    --muted: #8a847a;
+    --rule: #e3ded4;
+    --accent: #8a5a2b;
+    --green: #4f6f52;
+    --serif: "Hoefler Text", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --sans: "Avenir Next", "Optima", -apple-system, "Segoe UI", sans-serif;
+    --mono: "Courier New", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #ede9e1; color: var(--ink); font-family: var(--serif);
+    padding: 48px 16px; -webkit-font-smoothing: antialiased; }
+  .page { max-width: 760px; margin: 0 auto; background: var(--paper);
+    padding: 64px 64px 48px; box-shadow: 0 12px 50px rgba(33,31,28,0.12);
+    border-top: 4px solid var(--accent); }
+
+  .head { display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 48px; }
+  .mark { display: flex; gap: 14px; align-items: center; }
+  .mark svg { width: 44px; height: 44px; }
+  .mark .name { font-size: 22px; letter-spacing: 0.02em; }
+  .mark .name small { display: block; font-family: var(--sans); font-size: 10px;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+  .doc { text-align: right; }
+  .doc h1 { font-family: var(--sans); font-weight: 300; font-size: 34px;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  .doc .no { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  .meta { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;
+    padding: 24px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    margin-bottom: 36px; }
+  .meta .k { font-family: var(--sans); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+  .meta .v { font-size: 15px; line-height: 1.5; }
+
+  table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+  thead th { font-family: var(--sans); font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted); text-align: left;
+    padding: 0 0 14px; border-bottom: 1.5px solid var(--ink); }
+  thead th.r, tbody td.r { text-align: right; }
+  tbody td { padding: 16px 0; border-bottom: 1px solid var(--rule); font-size: 15px; vertical-align: top; }
+  tbody td .desc { font-size: 12px; color: var(--muted); margin-top: 4px; font-style: italic; }
+  tbody td.num { font-family: var(--mono); font-size: 14px; }
+
+  .totals { width: 280px; margin-left: auto; margin-top: 24px; }
+  .totals .row { display: flex; justify-content: space-between; padding: 9px 0;
+    font-size: 14px; }
+  .totals .row.sub { color: var(--muted); }
+  .totals .grand { border-top: 2px solid var(--ink); margin-top: 6px; padding-top: 14px;
+    font-size: 20px; }
+  .totals .grand .amt { font-family: var(--mono); color: var(--accent); font-weight: bold; }
+
+  .progress { margin: 40px 0; }
+  .progress .k { font-family: var(--sans); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .seg { display: flex; height: 10px; border-radius: 5px; overflow: hidden; }
+  .seg span { display: block; height: 100%; }
+  .seglabels { display: flex; gap: 18px; margin-top: 12px; font-family: var(--sans);
+    font-size: 11px; color: var(--muted); }
+  .seglabels i { width: 9px; height: 9px; border-radius: 2px; display: inline-block;
+    margin-right: 6px; vertical-align: middle; }
+
+  .foot { display: flex; justify-content: space-between; align-items: flex-end;
+    margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--rule); }
+  .stamp { border: 2px solid var(--green); color: var(--green); border-radius: 8px;
+    padding: 8px 16px; font-family: var(--sans); font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; font-size: 13px; transform: rotate(-6deg); }
+  .terms { font-size: 12px; color: var(--muted); line-height: 1.6; max-width: 360px; }
+  .terms strong { color: var(--ink); font-family: var(--sans); font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="head">
+    <div class="mark">
+      <svg viewBox="0 0 44 44" fill="none">
+        <rect x="2" y="2" width="40" height="40" rx="6" stroke="#8a5a2b" stroke-width="1.5"/>
+        <path d="M14 30 L14 14 L22 24 L30 14 L30 30" stroke="#211f1c" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="22" cy="33" r="1.6" fill="#8a5a2b"/>
+      </svg>
+      <div class="name">Atelier&nbsp;Brun<small>Design Studio · Lyon</small></div>
+    </div>
+    <div class="doc">
+      <h1>Invoice</h1>
+      <div class="no">№ ATB-2026-0184</div>
+    </div>
+  </div>
+
+  <div class="meta">
+    <div><div class="k">Billed to</div><div class="v">Maison Lévre<br/>14 Rue des Capucins<br/>69001 Lyon</div></div>
+    <div><div class="k">Issued</div><div class="v">12 May 2026</div>
+         <div class="k" style="margin-top:16px">Due</div><div class="v">11 June 2026</div></div>
+    <div><div class="k">Project</div><div class="v">Brand identity &amp; web<br/>Phase II — Delivery</div></div>
+  </div>
+
+  <table>
+    <thead><tr><th>Item</th><th class="r">Qty</th><th class="r">Rate</th><th class="r">Amount</th></tr></thead>
+    <tbody>
+      <tr><td>Brand system design<div class="desc">Logotype, palette, type scale, usage guide</div></td>
+        <td class="num r">1</td><td class="num r">€4,200.00</td><td class="num r">€4,200.00</td></tr>
+      <tr><td>Web design — 8 templates<div class="desc">Responsive, light/dark variants</div></td>
+        <td class="num r">8</td><td class="num r">€680.00</td><td class="num r">€5,440.00</td></tr>
+      <tr><td>Front-end build<div class="desc">Hand-coded, accessible, 14 days</div></td>
+        <td class="num r">14</td><td class="num r">€520.00</td><td class="num r">€7,280.00</td></tr>
+      <tr><td>Photography direction<div class="desc">Half-day shoot + retouch</div></td>
+        <td class="num r">1</td><td class="num r">€1,150.00</td><td class="num r">€1,150.00</td></tr>
+    </tbody>
+  </table>
+
+  <div class="totals">
+    <div class="row sub"><span>Subtotal</span><span>€18,070.00</span></div>
+    <div class="row sub"><span>Discount (10%)</span><span>−€1,807.00</span></div>
+    <div class="row sub"><span>VAT (20%)</span><span>€3,252.60</span></div>
+    <div class="row grand"><span>Total due</span><span class="amt">€19,515.60</span></div>
+  </div>
+
+  <div class="progress">
+    <div class="k">Budget allocation</div>
+    <div class="seg">
+      <span style="width:23%; background:#8a5a2b"></span>
+      <span style="width:30%; background:#b5895a"></span>
+      <span style="width:40%; background:#4f6f52"></span>
+      <span style="width:7%;  background:#c9a36b"></span>
+    </div>
+    <div class="seglabels">
+      <span><i style="background:#8a5a2b"></i>Design 23%</span>
+      <span><i style="background:#b5895a"></i>Web 30%</span>
+      <span><i style="background:#4f6f52"></i>Build 40%</span>
+      <span><i style="background:#c9a36b"></i>Photo 7%</span>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="terms">
+      <strong>Payment terms</strong>
+      Net 30. Bank transfer to FR76 3000 4000 0312 3456 7890 143.
+      A 1.5% monthly charge applies to overdue balances. Thank you for your trust.
+    </div>
+    <div class="stamp">Approved</div>
+  </div>
+</div>
+</body>
+</html>

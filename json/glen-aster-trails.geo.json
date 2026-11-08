@@ -1,0 +1,1959 @@
+{
+  "type": "FeatureCollection",
+  "name": "glen-aster-trails",
+  "bbox": [
+    -4.84504,
+    56.94766,
+    -4.40279,
+    57.17871
+  ],
+  "metadata": {
+    "title": "Glen Aster trail network",
+    "description": "Trails, lochs, trailheads and points of interest in Glen Aster, a fictional valley park. Names, routes and coordinates are invented; the park does not exist.",
+    "updated": "2026-10-20",
+    "licence": "CC0-1.0",
+    "crs_note": "WGS 84 longitude/latitude; third coordinate is elevation in metres.",
+    "difficulty_scale": {
+      "easy": "Good paths, little climbing, suitable for families.",
+      "moderate": "Rougher ground and sustained climbs; boots advised.",
+      "hard": "Steep, exposed or pathless; navigation skills needed."
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "park-boundary",
+      "properties": {
+        "kind": "boundary",
+        "name": "Glen Aster Park",
+        "designation": "Fictional national park",
+        "area_km2": 214.6,
+        "managed_by": "Glen Aster Trust (fictional)",
+        "established": 1971,
+        "website": "https://glen-aster.example"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -4.40814,
+              57.08
+            ],
+            [
+              -4.40279,
+              57.10128
+            ],
+            [
+              -4.41491,
+              57.12147
+            ],
+            [
+              -4.42806,
+              57.14157
+            ],
+            [
+              -4.44284,
+              57.16259
+            ],
+            [
+              -4.4725,
+              57.17766
+            ],
+            [
+              -4.51753,
+              57.1786
+            ],
+            [
+              -4.56142,
+              57.16941
+            ],
+            [
+              -4.59324,
+              57.16432
+            ],
+            [
+              -4.62,
+              57.1702
+            ],
+            [
+              -4.65128,
+              57.17857
+            ],
+            [
+              -4.68467,
+              57.17871
+            ],
+            [
+              -4.71554,
+              57.17193
+            ],
+            [
+              -4.74995,
+              57.16604
+            ],
+            [
+              -4.79348,
+              57.16087
+            ],
+            [
+              -4.83273,
+              57.14823
+            ],
+            [
+              -4.84504,
+              57.1255
+            ],
+            [
+              -4.82787,
+              57.10036
+            ],
+            [
+              -4.80414,
+              57.08
+            ],
+            [
+              -4.79277,
+              57.06308
+            ],
+            [
+              -4.78703,
+              57.04623
+            ],
+            [
+              -4.771,
+              57.03157
+            ],
+            [
+              -4.74619,
+              57.02117
+            ],
+            [
+              -4.72704,
+              57.00913
+            ],
+            [
+              -4.71554,
+              56.98807
+            ],
+            [
+              -4.69686,
+              56.96268
+            ],
+            [
+              -4.662,
+              56.94766
+            ],
+            [
+              -4.62,
+              56.9502
+            ],
+            [
+              -4.58252,
+              56.96191
+            ],
+            [
+              -4.54923,
+              56.97198
+            ],
+            [
+              -4.51754,
+              56.9814
+            ],
+            [
+              -4.49541,
+              56.99751
+            ],
+            [
+              -4.49012,
+              57.01946
+            ],
+            [
+              -4.48979,
+              57.03823
+            ],
+            [
+              -4.47292,
+              57.05026
+            ],
+            [
+              -4.43789,
+              57.06216
+            ],
+            [
+              -4.40814,
+              57.08
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "loch-vaira",
+      "properties": {
+        "kind": "water",
+        "name": "Loch Vaira",
+        "max_depth_m": 41,
+        "swimming": false,
+        "note": "Deep, cold and clear; brown trout and a crannog on the north shore."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -4.54952,
+              57.06
+            ],
+            [
+              -4.55167,
+              57.06571
+            ],
+            [
+              -4.55801,
+              57.07026
+            ],
+            [
+              -4.56668,
+              57.07295
+            ],
+            [
+              -4.57557,
+              57.07388
+            ],
+            [
+              -4.58335,
+              57.07379
+            ],
+            [
+              -4.59,
+              57.07351
+            ],
+            [
+              -4.5965,
+              57.07348
+            ],
+            [
+              -4.60393,
+              57.07341
+            ],
+            [
+              -4.61251,
+              57.0725
+            ],
+            [
+              -4.62113,
+              57.06998
+            ],
+            [
+              -4.62778,
+              57.06562
+            ],
+            [
+              -4.63048,
+              57.06
+            ],
+            [
+              -4.62833,
+              57.05429
+            ],
+            [
+              -4.62199,
+              57.04974
+            ],
+            [
+              -4.61332,
+              57.04705
+            ],
+            [
+              -4.60443,
+              57.04612
+            ],
+            [
+              -4.59665,
+              57.04621
+            ],
+            [
+              -4.59,
+              57.04649
+            ],
+            [
+              -4.5835,
+              57.04652
+            ],
+            [
+              -4.57607,
+              57.04659
+            ],
+            [
+              -4.56749,
+              57.0475
+            ],
+            [
+              -4.55887,
+              57.05002
+            ],
+            [
+              -4.55222,
+              57.05438
+            ],
+            [
+              -4.54952,
+              57.06
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "lochan-na-gealaich",
+      "properties": {
+        "kind": "water",
+        "name": "Lochan na Gealaich",
+        "max_depth_m": 12,
+        "swimming": true,
+        "note": "Moon pool: a high tarn that freezes most winters."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -4.66784,
+              57.13
+            ],
+            [
+              -4.66971,
+              57.13153
+            ],
+            [
+              -4.67162,
+              57.13269
+            ],
+            [
+              -4.6733,
+              57.13372
+            ],
+            [
+              -4.67494,
+              57.13487
+            ],
+            [
+              -4.67704,
+              57.13613
+            ],
+            [
+              -4.68,
+              57.13725
+            ],
+            [
+              -4.68376,
+              57.1378
+            ],
+            [
+              -4.68776,
+              57.13747
+            ],
+            [
+              -4.69111,
+              57.13617
+            ],
+            [
+              -4.69306,
+              57.13419
+            ],
+            [
+              -4.6933,
+              57.13198
+            ],
+            [
+              -4.69216,
+              57.13
+            ],
+            [
+              -4.69029,
+              57.12847
+            ],
+            [
+              -4.68838,
+              57.12731
+            ],
+            [
+              -4.6867,
+              57.12628
+            ],
+            [
+              -4.68506,
+              57.12513
+            ],
+            [
+              -4.68296,
+              57.12387
+            ],
+            [
+              -4.68,
+              57.12275
+            ],
+            [
+              -4.67624,
+              57.1222
+            ],
+            [
+              -4.67224,
+              57.12253
+            ],
+            [
+              -4.66889,
+              57.12383
+            ],
+            [
+              -4.66694,
+              57.12581
+            ],
+            [
+              -4.6667,
+              57.12802
+            ],
+            [
+              -4.66784,
+              57.13
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "loch-dubhan",
+      "properties": {
+        "kind": "water",
+        "name": "Loch Dubhan",
+        "max_depth_m": 23,
+        "swimming": true,
+        "note": "Peat-dark water below the north crags."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -4.52395,
+              57.14
+            ],
+            [
+              -4.52557,
+              57.14215
+            ],
+            [
+              -4.5269,
+              57.1442
+            ],
+            [
+              -4.52829,
+              57.14651
+            ],
+            [
+              -4.53056,
+              57.14908
+            ],
+            [
+              -4.53445,
+              57.1515
+            ],
+            [
+              -4.54,
+              57.15308
+            ],
+            [
+              -4.54638,
+              57.15323
+            ],
+            [
+              -4.55224,
+              57.15178
+            ],
+            [
+              -4.55629,
+              57.14905
+            ],
+            [
+              -4.55795,
+              57.14576
+            ],
+            [
+              -4.55755,
+              57.14261
+            ],
+            [
+              -4.55605,
+              57.14
+            ],
+            [
+              -4.55443,
+              57.13785
+            ],
+            [
+              -4.5531,
+              57.1358
+            ],
+            [
+              -4.55171,
+              57.13349
+            ],
+            [
+              -4.54944,
+              57.13092
+            ],
+            [
+              -4.54555,
+              57.1285
+            ],
+            [
+              -4.54,
+              57.12692
+            ],
+            [
+              -4.53362,
+              57.12677
+            ],
+            [
+              -4.52776,
+              57.12822
+            ],
+            [
+              -4.52371,
+              57.13095
+            ],
+            [
+              -4.52205,
+              57.13424
+            ],
+            [
+              -4.52245,
+              57.13739
+            ],
+            [
+              -4.52395,
+              57.14
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "th-1",
+      "properties": {
+        "kind": "trailhead",
+        "name": "Clachan Bridge car park",
+        "parking": 60,
+        "toilets": true,
+        "bus_stop": true,
+        "ev_charging": 4
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.692,
+          57.0
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "th-2",
+      "properties": {
+        "kind": "trailhead",
+        "name": "Aster Lodge",
+        "parking": 25,
+        "toilets": true,
+        "cafe": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.494,
+          57.03
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "th-3",
+      "properties": {
+        "kind": "trailhead",
+        "name": "Rowan Gate",
+        "parking": 12,
+        "toilets": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.836,
+          57.09
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "trail-1",
+      "properties": {
+        "kind": "trail",
+        "name": "Vaira Shore Loop",
+        "difficulty": "easy",
+        "route_shape": "loop",
+        "stroke": "#2f8fb3",
+        "stroke-width": 3,
+        "length_km": 9.9,
+        "ascent_m": 421,
+        "est_hours": 3.1,
+        "surface": [
+          "gravel",
+          "boardwalk"
+        ],
+        "dogs": "on lead",
+        "seasons": [
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct"
+        ],
+        "tags": [
+          "lochside",
+          "family",
+          "birds"
+        ],
+        "description": "Flat lochside path on old estate tracks. Pushchair-friendly to the boathouse.",
+        "waymark": {
+          "shape": "arrow",
+          "colour": "#2f8fb3"
+        }
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -4.692,
+            57.0,
+            423
+          ],
+          [
+            -4.68784,
+            56.99842,
+            357
+          ],
+          [
+            -4.683,
+            56.99919,
+            286
+          ],
+          [
+            -4.6801,
+            57.00148,
+            276
+          ],
+          [
+            -4.68272,
+            57.00387,
+            328
+          ],
+          [
+            -4.67995,
+            57.00621,
+            348
+          ],
+          [
+            -4.68029,
+            57.009,
+            397
+          ],
+          [
+            -4.68501,
+            57.00997,
+            403
+          ],
+          [
+            -4.68947,
+            57.01128,
+            392
+          ],
+          [
+            -4.69318,
+            57.01318,
+            360
+          ],
+          [
+            -4.69708,
+            57.01495,
+            308
+          ],
+          [
+            -4.70203,
+            57.01548,
+            262
+          ],
+          [
+            -4.70706,
+            57.01563,
+            243
+          ],
+          [
+            -4.71204,
+            57.0152,
+            263
+          ],
+          [
+            -4.71387,
+            57.01259,
+            316
+          ],
+          [
+            -4.7152,
+            57.00989,
+            368
+          ],
+          [
+            -4.7158,
+            57.00711,
+            415
+          ],
+          [
+            -4.71999,
+            57.00555,
+            419
+          ],
+          [
+            -4.72488,
+            57.00622,
+            389
+          ],
+          [
+            -4.72718,
+            57.00871,
+            391
+          ],
+          [
+            -4.72835,
+            57.01144,
+            411
+          ],
+          [
+            -4.73161,
+            57.01357,
+            453
+          ],
+          [
+            -4.7356,
+            57.01528,
+            507
+          ],
+          [
+            -4.692,
+            57.0,
+            423
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "trail-2",
+      "properties": {
+        "kind": "trail",
+        "name": "Gealach Ridge",
+        "difficulty": "hard",
+        "route_shape": "out-and-back",
+        "stroke": "#c2410c",
+        "stroke-width": 3,
+        "length_km": 11.9,
+        "ascent_m": 731,
+        "est_hours": 6.2,
+        "surface": [
+          "rock",
+          "scree",
+          "earth"
+        ],
+        "dogs": "not advised",
+        "seasons": [
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep"
+        ],
+        "tags": [
+          "ridge",
+          "scramble",
+          "views"
+        ],
+        "description": "Exposed ridge with two short scrambles. Turn back in high wind: there is no shelter above the lochan.",
+        "waymark": {
+          "shape": "disc",
+          "colour": "#c2410c"
+        }
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -4.692,
+            57.0,
+            423
+          ],
+          [
+            -4.68655,
+            57.00103,
+            345
+          ],
+          [
+            -4.68079,
+            57.00097,
+            277
+          ],
+          [
+            -4.67509,
+            57.00141,
+            245
+          ],
+          [
+            -4.66933,
+            57.0014,
+            246
+          ],
+          [
+            -4.66364,
+            57.0009,
+            279
+          ],
+          [
+            -4.65788,
+            57.00098,
+            349
+          ],
+          [
+            -4.65249,
+            57.00211,
+            420
+          ],
+          [
+            -4.64713,
+            57.00328,
+            465
+          ],
+          [
+            -4.64139,
+            57.00359,
+            493
+          ],
+          [
+            -4.63564,
+            57.0037,
+            496
+          ],
+          [
+            -4.62993,
+            57.00413,
+            467
+          ],
+          [
+            -4.62424,
+            57.00365,
+            431
+          ],
+          [
+            -4.61877,
+            57.00263,
+            376
+          ],
+          [
+            -4.6131,
+            57.0021,
+            310
+          ],
+          [
+            -4.60751,
+            57.00131,
+            254
+          ],
+          [
+            -4.60207,
+            57.00026,
+            223
+          ],
+          [
+            -4.59702,
+            56.99873,
+            227
+          ],
+          [
+            -4.59269,
+            56.99662,
+            262
+          ],
+          [
+            -4.58804,
+            56.99472,
+            335
+          ],
+          [
+            -4.5831,
+            56.99308,
+            427
+          ],
+          [
+            -4.57754,
+            56.99224,
+            519
+          ],
+          [
+            -4.57191,
+            56.99158,
+            576
+          ],
+          [
+            -4.56629,
+            56.99087,
+            584
+          ],
+          [
+            -4.56094,
+            56.98969,
+            541
+          ],
+          [
+            -4.55591,
+            56.98813,
+            470
+          ],
+          [
+            -4.55048,
+            56.98705,
+            394
+          ],
+          [
+            -4.5452,
+            56.98578,
+            336
+          ],
+          [
+            -4.53951,
+            56.98527,
+            296
+          ],
+          [
+            -4.53436,
+            56.98384,
+            306
+          ],
+          [
+            -4.52965,
+            56.982,
+            347
+          ],
+          [
+            -4.52554,
+            56.97975,
+            395
+          ],
+          [
+            -4.52101,
+            56.97778,
+            415
+          ],
+          [
+            -4.51745,
+            56.97527,
+            410
+          ],
+          [
+            -4.51533,
+            56.97229,
+            391
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "trail-3",
+      "properties": {
+        "kind": "trail",
+        "name": "Old Drove Road",
+        "difficulty": "moderate",
+        "route_shape": "point-to-point",
+        "stroke": "#7c5cbf",
+        "stroke-width": 3,
+        "length_km": 14.95,
+        "ascent_m": 706,
+        "est_hours": 5.8,
+        "surface": [
+          "gravel",
+          "earth",
+          "rock"
+        ],
+        "dogs": "on lead",
+        "seasons": [
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct"
+        ],
+        "tags": [
+          "history",
+          "long-distance"
+        ],
+        "description": "Follows the line cattle drovers once walked south. Long, gentle and remote.",
+        "waymark": {
+          "shape": "disc",
+          "colour": "#7c5cbf"
+        }
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -4.836,
+            57.09,
+            402
+          ],
+          [
+            -4.83534,
+            57.08662,
+            354
+          ],
+          [
+            -4.83515,
+            57.08322,
+            314
+          ],
+          [
+            -4.83499,
+            57.07982,
+            289
+          ],
+          [
+            -4.83176,
+            57.07694,
+            349
+          ],
+          [
+            -4.83087,
+            57.07357,
+            370
+          ],
+          [
+            -4.82741,
+            57.07077,
+            410
+          ],
+          [
+            -4.82228,
+            57.06891,
+            433
+          ],
+          [
+            -4.8177,
+            57.06666,
+            409
+          ],
+          [
+            -4.81294,
+            57.06452,
+            362
+          ],
+          [
+            -4.81073,
+            57.06135,
+            294
+          ],
+          [
+            -4.81212,
+            57.05804,
+            233
+          ],
+          [
+            -4.81653,
+            57.05568,
+            218
+          ],
+          [
+            -4.81978,
+            57.0528,
+            231
+          ],
+          [
+            -4.82317,
+            57.04997,
+            279
+          ],
+          [
+            -4.82637,
+            57.04707,
+            339
+          ],
+          [
+            -4.82843,
+            57.04387,
+            377
+          ],
+          [
+            -4.83144,
+            57.04091,
+            405
+          ],
+          [
+            -4.83416,
+            57.03786,
+            397
+          ],
+          [
+            -4.8337,
+            57.03447,
+            367
+          ],
+          [
+            -4.83147,
+            57.03131,
+            367
+          ],
+          [
+            -4.8279,
+            57.02854,
+            414
+          ],
+          [
+            -4.82511,
+            57.02552,
+            466
+          ],
+          [
+            -4.82393,
+            57.02218,
+            490
+          ],
+          [
+            -4.82408,
+            57.01878,
+            478
+          ],
+          [
+            -4.82085,
+            57.01589,
+            495
+          ],
+          [
+            -4.81734,
+            57.01311,
+            479
+          ],
+          [
+            -4.81303,
+            57.0107,
+            438
+          ],
+          [
+            -4.81033,
+            57.00764,
+            368
+          ],
+          [
+            -4.80717,
+            57.00473,
+            311
+          ],
+          [
+            -4.80173,
+            57.00317,
+            319
+          ],
+          [
+            -4.79562,
+            57.00328,
+            379
+          ],
+          [
+            -4.78955,
+            57.00282,
+            444
+          ],
+          [
+            -4.78343,
+            57.00285,
+            494
+          ],
+          [
+            -4.77735,
+            57.00324,
+            507
+          ],
+          [
+            -4.77149,
+            57.00421,
+            475
+          ],
+          [
+            -4.76538,
+            57.00442,
+            436
+          ],
+          [
+            -4.75984,
+            57.00587,
+            391
+          ],
+          [
+            -4.75466,
+            57.00768,
+            381
+          ],
+          [
+            -4.74956,
+            57.00956,
+            407
+          ],
+          [
+            -4.74347,
+            57.0099,
+            420
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "trail-4",
+      "properties": {
+        "kind": "trail",
+        "name": "Dubhan Crags Path",
+        "difficulty": "moderate",
+        "route_shape": "out-and-back",
+        "stroke": "#3f8f5f",
+        "stroke-width": 3,
+        "length_km": 8.57,
+        "ascent_m": 689,
+        "est_hours": 3.8,
+        "surface": [
+          "gravel",
+          "earth",
+          "rock"
+        ],
+        "dogs": "on lead",
+        "seasons": [
+          "all"
+        ],
+        "tags": [
+          "woodland",
+          "viewpoint"
+        ],
+        "description": "Climbs through birch woodland to a viewpoint over the dark loch.",
+        "waymark": {
+          "shape": "arrow",
+          "colour": "#3f8f5f"
+        }
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -4.494,
+            57.03,
+            250
+          ],
+          [
+            -4.48877,
+            57.02926,
+            280
+          ],
+          [
+            -4.48338,
+            57.02942,
+            348
+          ],
+          [
+            -4.47872,
+            57.03094,
+            410
+          ],
+          [
+            -4.47583,
+            57.03347,
+            423
+          ],
+          [
+            -4.47359,
+            57.0362,
+            403
+          ],
+          [
+            -4.47178,
+            57.03903,
+            360
+          ],
+          [
+            -4.47221,
+            57.04202,
+            318
+          ],
+          [
+            -4.47244,
+            57.04502,
+            285
+          ],
+          [
+            -4.47141,
+            57.04796,
+            249
+          ],
+          [
+            -4.47088,
+            57.05095,
+            232
+          ],
+          [
+            -4.47158,
+            57.05392,
+            246
+          ],
+          [
+            -4.47446,
+            57.05646,
+            299
+          ],
+          [
+            -4.475,
+            57.05945,
+            328
+          ],
+          [
+            -4.4774,
+            57.06213,
+            369
+          ],
+          [
+            -4.47998,
+            57.06477,
+            389
+          ],
+          [
+            -4.48175,
+            57.0676,
+            385
+          ],
+          [
+            -4.48423,
+            57.07027,
+            356
+          ],
+          [
+            -4.48545,
+            57.07319,
+            322
+          ],
+          [
+            -4.48864,
+            57.07561,
+            264
+          ],
+          [
+            -4.4927,
+            57.07759,
+            209
+          ],
+          [
+            -4.49774,
+            57.07866,
+            182
+          ],
+          [
+            -4.50261,
+            57.07996,
+            199
+          ],
+          [
+            -4.50785,
+            57.08068,
+            265
+          ],
+          [
+            -4.51325,
+            57.08082,
+            357
+          ],
+          [
+            -4.51801,
+            57.08224,
+            454
+          ],
+          [
+            -4.52341,
+            57.08223,
+            541
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "trail-5",
+      "properties": {
+        "kind": "trail",
+        "name": "Heron Wood Trail",
+        "difficulty": "easy",
+        "route_shape": "loop",
+        "stroke": "#d99a1e",
+        "stroke-width": 3,
+        "length_km": 5.09,
+        "ascent_m": 250,
+        "est_hours": 1.6,
+        "surface": [
+          "gravel",
+          "boardwalk"
+        ],
+        "dogs": "on lead",
+        "seasons": [
+          "all"
+        ],
+        "tags": [
+          "woodland",
+          "family",
+          "accessible-in-part"
+        ],
+        "description": "Waymarked woodland loop with a heronry hide. Boardwalk over the bog sections.",
+        "waymark": {
+          "shape": "disc",
+          "colour": "#d99a1e"
+        }
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -4.494,
+            57.03,
+            250
+          ],
+          [
+            -4.49536,
+            57.03207,
+            281
+          ],
+          [
+            -4.49839,
+            57.03348,
+            307
+          ],
+          [
+            -4.50227,
+            57.03392,
+            323
+          ],
+          [
+            -4.50365,
+            57.03599,
+            367
+          ],
+          [
+            -4.50214,
+            57.03802,
+            408
+          ],
+          [
+            -4.4987,
+            57.0391,
+            434
+          ],
+          [
+            -4.49888,
+            57.0413,
+            482
+          ],
+          [
+            -4.5025,
+            57.0422,
+            491
+          ],
+          [
+            -4.50617,
+            57.04302,
+            482
+          ],
+          [
+            -4.50834,
+            57.04118,
+            443
+          ],
+          [
+            -4.51176,
+            57.04006,
+            411
+          ],
+          [
+            -4.51448,
+            57.03847,
+            392
+          ],
+          [
+            -4.51609,
+            57.03646,
+            391
+          ],
+          [
+            -4.52,
+            57.03608,
+            400
+          ],
+          [
+            -4.494,
+            57.03,
+            250
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "trail-6",
+      "properties": {
+        "kind": "trail",
+        "name": "Clachan Link",
+        "difficulty": "easy",
+        "route_shape": "point-to-point",
+        "stroke": "#64748b",
+        "stroke-width": 3,
+        "length_km": 3.32,
+        "ascent_m": 139,
+        "est_hours": 1.0,
+        "surface": [
+          "gravel",
+          "boardwalk"
+        ],
+        "dogs": "on lead",
+        "seasons": [
+          "all"
+        ],
+        "tags": [
+          "connector",
+          "river"
+        ],
+        "description": "Connects the two car parks along the river.",
+        "waymark": {
+          "shape": "arrow",
+          "colour": "#64748b"
+        }
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -4.692,
+            57.0,
+            423
+          ],
+          [
+            -4.69106,
+            57.00295,
+            404
+          ],
+          [
+            -4.68937,
+            57.0058,
+            387
+          ],
+          [
+            -4.68873,
+            57.00878,
+            390
+          ],
+          [
+            -4.6882,
+            57.01177,
+            400
+          ],
+          [
+            -4.68675,
+            57.01466,
+            425
+          ],
+          [
+            -4.6856,
+            57.01759,
+            455
+          ],
+          [
+            -4.68389,
+            57.02043,
+            493
+          ],
+          [
+            -4.68299,
+            57.02339,
+            511
+          ],
+          [
+            -4.68131,
+            57.02624,
+            526
+          ],
+          [
+            -4.67981,
+            57.02913,
+            517
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "closures-2026",
+      "properties": {
+        "kind": "closure",
+        "name": "Seasonal closures 2026",
+        "reason": "Ground-nesting birds",
+        "from": "2026-04-01",
+        "to": "2026-07-31",
+        "stroke": "#b91c1c",
+        "stroke-dasharray": "4 3"
+      },
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [
+              -4.75143,
+              57.09093,
+              512
+            ],
+            [
+              -4.74848,
+              57.09282,
+              502
+            ],
+            [
+              -4.74483,
+              57.09429,
+              483
+            ],
+            [
+              -4.74056,
+              57.09507,
+              470
+            ],
+            [
+              -4.73618,
+              57.09564,
+              465
+            ],
+            [
+              -4.732,
+              57.09657,
+              466
+            ],
+            [
+              -4.72833,
+              57.09802,
+              480
+            ]
+          ],
+          [
+            [
+              -4.67727,
+              57.0938,
+              490
+            ],
+            [
+              -4.68166,
+              57.09434,
+              482
+            ],
+            [
+              -4.68572,
+              57.09542,
+              481
+            ],
+            [
+              -4.68992,
+              57.09632,
+              497
+            ],
+            [
+              -4.69429,
+              57.09692,
+              524
+            ],
+            [
+              -4.69879,
+              57.09686,
+              542
+            ],
+            [
+              -4.70319,
+              57.09737,
+              568
+            ]
+          ],
+          [
+            [
+              -4.6989,
+              57.06709,
+              367
+            ],
+            [
+              -4.70278,
+              57.06835,
+              335
+            ],
+            [
+              -4.70708,
+              57.06911,
+              314
+            ],
+            [
+              -4.71128,
+              57.07,
+              301
+            ],
+            [
+              -4.7149,
+              57.07149,
+              294
+            ],
+            [
+              -4.71885,
+              57.07268,
+              317
+            ],
+            [
+              -4.72332,
+              57.07295,
+              371
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "poi-1",
+      "properties": {
+        "kind": "bothy",
+        "name": "Corrie Bothy",
+        "description": "A stone shelter with a sleeping platform for eight. No fire: bring a stove.",
+        "sleeps": 8,
+        "water": "stream 50 m east"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.63412,
+          57.10617
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "poi-2",
+      "properties": {
+        "kind": "viewpoint",
+        "name": "The Lantern",
+        "description": "A granite tor; on clear days you can see three lochs and the sea.",
+        "elevation_m": 812
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.60038,
+          56.99511
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "poi-3",
+      "properties": {
+        "kind": "viewpoint",
+        "name": "Heron Hide",
+        "description": "Timber hide overlooking the heronry.",
+        "best_time": "early morning, March to June"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.63561,
+          57.04899
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "poi-4",
+      "properties": {
+        "kind": "heritage",
+        "name": "Clachan Shieling",
+        "description": "Ruined summer dwellings where families brought cattle to the high pasture.",
+        "period": "17th–19th century"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.72781,
+          57.03888
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "poi-5",
+      "properties": {
+        "kind": "heritage",
+        "name": "Vaira Crannog",
+        "description": "An artificial island dwelling, now a grassy mound in the loch.",
+        "period": "Iron Age"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.59585,
+          57.13429
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "poi-6",
+      "properties": {
+        "kind": "water",
+        "name": "Fuaran Spring",
+        "description": "Reliable spring; treat before drinking.",
+        "flow": "year-round"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.54737,
+          57.02771
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "poi-7",
+      "properties": {
+        "kind": "rescue",
+        "name": "Gealach Emergency Point",
+        "description": "Grid reference board and an emergency phone box with solar light.",
+        "phone": "emergency services; the board gives the grid reference to read out"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.63133,
+          57.10311
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "poi-8",
+      "properties": {
+        "kind": "campsite",
+        "name": "Aster Meadow Camp",
+        "description": "Small informal pitch area by the river; leave no trace.",
+        "pitches": 10,
+        "fires": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.66941,
+          57.11648
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "poi-9",
+      "properties": {
+        "kind": "bridge",
+        "name": "Sgàthan Footbridge",
+        "description": "Suspension footbridge, one person at a time.",
+        "max_load_kg": 150
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.70895,
+          57.02672
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "poi-10",
+      "properties": {
+        "kind": "viewpoint",
+        "name": "Dubhan Seat",
+        "description": "A bench carved with the names of the trail's volunteer builders."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.62803,
+          57.10642
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "summits",
+      "properties": {
+        "kind": "summits",
+        "names": [
+          "Sgùrr Aster",
+          "Beinn Gealach",
+          "Meall Dubh",
+          "Càrn Ruadh"
+        ],
+        "heights_m": [
+          1024,
+          948,
+          873,
+          801
+        ]
+      },
+      "geometry": {
+        "type": "MultiPoint",
+        "coordinates": [
+          [
+            -4.45961,
+            57.15618,
+            1024
+          ],
+          [
+            -4.50279,
+            57.11037,
+            948
+          ],
+          [
+            -4.52824,
+            57.16055,
+            873
+          ],
+          [
+            -4.64964,
+            57.12595,
+            801
+          ]
+        ]
+      }
+    }
+  ]
+}

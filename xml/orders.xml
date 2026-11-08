@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<orderBook xmlns="urn:example:orders"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="urn:example:orders orders.xsd"
+           generated="2026-10-24T18:40:00Z" currency="EUR">
+  <customers>
+    <customer id="C00017" kind="company">
+      <name>Kestrel Analytics GmbH</name>
+      <email>billing@kestrel.example</email>
+      <email>ops@kestrel.example</email>
+      <address>
+        <street>Hafenstraße 12</street>
+        <city>Hamburg</city>
+        <postcode>20457</postcode>
+        <country>DE</country>
+      </address>
+      <vatNumber>DE123456789</vatNumber>
+    </customer>
+    <customer id="C00042">
+      <name>Ana Ribeiro</name>
+      <email>ana.ribeiro@mail.example</email>
+      <address>
+        <city>Lisbon</city>
+        <street>Rua das Flores 7</street>
+        <postcode>1200-195</postcode>
+        <country>PT</country>
+      </address>
+    </customer>
+  </customers>
+  <orders>
+    <order number="ORD-2026-000311" customer="C00017" status="paid">
+      <placed>2026-10-20T09:12:44Z</placed>
+      <items>
+        <item line="1">
+          <sku>DSK-2040</sku>
+          <description>Standing desk, oak, 160 cm</description>
+          <quantity>4</quantity>
+          <unitPrice>649.00</unitPrice>
+          <discount>10</discount>
+        </item>
+        <item line="2">
+          <sku>CHR-1102</sku>
+          <description>Task chair, mesh back</description>
+          <quantity>4</quantity>
+          <unitPrice>289.50</unitPrice>
+        </item>
+      </items>
+      <payment>
+        <invoice dueDays="14"/>
+      </payment>
+      <note>Deliver to loading bay 3, weekdays before 16:00.</note>
+    </order>
+    <order number="ORD-2026-000312" customer="C00042">
+      <placed>2026-10-22T17:03:10Z</placed>
+      <items>
+        <item line="1">
+          <sku>LMP-0007</sku>
+          <description>Desk lamp, warm white</description>
+          <quantity>1</quantity>
+          <unitPrice>39.90</unitPrice>
+        </item>
+      </items>
+      <payment>
+        <card>
+          <brand>visa</brand>
+          <last4>4242</last4>
+        </card>
+      </payment>
+    </order>
+  </orders>
+</orderBook>

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article [
+  <!ENTITY company "Halcyon Instruments">
+  <!ENTITY vesper "Vesper">
+  <!ENTITY lantern "Lantern">
+  <!ENTITY cents "&#162;">
+]>
+<!--
+  Field Notes, issue 14: a long-form engineering article.
+  Halcyon Instruments, its products and every person named here are fictional.
+  Released under CC0-1.0.
+-->
+<article xml:lang="en-GB" id="field-notes-14" status="published">
+  <info>
+    <series>Field Notes from &company;</series>
+    <issue number="14" date="2026-09-22"/>
+    <title>The Drift Problem</title>
+    <subtitle>Why two identical oscillators never quite agree, and why we stopped trying to make them</subtitle>
+    <byline>
+      <author role="writer"><handle>bench-four</handle><team>Voice Engineering</team></author>
+      <author role="editor"><handle>quiet.machines</handle><team>Documentation</team></author>
+    </byline>
+    <reading-time minutes="14"/>
+    <keywords>
+      <keyword>oscillator drift</keyword>
+      <keyword>virtual analogue</keyword>
+      <keyword>random walks</keyword>
+      <keyword>calibration</keyword>
+    </keywords>
+    <abstract>
+      <para>The &vesper; has a knob labelled <control>Drift</control>. It is the most
+      argued-about control we have ever shipped. This issue explains what it does, why the
+      first prototype had none, why the second had far too much, and how we arrived at a
+      model that a room full of engineers could agree sounded <emphasis>alive</emphasis>
+      without sounding <emphasis>broken</emphasis>.</para>
+    </abstract>
+  </info>
+
+  <section id="s1">
+    <title>A sound that was too correct</title>
+    <para>The first &vesper; prototype ran on a development board taped to the underside of a
+    plywood panel. Its oscillators were mathematically perfect: a sawtooth at 220 Hz was a
+    sawtooth at exactly 220 Hz, forever, on every voice. We played a six-note chord, and the room
+    went quiet in the wrong way.</para>
+    <para>Nothing was <emphasis>wrong</emphasis> with it. Every measurement passed. But the chord
+    sat in the speakers like a photograph of a chord. A sound designer on the team described it,
+    with some cruelty, as <quote>a spreadsheet that has learned to hum</quote>.</para>
+    <para>What the old instruments we grew up with had, and our prototype lacked, was
+    disagreement. Six voices that each believe they are playing A3 will, on a circuit made of
+    real components, each be a few cents off in a different direction, and the direction will
+    wander. The ear hears that wandering as width, warmth and motion. It is the reason a chord on
+    an old polysynth seems to breathe.</para>
+    <note type="aside">
+      <title>A cent, briefly</title>
+      <para>A cent (&cents;) is one hundredth of an equal-tempered semitone. Most listeners
+      cannot pick out a single sustained note that is 5&#160;&cents; flat, but they can hear two
+      notes 2&#160;&cents; apart beating against each other as a slow pulse.</para>
+    </note>
+  </section>
+
+  <section id="s2">
+    <title>Where real drift comes from</title>
+    <para>Before modelling anything, we spent three weeks measuring. We borrowed a dozen
+    instruments from colleagues and friends, warmed them up, and logged their pitch every
+    50 milliseconds for an hour. Three different behaviours stood out, each with its own time
+    scale.</para>
+    <list style="definitions">
+      <item>
+        <term>Thermal drift</term>
+        <definition>Slow and large. As a circuit warms up, its pitch slides, sometimes by
+        twenty cents over the first quarter of an hour, then settles into a lazy wander of a
+        few cents over minutes.</definition>
+      </item>
+      <item>
+        <term>Component tolerance</term>
+        <definition>Static. Two voices built from parts that are each within one per cent of
+        their nominal value will simply not be tuned identically. This never changes; it is a
+        fingerprint.</definition>
+      </item>
+      <item>
+        <term>Jitter</term>
+        <definition>Fast and tiny. Noise in the power supply and the timing circuitry nudges
+        each cycle a fraction early or late. Alone it is inaudible; it smears the very top of
+        the spectrum just enough to soften a bright sawtooth.</definition>
+      </item>
+    </list>
+    <para>The important finding was not any one of these, but that they are
+    <emphasis role="strong">independent per voice</emphasis>. A single global wobble applied to
+    all six voices, which is what our second prototype did, sounds like a tape machine with a
+    bad motor. It is drift, but it is the wrong drift.</para>
+    <figure id="fig-measure">
+      <title>One hour of pitch error, voice 3 of a borrowed instrument</title>
+      <description>A line that falls steeply from +18&#160;&cents; to +3&#160;&cents; in the first
+      twelve minutes, then wanders between &#8722;2 and +5&#160;&cents; for the remaining
+      forty-eight, with a fine fuzz of jitter along its whole length.</description>
+    </figure>
+  </section>
+
+  <section id="s3">
+    <title>The second prototype: too much of a good thing</title>
+    <para>Our first attempt at modelling drift was a sine-wave LFO, one per instrument, at
+    0.3&#160;Hz, routed to every oscillator's pitch. Turning it up made the chord swim
+    together, in lockstep, like a choir following a conductor who cannot keep still.</para>
+    <para>The second attempt gave each voice its own LFO with a random phase. Better, but the
+    periodicity was audible within a few seconds: the ear is extremely good at noticing that
+    something repeats. We had made six seasick metronomes.</para>
+    <para>The third attempt replaced the LFOs with white noise, low-pass filtered. This is where
+    the trouble really started, because filtered white noise is stationary: it has no memory of
+    where it has been, so it never wanders <emphasis>away</emphasis>. Real drift does. A voice
+    that has drifted sharp tends to stay sharp for a while.</para>
+  </section>
+
+  <section id="s4">
+    <title>A bounded random walk</title>
+    <para>What finally worked is a random walk with a gentle pull back towards zero, a
+    process statisticians call mean-reverting. Each voice keeps a single number, its current
+    offset in cents. Every control tick, the offset takes a small random step and is then
+    nudged a fraction of the way back towards the centre.</para>
+    <listing language="c" id="lst-walk">
+      <title>The per-voice drift step, simplified</title>
+<![CDATA[
+/* Called once per control tick (every 1 ms) for each voice.
+ * `amount` is the Drift knob, 0.0 to 1.0.                     */
+float drift_step(voice_t *v, float amount, rng_t *rng)
+{
+    const float pull  = 0.0008f;          /* return-to-centre per tick   */
+    const float step  = 0.045f * amount;  /* random step size, in cents  */
+    const float limit = 12.0f  * amount;  /* hard ceiling, in cents      */
+
+    v->drift += step * rng_gaussian(rng); /* wander...                   */
+    v->drift -= pull * v->drift;          /* ...but drift home slowly    */
+
+    if (v->drift >  limit) v->drift =  limit;
+    if (v->drift < -limit) v->drift = -limit;
+
+    return v->drift + v->tolerance;       /* tolerance never changes     */
+}
+]]>
+    </listing>
+    <para>Three properties of this little function matter more than its arithmetic.</para>
+    <list style="numbered">
+      <item><para><emphasis>It has memory.</emphasis> Because each step starts from where the
+      last one ended, the offset wanders in long, unhurried arcs instead of fizzing around
+      zero.</para></item>
+      <item><para><emphasis>It cannot run away.</emphasis> The pull term means that, however
+      long the instrument is left on, the voices stay within a predictable range. The clamp is
+      only there for the knob's extreme end.</para></item>
+      <item><para><emphasis>It never repeats.</emphasis> There is no period for the ear to
+      latch onto, because there is no oscillator underneath.</para></item>
+    </list>
+    <note type="tip">
+      <title>Try it yourself</title>
+      <para>Load the factory patch <patch-ref bank="A" slot="03">Tidepool Glass</patch-ref>,
+      hold a single note, and turn <control>Drift</control> from zero to full over about
+      thirty seconds. Then do the same with a three-note chord. The single note changes
+      very little; the chord comes alive. Drift is a property of
+      <emphasis>relationships</emphasis> between voices, not of any one voice.</para>
+    </note>
+  </section>
+
+  <section id="s5">
+    <title>Tolerance: the fingerprint</title>
+    <para>The <code>tolerance</code> term in the listing above is fixed when the instrument
+    first boots in the factory. Each voice is assigned a small, permanent offset drawn from a
+    narrow distribution and stored in its calibration memory. Your &vesper;'s voice 4 is
+    slightly flat, and it will be slightly flat for the life of the instrument.</para>
+    <para>We argued for a long time about whether this was honest. A digital instrument has no
+    real tolerances; we are inventing them. The deciding argument came from a player in our
+    beta group, who wrote:</para>
+    <blockquote>
+      <para>I want to know that my instrument is mine. If I sell it and buy another, I want the
+      new one to sound like the same model and not like the same instrument.</para>
+      <attribution>A beta tester, in a feedback form</attribution>
+    </blockquote>
+    <para>So we kept it, and we made it visible. The calibration page in the
+    <menu-path><item>Settings</item><item>Voices</item><item>Character</item></menu-path>
+    menu shows each voice's fingerprint as a small bar, and it can be reset to a new random
+    fingerprint, or to zero for anyone who wants their &vesper; perfectly matched.</para>
+  </section>
+
+  <section id="s6">
+    <title>How much is enough?</title>
+    <para>The final question was the range of the knob. We ran a listening test with
+    twenty-four participants, a mixture of players, engineers and people who had never touched
+    a synthesizer. Each heard the same chord progression at eight drift settings in random order
+    and rated it on two scales: <quote>alive</quote> and <quote>out of tune</quote>.</para>
+    <table id="tbl-listening">
+      <title>Median ratings by peak drift (1 = not at all, 7 = very)</title>
+      <header>
+        <cell>Peak drift (&cents;)</cell>
+        <cell>Alive</cell>
+        <cell>Out of tune</cell>
+        <cell>Verdict</cell>
+      </header>
+      <row><cell>0</cell><cell>2</cell><cell>1</cell><cell>Clean, lifeless</cell></row>
+      <row><cell>1</cell><cell>3</cell><cell>1</cell><cell>Barely different</cell></row>
+      <row><cell>2</cell><cell>4</cell><cell>1</cell><cell>Subtle warmth</cell></row>
+      <row><cell>4</cell><cell>6</cell><cell>2</cell><cell>The sweet spot</cell></row>
+      <row><cell>6</cell><cell>6</cell><cell>3</cell><cell>Lush, a little loose</cell></row>
+      <row><cell>8</cell><cell>5</cell><cell>4</cell><cell>Vintage character</cell></row>
+      <row><cell>12</cell><cell>4</cell><cell>6</cell><cell>Seasick</cell></row>
+      <row><cell>20</cell><cell>2</cell><cell>7</cell><cell>Broken</cell></row>
+    </table>
+    <para>The <quote>alive</quote> curve peaks at four to six cents and falls away after eight,
+    while <quote>out of tune</quote> climbs steadily. We put four cents at twelve o'clock on the
+    knob and twelve cents at full, so that the centre of the knob is where most people would
+    choose to be, and the extreme is available for anyone who wants it.</para>
+    <note type="warning">
+      <title>Drift and tuning-critical patches</title>
+      <para>Drift is applied before the global tuning stage. If you are playing alongside an
+      acoustic instrument tuned to a fixed reference, set <control>Drift</control> below nine
+      o'clock, or switch on <setting>Drift follows tuning</setting> so the walk is centred on
+      the reference instead of on zero.</para>
+    </note>
+  </section>
+
+  <section id="s7">
+    <title>On the &lantern;</title>
+    <para>The &lantern; is a different instrument, built around wavetables and FM, and its
+    voices are meant to sound precise. It still has drift, but it is off by default and its
+    range is a quarter of the &vesper;'s. Applied to an FM operator, even a cent of
+    disagreement between carrier and modulator changes the timbre over time, which is
+    occasionally beautiful and frequently alarming. We left the control in, behind a
+    <setting>Character</setting> page, for the people who will find the beautiful cases.</para>
+    <section id="s7-1">
+      <title>Drift as a modulation source</title>
+      <para>On both instruments, each voice's drift value is also exposed as a modulation
+      source, <code>random-per-note</code>, so it can move things other than pitch. Routing it
+      to filter cutoff by a small amount gives each note of a chord a slightly different
+      brightness, which is one of the quietest and most effective tricks in the factory
+      library.</para>
+      <listing language="json" id="lst-route">
+        <title>A modulation route from a patch file</title>
+<![CDATA[
+{
+  "source": "random-per-note",
+  "target": "filter.cutoff",
+  "amount": 0.12,
+  "curve": "s-curve"
+}
+]]>
+      </listing>
+    </section>
+  </section>
+
+  <section id="s8">
+    <title>What we learned</title>
+    <para>The lesson of the drift problem is not really about oscillators. It is that
+    <emphasis>correct</emphasis> and <emphasis>right</emphasis> are different targets, and an
+    instrument has to hit the second one. Every measurement we took told us the first
+    prototype was perfect. Every person who played it told us it was not.</para>
+    <para>The work was to find out what they were hearing, measure that instead, and build the
+    smallest model that reproduced it: one number per voice, a random step, a gentle pull home.
+    Eleven lines of C, three weeks of logging, and a knob people still argue about.</para>
+    <para>We consider that a success.</para>
+  </section>
+
+  <appendix id="app-a">
+    <title>Glossary</title>
+    <glossary>
+      <entry><term>Control tick</term><definition>The 1&#160;ms interval at which slow
+      parameters, including drift, are updated. Audio runs much faster.</definition></entry>
+      <entry><term>Mean reversion</term><definition>A tendency to move back towards an average
+      after wandering away from it.</definition></entry>
+      <entry><term>Voice</term><definition>One complete sound-producing path. A six-voice
+      instrument can play six notes at once.</definition></entry>
+      <entry><term>Beating</term><definition>The slow pulsing heard when two nearly equal
+      frequencies sound together.</definition></entry>
+    </glossary>
+  </appendix>
+
+  <colophon>
+    <para>Field Notes is written by the people who build &company; instruments. &company; is
+    a fictional company; this article is a sample document and is dedicated to the public
+    domain.</para>
+  </colophon>
+</article>

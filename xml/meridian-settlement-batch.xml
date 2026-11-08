@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Meridian Payments: settlement batch for the 2026-10-14 payout cycle.
+  Validates against xsd/meridian-settlement.xsd. Every party, account,
+  amount and identifier is fictional. Released under CC0-1.0.
+  Amounts are integer minor units: 12900 SEK means 129.00 kronor.
+-->
+<settlementBatch xmlns="urn:example:meridian:settlement:2" id="bat_6qfpagrut1qxbk0ov62g" schemaVersion="2.3">
+  <header>
+    <cycle>2026-10-14</cycle>
+    <sender id="acq_ydacxm6tyduw1nxlqtdb" role="sponsor-bank">
+      <legalName>Meridian Payments Europe AB</legalName>
+      <address><line>Provvägen 1</line><city>Stockholm</city><country>SE</country></address>
+      <bic>MRDNSESSXXX</bic>
+    </sender>
+    <receiver id="acq_pw7m3ghop304qqmg6ejp" role="settlement-bank">
+      <legalName>Northgate Clearing Bank (fictional)</legalName>
+      <address><line>Example Quay 3</line><city>Copenhagen</city><country>DK</country></address>
+      <bic>NGCBDKKKXXX</bic>
+    </receiver>
+    <environment>sandbox</environment>
+  </header>
+  <merchants>
+    <merchant id="mer_k9p34y6n3wd25rq4f5zr" created="2026-05-13T09:35:00Z" source="dashboard">
+      <legalName>Lindqvist Bakery AB</legalName>
+      <address>
+        <line>Exempelgatan 12</line>
+        <city>Uppsala</city>
+        <postalCode>000 00</postalCode>
+        <country>SE</country>
+      </address>
+      <tradingName>Lindqvist Bageri</tradingName>
+      <category>food-and-drink</category>
+      <window cadence="daily" cutoff="22:00:00" timeZone="Europe/Stockholm" delayDays="1"/>
+      <feeSchedule effectiveFrom="2026-07-01">
+        <tier upToVolume="5000000" percent="145" fixed="180"/>
+        <tier percent="120" fixed="180"/>
+      </feeSchedule>
+      <payoutAccount id="dst_vlsi47wqal9vq24zklmv" currency="SEK">
+        <holder>Lindqvist Bakery AB</holder>
+        <iban>SE00 0000 0000 0000 0000 0042</iban>
+        <bic>MRDNSESSXXX</bic>
+      </payoutAccount>
+    </merchant>
+    <merchant id="mer_37e3p3e2z8iq9y7jzb6c" created="2026-02-12T09:18:00Z" source="api">
+      <legalName>Fjordlys Kaffebrenneri AS</legalName>
+      <address>
+        <line>Prøvegata 4</line>
+        <line>2. etasje</line>
+        <city>Bergen</city>
+        <postalCode>0000</postalCode>
+        <country>NO</country>
+      </address>
+      <tradingName>Fjordlys</tradingName>
+      <category>food-and-drink</category>
+      <window cadence="daily" cutoff="23:59:00" timeZone="Europe/Oslo" delayDays="2"/>
+      <feeSchedule effectiveFrom="2026-07-01">
+        <tier percent="139" fixed="150"/>
+      </feeSchedule>
+      <payoutAccount id="dst_t45hu43jsiom1tma7v3d" currency="NOK">
+        <holder>Fjordlys Kaffebrenneri AS</holder>
+        <iban>NO00 0000 0000 042</iban>
+      </payoutAccount>
+    </merchant>
+    <merchant id="mer_n6z43dvyrkttnjfbf5jx" created="2026-06-13T09:40:00Z" source="api">
+      <legalName>Copperline Outfitters ApS</legalName>
+      <address>
+        <line>Eksempelvej 88</line>
+        <city>Aarhus</city>
+        <postalCode>0000</postalCode>
+        <country>DK</country>
+      </address>
+      <category>retail-goods</category>
+      <window cadence="weekly" cutoff="20:00:00" timeZone="Europe/Copenhagen" delayDays="2"/>
+      <feeSchedule effectiveFrom="2026-07-01">
+        <tier upToVolume="20000000" percent="160" fixed="100"/>
+        <tier upToVolume="80000000" percent="140" fixed="100"/>
+        <tier percent="115" fixed="100"/>
+      </feeSchedule>
+      <payoutAccount id="dst_i8fppv5aspzh8rzhqmoe" currency="DKK">
+        <holder>Copperline Outfitters ApS</holder>
+        <iban>DK00 0000 0000 0000 42</iban>
+        <bic>MRDNDKKKXXX</bic>
+      </payoutAccount>
+    </merchant>
+  </merchants>
+  <runs>
+    <run id="run_rwplqcmk5n1lzts1olxi" merchant="mer_k9p34y6n3wd25rq4f5zr" currency="SEK">
+      <window opens="2026-10-12T20:00:00Z" closes="2026-10-13T20:00:00Z"/>
+      <lines>
+        <capture seq="1" source="cap_9ee0vbgi09qynk8w3tzp">
+          <amount currency="SEK">12900</amount>
+          <posted>2026-10-12T20:30:00Z</posted>
+          <method><card network="northstar" last4="5785" funding="prepaid"/></method>
+          <reference>order-66170</reference>
+        </capture>
+        <fee seq="2" source="cap_9ee0vbgi09qynk8w3tzp" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-367</amount>
+          <posted>2026-10-12T20:30:00Z</posted>
+        </fee>
+        <capture seq="3" source="cap_4dsa7l3609y6n14do9gm">
+          <amount currency="SEK">24900</amount>
+          <posted>2026-10-12T20:54:00Z</posted>
+          <method><card network="lumen" last4="4822" funding="credit"/></method>
+          <reference>order-78363</reference>
+        </capture>
+        <fee seq="4" source="cap_4dsa7l3609y6n14do9gm" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-541</amount>
+          <posted>2026-10-12T20:54:00Z</posted>
+        </fee>
+        <capture seq="5" source="cap_uj596lguax1dxn9y1xj5">
+          <amount currency="SEK">18990</amount>
+          <posted>2026-10-12T23:02:00Z</posted>
+          <method><accountDebit mandate="mnd_umehogrbu0hmfjkuvr5n"/></method>
+          <reference>order-61375</reference>
+        </capture>
+        <fee seq="6" source="cap_uj596lguax1dxn9y1xj5" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-455</amount>
+          <posted>2026-10-12T23:02:00Z</posted>
+        </fee>
+        <capture seq="7" source="cap_eyywlecfpecxvm11hugc">
+          <amount currency="SEK">2200</amount>
+          <posted>2026-10-12T23:53:00Z</posted>
+          <method><accountDebit mandate="mnd_9jo35k8xm00d4ig69ebs"/></method>
+        </capture>
+        <fee seq="8" source="cap_eyywlecfpecxvm11hugc" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-212</amount>
+          <posted>2026-10-12T23:53:00Z</posted>
+        </fee>
+        <capture seq="9" source="cap_n5e6eucldu0um57ocubr">
+          <amount currency="SEK">2200</amount>
+          <posted>2026-10-13T01:56:00Z</posted>
+          <method><wallet provider="brightwallet"/></method>
+          <reference>order-65485</reference>
+        </capture>
+        <fee seq="10" source="cap_n5e6eucldu0um57ocubr" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-212</amount>
+          <posted>2026-10-13T01:56:00Z</posted>
+        </fee>
+        <capture seq="11" source="cap_5aa819t9um9zz8106x8r">
+          <amount currency="SEK">64000</amount>
+          <posted>2026-10-13T04:03:00Z</posted>
+          <method><wallet provider="pocketpay"/></method>
+          <reference>order-39592</reference>
+        </capture>
+        <fee seq="12" source="cap_5aa819t9um9zz8106x8r" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-1108</amount>
+          <posted>2026-10-13T04:03:00Z</posted>
+        </fee>
+        <capture seq="13" source="cap_diwfkgyq83mtxqw8y9xw">
+          <amount currency="SEK">8750</amount>
+          <posted>2026-10-13T04:19:00Z</posted>
+          <method><card network="northstar" last4="6594" funding="credit"/></method>
+          <reference>order-10548</reference>
+        </capture>
+        <fee seq="14" source="cap_diwfkgyq83mtxqw8y9xw" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-307</amount>
+          <posted>2026-10-13T04:19:00Z</posted>
+        </fee>
+        <capture seq="15" source="cap_9u7z3kxxzu6z3fch26ws">
+          <amount currency="SEK">12900</amount>
+          <posted>2026-10-13T05:06:00Z</posted>
+          <method><card network="orbit" last4="9967" funding="debit"/></method>
+        </capture>
+        <fee seq="16" source="cap_9u7z3kxxzu6z3fch26ws" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-367</amount>
+          <posted>2026-10-13T05:06:00Z</posted>
+        </fee>
+        <refund seq="17" source="ref_wwchswyuwfxgzcs8q7ps" capture="cap_9u7z3kxxzu6z3fch26ws">
+          <amount currency="SEK">-12900</amount>
+          <posted>2026-10-13T05:39:00Z</posted>
+          <reason>goods-not-received</reason>
+        </refund>
+        <fee seq="18" source="cap_9ee0vbgi09qynk8w3tzp" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-367</amount>
+          <posted>2026-10-13T05:43:00Z</posted>
+        </fee>
+        <adjustment seq="19" source="adj_4fr4dj79n9g8te6pvaea" reverses="18" approvedBy="ops-ledger-2">
+          <amount currency="SEK">367</amount>
+          <posted>2026-10-13T05:44:00Z</posted>
+          <explanation>The fee on capture line 1 was posted twice by a retried request (line 18). This line reverses the duplicate.</explanation>
+        </adjustment>
+      </lines>
+      <totals>
+        <gross currency="SEK">146840</gross>
+        <fees currency="SEK">3936</fees>
+        <refunds currency="SEK">12900</refunds>
+        <adjustments currency="SEK">367</adjustments>
+        <net currency="SEK">130371</net>
+      </totals>
+      <seal>f249808d3be3ccf990d77280a70c789cb4cf6eaf09a8cb1e624bf63ba8f913c3</seal>
+    </run>
+    <run id="run_auqlijggpfjuzp7aa4dw" merchant="mer_k9p34y6n3wd25rq4f5zr" currency="SEK">
+      <window opens="2026-10-11T20:00:00Z" closes="2026-10-12T20:00:00Z"/>
+      <lines>
+        <capture seq="1" source="cap_e65gh2bh8rgp9ywvk5h3">
+          <amount currency="SEK">5900</amount>
+          <posted>2026-10-11T20:25:00Z</posted>
+          <method><wallet provider="brightwallet"/></method>
+          <reference>order-20138</reference>
+        </capture>
+        <fee seq="2" source="cap_e65gh2bh8rgp9ywvk5h3" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-266</amount>
+          <posted>2026-10-11T20:25:00Z</posted>
+        </fee>
+        <capture seq="3" source="cap_5g5e4g7t0lzqh82xf7ag">
+          <amount currency="SEK">3450</amount>
+          <posted>2026-10-11T21:42:00Z</posted>
+          <method><card network="northstar" last4="8101" funding="credit"/></method>
+          <fx><original currency="EUR">302</original><rate>11.4382</rate></fx>
+          <reference>order-52744</reference>
+        </capture>
+        <fee seq="4" source="cap_5g5e4g7t0lzqh82xf7ag" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-230</amount>
+          <posted>2026-10-11T21:42:00Z</posted>
+        </fee>
+        <capture seq="5" source="cap_swbhm1g201wzcwufs6rv">
+          <amount currency="SEK">8750</amount>
+          <posted>2026-10-11T22:43:00Z</posted>
+          <method><card network="orbit" last4="1288" funding="prepaid"/></method>
+        </capture>
+        <fee seq="6" source="cap_swbhm1g201wzcwufs6rv" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-307</amount>
+          <posted>2026-10-11T22:43:00Z</posted>
+        </fee>
+        <capture seq="7" source="cap_elc8pm3804gra35owifi">
+          <amount currency="SEK">24900</amount>
+          <posted>2026-10-12T00:10:00Z</posted>
+          <method><card network="orbit" last4="1916" funding="debit"/></method>
+          <fx><original currency="EUR">2177</original><rate>11.4382</rate></fx>
+          <reference>order-10411</reference>
+        </capture>
+        <fee seq="8" source="cap_elc8pm3804gra35owifi" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-541</amount>
+          <posted>2026-10-12T00:10:00Z</posted>
+        </fee>
+        <capture seq="9" source="cap_lzkf2jdmb0lo5uhwcfw0">
+          <amount currency="SEK">2200</amount>
+          <posted>2026-10-12T01:26:00Z</posted>
+          <method><card network="lumen" last4="6865" funding="credit"/></method>
+          <reference>order-92200</reference>
+        </capture>
+        <fee seq="10" source="cap_lzkf2jdmb0lo5uhwcfw0" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-212</amount>
+          <posted>2026-10-12T01:26:00Z</posted>
+        </fee>
+        <capture seq="11" source="cap_1jje5x9okv9i92wrw8xw">
+          <amount currency="SEK">64000</amount>
+          <posted>2026-10-12T01:45:00Z</posted>
+          <method><card network="northstar" last4="7753" funding="prepaid"/></method>
+          <reference>order-91926</reference>
+        </capture>
+        <fee seq="12" source="cap_1jje5x9okv9i92wrw8xw" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-1108</amount>
+          <posted>2026-10-12T01:45:00Z</posted>
+        </fee>
+        <capture seq="13" source="cap_128n6osz31yfvg0t4wy5">
+          <amount currency="SEK">5900</amount>
+          <posted>2026-10-12T02:52:00Z</posted>
+          <method><card network="orbit" last4="0957" funding="prepaid"/></method>
+          <fx><original currency="EUR">516</original><rate>11.4382</rate></fx>
+        </capture>
+        <fee seq="14" source="cap_128n6osz31yfvg0t4wy5" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-266</amount>
+          <posted>2026-10-12T02:52:00Z</posted>
+        </fee>
+        <capture seq="15" source="cap_gfdetvo4ui2c49lgj80u">
+          <amount currency="SEK">5900</amount>
+          <posted>2026-10-12T04:05:00Z</posted>
+          <method><card network="lumen" last4="2366" funding="prepaid"/></method>
+          <reference>order-40414</reference>
+        </capture>
+        <fee seq="16" source="cap_gfdetvo4ui2c49lgj80u" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-266</amount>
+          <posted>2026-10-12T04:05:00Z</posted>
+        </fee>
+        <capture seq="17" source="cap_xittt7zcj5u1it4wshod">
+          <amount currency="SEK">8750</amount>
+          <posted>2026-10-12T06:19:00Z</posted>
+          <method><wallet provider="pocketpay"/></method>
+        </capture>
+        <fee seq="18" source="cap_xittt7zcj5u1it4wshod" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-307</amount>
+          <posted>2026-10-12T06:19:00Z</posted>
+        </fee>
+        <capture seq="19" source="cap_59xgn8wh7nevvp1a0vsp">
+          <amount currency="SEK">99500</amount>
+          <posted>2026-10-12T06:47:00Z</posted>
+          <method><card network="lumen" last4="2697" funding="debit"/></method>
+          <fx><original currency="EUR">8699</original><rate>11.4382</rate></fx>
+          <reference>order-54251</reference>
+        </capture>
+        <fee seq="20" source="cap_59xgn8wh7nevvp1a0vsp" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-1623</amount>
+          <posted>2026-10-12T06:47:00Z</posted>
+        </fee>
+        <capture seq="21" source="cap_0klp7c0ign4po4nrh3h6">
+          <amount currency="SEK">2200</amount>
+          <posted>2026-10-12T07:26:00Z</posted>
+          <method><card network="northstar" last4="5254" funding="prepaid"/></method>
+          <reference>order-30824</reference>
+        </capture>
+        <fee seq="22" source="cap_0klp7c0ign4po4nrh3h6" tier="1" schedule="2026-07-01">
+          <amount currency="SEK">-212</amount>
+          <posted>2026-10-12T07:26:00Z</posted>
+        </fee>
+        <refund seq="23" source="ref_rwkcnr1pzzd53qs8iv3z" capture="cap_elc8pm3804gra35owifi">
+          <amount currency="SEK">-12450</amount>
+          <posted>2026-10-12T07:59:00Z</posted>
+          <reason>requested-by-customer</reason>
+        </refund>
+      </lines>
+      <totals>
+        <gross currency="SEK">231450</gross>
+        <fees currency="SEK">5338</fees>
+        <refunds currency="SEK">12450</refunds>
+        <net currency="SEK">213662</net>
+      </totals>
+      <seal>0d3be1fcd1e7a1b8919d8d9a7cbffb6beef006fb210e1ecd64aa3c2e7049e587</seal>
+    </run>
+    <run id="run_sfbff9ick4pgfwxe6t26" merchant="mer_37e3p3e2z8iq9y7jzb6c" currency="NOK">
+      <window opens="2026-10-12T20:00:00Z" closes="2026-10-13T20:00:00Z"/>
+      <lines>
+        <capture seq="1" source="cap_lsr8zcf5blz5kfngc1qo">
+          <amount currency="NOK">18990</amount>
+          <posted>2026-10-12T21:05:00Z</posted>
+          <method><card network="orbit" last4="9217" funding="prepaid"/></method>
+          <reference>order-57402</reference>
+        </capture>
+        <fee seq="2" source="cap_lsr8zcf5blz5kfngc1qo" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-414</amount>
+          <posted>2026-10-12T21:05:00Z</posted>
+        </fee>
+        <capture seq="3" source="cap_hn8wxd5hfopsrj182ruv">
+          <amount currency="NOK">18990</amount>
+          <posted>2026-10-12T21:29:00Z</posted>
+          <method><card network="orbit" last4="4863" funding="prepaid"/></method>
+        </capture>
+        <fee seq="4" source="cap_hn8wxd5hfopsrj182ruv" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-414</amount>
+          <posted>2026-10-12T21:29:00Z</posted>
+        </fee>
+        <capture seq="5" source="cap_f6e99x6t5z208e2j8gxr">
+          <amount currency="NOK">18990</amount>
+          <posted>2026-10-12T23:37:00Z</posted>
+          <method><accountDebit mandate="mnd_nrq4bn112l6wuv92dq8l"/></method>
+          <reference>order-19864</reference>
+        </capture>
+        <fee seq="6" source="cap_f6e99x6t5z208e2j8gxr" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-414</amount>
+          <posted>2026-10-12T23:37:00Z</posted>
+        </fee>
+        <capture seq="7" source="cap_coge00yjthkfuxfzf1qj">
+          <amount currency="NOK">4300</amount>
+          <posted>2026-10-13T01:02:00Z</posted>
+          <method><card network="northstar" last4="5999" funding="debit"/></method>
+          <fx><original currency="EUR">367</original><rate>11.7215</rate></fx>
+        </capture>
+        <fee seq="8" source="cap_coge00yjthkfuxfzf1qj" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-210</amount>
+          <posted>2026-10-13T01:02:00Z</posted>
+        </fee>
+        <capture seq="9" source="cap_gernev2lqnpc0iw4dvcj">
+          <amount currency="NOK">5900</amount>
+          <posted>2026-10-13T02:58:00Z</posted>
+          <method><accountDebit mandate="mnd_uxzdirlrgz3iimvplwhw"/></method>
+          <reference>order-75212</reference>
+        </capture>
+        <fee seq="10" source="cap_gernev2lqnpc0iw4dvcj" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-232</amount>
+          <posted>2026-10-13T02:58:00Z</posted>
+        </fee>
+        <capture seq="11" source="cap_i6vbevq39p3d19q33bps">
+          <amount currency="NOK">8750</amount>
+          <posted>2026-10-13T04:03:00Z</posted>
+          <method><wallet provider="brightwallet"/></method>
+        </capture>
+        <fee seq="12" source="cap_i6vbevq39p3d19q33bps" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-272</amount>
+          <posted>2026-10-13T04:03:00Z</posted>
+        </fee>
+        <capture seq="13" source="cap_alcbxt2jonlsa605h5mq">
+          <amount currency="NOK">5900</amount>
+          <posted>2026-10-13T04:40:00Z</posted>
+          <method><wallet provider="pocketpay"/></method>
+          <reference>order-39044</reference>
+        </capture>
+        <fee seq="14" source="cap_alcbxt2jonlsa605h5mq" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-232</amount>
+          <posted>2026-10-13T04:40:00Z</posted>
+        </fee>
+        <capture seq="15" source="cap_jr53ucnyscknu1qfp2o2">
+          <amount currency="NOK">2200</amount>
+          <posted>2026-10-13T06:26:00Z</posted>
+          <method><card network="orbit" last4="8064" funding="debit"/></method>
+          <reference>order-37263</reference>
+        </capture>
+        <fee seq="16" source="cap_jr53ucnyscknu1qfp2o2" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-181</amount>
+          <posted>2026-10-13T06:26:00Z</posted>
+        </fee>
+        <capture seq="17" source="cap_lnhl2gkhj041e6utogrv">
+          <amount currency="NOK">99500</amount>
+          <posted>2026-10-13T06:51:00Z</posted>
+          <method><card network="lumen" last4="3150" funding="debit"/></method>
+          <reference>order-52470</reference>
+        </capture>
+        <fee seq="18" source="cap_lnhl2gkhj041e6utogrv" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-1533</amount>
+          <posted>2026-10-13T06:51:00Z</posted>
+        </fee>
+        <capture seq="19" source="cap_fkktn5wcpafq42uzykar">
+          <amount currency="NOK">99500</amount>
+          <posted>2026-10-13T07:38:00Z</posted>
+          <method><wallet provider="brightwallet"/></method>
+        </capture>
+        <fee seq="20" source="cap_fkktn5wcpafq42uzykar" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-1533</amount>
+          <posted>2026-10-13T07:38:00Z</posted>
+        </fee>
+        <refund seq="21" source="ref_d6qvsbe8qtfy7iihhngg" capture="cap_gernev2lqnpc0iw4dvcj">
+          <amount currency="NOK">-2950</amount>
+          <posted>2026-10-13T08:11:00Z</posted>
+          <reason>requested-by-customer</reason>
+        </refund>
+      </lines>
+      <totals>
+        <gross currency="NOK">283020</gross>
+        <fees currency="NOK">5435</fees>
+        <refunds currency="NOK">2950</refunds>
+        <net currency="NOK">274635</net>
+      </totals>
+      <seal>38c873aa60e0801ceedb494aaa78fcbaf522de1fe62983508689901374314e79</seal>
+    </run>
+    <run id="run_g7x3nszx6gypngon9nl5" merchant="mer_37e3p3e2z8iq9y7jzb6c" currency="NOK">
+      <window opens="2026-10-11T20:00:00Z" closes="2026-10-12T20:00:00Z"/>
+      <lines>
+        <capture seq="1" source="cap_sn2ie73cc4nwbsg06md2">
+          <amount currency="NOK">24900</amount>
+          <posted>2026-10-11T22:10:00Z</posted>
+          <method><card network="northstar" last4="9608" funding="debit"/></method>
+          <fx><original currency="EUR">2124</original><rate>11.7215</rate></fx>
+          <reference>order-45757</reference>
+        </capture>
+        <fee seq="2" source="cap_sn2ie73cc4nwbsg06md2" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-496</amount>
+          <posted>2026-10-11T22:10:00Z</posted>
+        </fee>
+        <capture seq="3" source="cap_d0kqnbj4d2vzu4q6pz9y">
+          <amount currency="NOK">99500</amount>
+          <posted>2026-10-11T22:28:00Z</posted>
+          <method><card network="northstar" last4="6535" funding="prepaid"/></method>
+          <fx><original currency="EUR">8489</original><rate>11.7215</rate></fx>
+          <reference>order-67403</reference>
+        </capture>
+        <fee seq="4" source="cap_d0kqnbj4d2vzu4q6pz9y" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-1533</amount>
+          <posted>2026-10-11T22:28:00Z</posted>
+        </fee>
+        <capture seq="5" source="cap_q3jmqq1ncppd0rar75pn">
+          <amount currency="NOK">8750</amount>
+          <posted>2026-10-11T23:49:00Z</posted>
+          <method><card network="orbit" last4="9405" funding="debit"/></method>
+          <fx><original currency="EUR">746</original><rate>11.7215</rate></fx>
+          <reference>order-87268</reference>
+        </capture>
+        <fee seq="6" source="cap_q3jmqq1ncppd0rar75pn" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-272</amount>
+          <posted>2026-10-11T23:49:00Z</posted>
+        </fee>
+        <capture seq="7" source="cap_5nwa9miaxa46ovcj82uk">
+          <amount currency="NOK">64000</amount>
+          <posted>2026-10-12T00:34:00Z</posted>
+          <method><card network="lumen" last4="4921" funding="debit"/></method>
+          <reference>order-96995</reference>
+        </capture>
+        <fee seq="8" source="cap_5nwa9miaxa46ovcj82uk" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-1040</amount>
+          <posted>2026-10-12T00:34:00Z</posted>
+        </fee>
+        <capture seq="9" source="cap_pcubd2pxaom79fc2z2k7">
+          <amount currency="NOK">24900</amount>
+          <posted>2026-10-12T01:24:00Z</posted>
+          <method><card network="northstar" last4="0760" funding="credit"/></method>
+        </capture>
+        <fee seq="10" source="cap_pcubd2pxaom79fc2z2k7" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-496</amount>
+          <posted>2026-10-12T01:24:00Z</posted>
+        </fee>
+        <capture seq="11" source="cap_jfronswsb10vtfstbup6">
+          <amount currency="NOK">64000</amount>
+          <posted>2026-10-12T02:51:00Z</posted>
+          <method><card network="lumen" last4="9972" funding="debit"/></method>
+          <reference>order-71924</reference>
+        </capture>
+        <fee seq="12" source="cap_jfronswsb10vtfstbup6" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-1040</amount>
+          <posted>2026-10-12T02:51:00Z</posted>
+        </fee>
+        <capture seq="13" source="cap_2285kw53wo8147c8viae">
+          <amount currency="NOK">4300</amount>
+          <posted>2026-10-12T05:09:00Z</posted>
+          <method><card network="orbit" last4="8907" funding="prepaid"/></method>
+        </capture>
+        <fee seq="14" source="cap_2285kw53wo8147c8viae" tier="1" schedule="2026-07-01">
+          <amount currency="NOK">-210</amount>
+          <posted>2026-10-12T05:09:00Z</posted>
+        </fee>
+        <refund seq="15" source="ref_ht9gwudgwfkn2cbpahko" capture="cap_d0kqnbj4d2vzu4q6pz9y">
+          <amount currency="NOK">-99500</amount>
+          <posted>2026-10-12T05:42:00Z</posted>
+          <reason>requested-by-customer</reason>
+        </refund>
+      </lines>
+      <totals>
+        <gross currency="NOK">290350</gross>
+        <fees currency="NOK">5087</fees>
+        <refunds currency="NOK">99500</refunds>
+        <net currency="NOK">185763</net>
+      </totals>
+      <seal>4d95064dfa42571f99f44867d99128a28ff85d384b856b091dcffaaa7e989d7f</seal>
+    </run>
+    <run id="run_ewit19gp0frqeeb7trkg" merchant="mer_n6z43dvyrkttnjfbf5jx" currency="DKK">
+      <window opens="2026-10-07T20:00:00Z" closes="2026-10-14T20:00:00Z"/>
+      <lines>
+        <capture seq="1" source="cap_3ixgjk02e9irqwn38ve2">
+          <amount currency="DKK">12900</amount>
+          <posted>2026-10-08T03:49:00Z</posted>
+          <method><card network="orbit" last4="2409" funding="debit"/></method>
+          <fx><original currency="EUR">1729</original><rate>7.4603</rate></fx>
+          <reference>order-24796</reference>
+        </capture>
+        <fee seq="2" source="cap_3ixgjk02e9irqwn38ve2" tier="1" schedule="2026-07-01">
+          <amount currency="DKK">-306</amount>
+          <posted>2026-10-08T03:49:00Z</posted>
+        </fee>
+        <capture seq="3" source="cap_eqj8dnua80f9s649hpg0">
+          <amount currency="DKK">4300</amount>
+          <posted>2026-10-08T15:29:00Z</posted>
+          <method><card network="northstar" last4="0646" funding="prepaid"/></method>
+        </capture>
+        <fee seq="4" source="cap_eqj8dnua80f9s649hpg0" tier="1" schedule="2026-07-01">
+          <amount currency="DKK">-169</amount>
+          <posted>2026-10-08T15:29:00Z</posted>
+        </fee>
+        <capture seq="5" source="cap_xvfa023y1pbfa360zc9q">
+          <amount currency="DKK">99500</amount>
+          <posted>2026-10-09T05:43:00Z</posted>
+          <method><card network="orbit" last4="2849" funding="debit"/></method>
+          <reference>order-99872</reference>
+        </capture>
+        <fee seq="6" source="cap_xvfa023y1pbfa360zc9q" tier="1" schedule="2026-07-01">
+          <amount currency="DKK">-1692</amount>
+          <posted>2026-10-09T05:43:00Z</posted>
+        </fee>
+        <capture seq="7" source="cap_bwj4j3uy0ort5sbe6ge2">
+          <amount currency="DKK">99500</amount>
+          <posted>2026-10-09T19:08:00Z</posted>
+          <method><card network="orbit" last4="2970" funding="debit"/></method>
+        </capture>
+        <fee seq="8" source="cap_bwj4j3uy0ort5sbe6ge2" tier="1" schedule="2026-07-01">
+          <amount currency="DKK">-1692</amount>
+          <posted>2026-10-09T19:08:00Z</posted>
+        </fee>
+        <capture seq="9" source="cap_hzrxgid5w0agfcakcolf">
+          <amount currency="DKK">3450</amount>
+          <posted>2026-10-10T04:00:00Z</posted>
+          <method><card network="lumen" last4="1648" funding="debit"/></method>
+        </capture>
+        <fee seq="10" source="cap_hzrxgid5w0agfcakcolf" tier="1" schedule="2026-07-01">
+          <amount currency="DKK">-155</amount>
+          <posted>2026-10-10T04:00:00Z</posted>
+        </fee>
+        <capture seq="11" source="cap_x01rejdp4a92176am911">
+          <amount currency="DKK">18990</amount>
+          <posted>2026-10-10T19:03:00Z</posted>
+          <method><card network="lumen" last4="2272" funding="debit"/></method>
+          <reference>order-19453</reference>
+        </capture>
+        <fee seq="12" source="cap_x01rejdp4a92176am911" tier="1" schedule="2026-07-01">
+          <amount currency="DKK">-404</amount>
+          <posted>2026-10-10T19:03:00Z</posted>
+        </fee>
+        <capture seq="13" source="cap_ncy4o6fdd7225iu686di">
+          <amount currency="DKK">5900</amount>
+          <posted>2026-10-10T21:23:00Z</posted>
+          <method><card network="orbit" last4="4227" funding="debit"/></method>
+          <reference>order-45894</reference>
+        </capture>
+        <fee seq="14" source="cap_ncy4o6fdd7225iu686di" tier="1" schedule="2026-07-01">
+          <amount currency="DKK">-194</amount>
+          <posted>2026-10-10T21:23:00Z</posted>
+        </fee>
+        <capture seq="15" source="cap_nkwui1q1rx6mu3yd5iar">
+          <amount currency="DKK">3450</amount>
+          <posted>2026-10-11T06:50:00Z</posted>
+          <method><card network="northstar" last4="6910" funding="debit"/></method>
+          <fx><original currency="EUR">462</original><rate>7.4603</rate></fx>
+        </capture>
+        <fee seq="16" source="cap_nkwui1q1rx6mu3yd5iar" tier="1" schedule="2026-07-01">
+          <amount currency="DKK">-155</amount>
+          <posted>2026-10-11T06:50:00Z</posted>
+        </fee>
+        <capture seq="17" source="cap_mv6vbvmwgaideva75vz6">
+          <amount currency="DKK">3450</amount>
+          <posted>2026-10-11T09:24:00Z</posted>
+          <method><card network="lumen" last4="0334" funding="prepaid"/></method>
+          <reference>order-65348</reference>
+        </capture>
+        <fee seq="18" source="cap_mv6vbvmwgaideva75vz6" tier="1" schedule="2026-07-01">
+          <amount currency="DKK">-155</amount>
+          <posted>2026-10-11T09:24:00Z</posted>
+        </fee>
+        <capture seq="19" source="cap_1ndjgrywaoet8y2mkx9s">
+          <amount currency="DKK">64000</amount>
+          <posted>2026-10-11T13:01:00Z</posted>
+          <method><card network="orbit" last4="9474" funding="debit"/></method>
+          <reference>order-71513</reference>
+        </capture>
+        <fee seq="20" source="cap_1ndjgrywaoet8y2mkx9s" tier="1" schedule="2026-07-01">
+          <amount currency="DKK">-1124</amount>
+          <posted>2026-10-11T13:01:00Z</posted>
+        </fee>
+        <refund seq="21" source="ref_8ltfwchj99fkxmafkcg6" capture="cap_hzrxgid5w0agfcakcolf">
+          <amount currency="DKK">-1725</amount>
+          <posted>2026-10-11T13:34:00Z</posted>
+          <reason>requested-by-customer</reason>
+        </refund>
+        <reserve seq="22" source="rsv_6co99jjrhc66hdot20pr" direction="hold" releaseOn="2027-01-12">
+          <amount currency="DKK">-15772</amount>
+          <posted>2026-10-11T13:35:00Z</posted>
+        </reserve>
+      </lines>
+      <totals>
+        <gross currency="DKK">315440</gross>
+        <fees currency="DKK">6046</fees>
+        <refunds currency="DKK">1725</refunds>
+        <reserves currency="DKK">-15772</reserves>
+        <net currency="DKK">291897</net>
+      </totals>
+      <seal>3b7dd1ff9da3881f5c2f51e395d5ab0aa3e2a7a1dae215b2ec63f8123dd61cb3</seal>
+    </run>
+  </runs>
+  <payouts>
+    <payout id="pay_vx27qps40o9uqz65ud90" merchant="mer_k9p34y6n3wd25rq4f5zr" account="dst_vlsi47wqal9vq24zklmv">
+      <amount currency="SEK">344033</amount>
+      <run ref="run_rwplqcmk5n1lzts1olxi"/>
+      <run ref="run_auqlijggpfjuzp7aa4dw"/>
+      <valueDate>2026-10-15</valueDate>
+      <remittance>MERIDIAN 20261014 LINDQVIST BAGERI</remittance>
+    </payout>
+    <payout id="pay_r0075d78u1hfsb3n95iz" merchant="mer_37e3p3e2z8iq9y7jzb6c" account="dst_t45hu43jsiom1tma7v3d">
+      <amount currency="NOK">460398</amount>
+      <run ref="run_sfbff9ick4pgfwxe6t26"/>
+      <run ref="run_g7x3nszx6gypngon9nl5"/>
+      <valueDate>2026-10-16</valueDate>
+      <remittance>MERIDIAN 20261014 FJORDLYS</remittance>
+    </payout>
+    <payout id="pay_vtg320305ojjav3knsua" merchant="mer_n6z43dvyrkttnjfbf5jx" account="dst_i8fppv5aspzh8rzhqmoe">
+      <amount currency="DKK">291897</amount>
+      <run ref="run_ewit19gp0frqeeb7trkg"/>
+      <valueDate>2026-10-16</valueDate>
+      <remittance>MERIDIAN 20261014 COPPERLINE OUTFITTERS APS</remittance>
+    </payout>
+  </payouts>
+  <trailer>
+    <runCount>5</runCount>
+    <lineCount>100</lineCount>
+    <payoutTotal currency="SEK">344033</payoutTotal>
+    <payoutTotal currency="NOK">460398</payoutTotal>
+    <payoutTotal currency="DKK">291897</payoutTotal>
+  </trailer>
+</settlementBatch>

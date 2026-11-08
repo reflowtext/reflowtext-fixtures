@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Order book schema for a fictional shop.
+  Describes a small order book: customers, orders, line items, payments.
+  Exercises: a target namespace, global and local elements, named and anonymous
+  complex types, sequence / choice / all, min/maxOccurs, attributes with defaults,
+  enumerations, patterns, numeric facets, key/keyref, and annotations.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:o="urn:example:orders"
+           targetNamespace="urn:example:orders"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.2">
+
+  <xs:annotation>
+    <xs:documentation xml:lang="en">
+      Order book for the reader-demo shop. One document holds the customers
+      it refers to and any number of orders placed by them.
+    </xs:documentation>
+  </xs:annotation>
+
+  <!-- Root element -->
+  <xs:element name="orderBook">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="customers">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="o:customer" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="orders">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="order" type="o:OrderType" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="generated" type="xs:dateTime" use="required"/>
+      <xs:attribute name="currency" type="o:CurrencyCode" default="EUR"/>
+    </xs:complexType>
+
+    <!-- Every customer id is unique, and every order points at a real customer -->
+    <xs:key name="customerKey">
+      <xs:selector xpath="o:customers/o:customer"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:keyref name="orderCustomerRef" refer="o:customerKey">
+      <xs:selector xpath="o:orders/o:order"/>
+      <xs:field xpath="@customer"/>
+    </xs:keyref>
+  </xs:element>
+
+  <!-- Customer -->
+  <xs:element name="customer">
+    <xs:annotation>
+      <xs:documentation>A person or company that can place orders.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="o:NonEmptyString"/>
+        <xs:element name="email" type="o:Email" maxOccurs="3"/>
+        <xs:element name="address" type="o:AddressType"/>
+        <xs:element name="vatNumber" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="id" type="o:CustomerId" use="required"/>
+      <xs:attribute name="kind" default="person">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="person"/>
+            <xs:enumeration value="company"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="AddressType">
+    <xs:all>
+      <xs:element name="street" type="o:NonEmptyString"/>
+      <xs:element name="city" type="o:NonEmptyString"/>
+      <xs:element name="postcode" type="xs:string"/>
+      <xs:element name="country" type="o:CountryCode"/>
+    </xs:all>
+  </xs:complexType>
+
+  <!-- Order -->
+  <xs:complexType name="OrderType">
+    <xs:sequence>
+      <xs:element name="placed" type="xs:dateTime"/>
+      <xs:element name="items">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="item" type="o:LineItemType" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="payment" type="o:PaymentType"/>
+      <xs:element name="note" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="number" type="o:OrderNumber" use="required"/>
+    <xs:attribute name="customer" type="o:CustomerId" use="required"/>
+    <xs:attribute name="status" type="o:OrderStatus" default="open"/>
+  </xs:complexType>
+
+  <xs:complexType name="LineItemType">
+    <xs:sequence>
+      <xs:element name="sku" type="o:Sku"/>
+      <xs:element name="description" type="xs:string"/>
+      <xs:element name="quantity" type="xs:positiveInteger"/>
+      <xs:element name="unitPrice" type="o:Money"/>
+      <xs:element name="discount" type="o:Percent" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="line" type="xs:positiveInteger" use="required"/>
+  </xs:complexType>
+
+  <!-- Payment: exactly one of three methods -->
+  <xs:complexType name="PaymentType">
+    <xs:choice>
+      <xs:element name="card">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="brand" type="o:CardBrand"/>
+            <xs:element name="last4">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:pattern value="[0-9]{4}"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="invoice">
+        <xs:complexType>
+          <xs:attribute name="dueDays" type="xs:positiveInteger" default="30"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="voucher" type="xs:string"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <!-- Simple types -->
+  <xs:simpleType name="NonEmptyString">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+      <xs:maxLength value="200"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Email">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[^@\s]+@[^@\s]+\.[^@\s]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CustomerId">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="C[0-9]{5}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="OrderNumber">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="ORD-[0-9]{4}-[0-9]{6}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Sku">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z]{3}-[0-9]{4}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Money">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+      <xs:fractionDigits value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Percent">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="100"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="OrderStatus">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="open"/>
+      <xs:enumeration value="paid"/>
+      <xs:enumeration value="shipped"/>
+      <xs:enumeration value="cancelled"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CardBrand">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="visa"/>
+      <xs:enumeration value="mastercard"/>
+      <xs:enumeration value="amex"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CurrencyCode">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z]{3}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CountryCode">
+    <xs:restriction base="xs:string">
+      <xs:length value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

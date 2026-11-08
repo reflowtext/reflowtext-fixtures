@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HALCYON — Synthwave Synth</title>
+<style>
+  :root {
+    --night: #11071f;
+    --night-2: #1c0b35;
+    --magenta: #ff2d95;
+    --cyan: #2de2e6;
+    --violet: #b14aed;
+    --amber: #ffb800;
+    --ink: #f7e8ff;
+    --muted: #b69fcf;
+    --display: "Bahnschrift", "Eurostile", "Futura", "Trebuchet MS", sans-serif;
+    --body: "Avenir Next", -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--night); color: var(--ink); font-family: var(--body);
+    overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+  /* sun + grid backdrop */
+  .backdrop { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+  .sun { position: absolute; top: 60px; left: 50%; transform: translateX(-50%);
+    width: 380px; height: 380px; border-radius: 50%;
+    background: linear-gradient(180deg, var(--amber) 0%, var(--magenta) 55%, var(--violet) 100%);
+    filter: blur(2px); }
+  .sun::after { content: ""; position: absolute; inset: 0; border-radius: 50%;
+    background: repeating-linear-gradient(180deg, transparent 0 22px, var(--night) 22px 28px);
+    mask: linear-gradient(180deg, transparent 55%, #000 55%); }
+  .glow { position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 700px; height: 500px; background: radial-gradient(circle, rgba(255,45,149,0.35), transparent 65%);
+    filter: blur(40px); }
+  .floor { position: absolute; bottom: 0; left: 0; right: 0; height: 320px;
+    background: linear-gradient(180deg, transparent, rgba(45,226,230,0.06));
+    perspective: 300px; overflow: hidden; }
+  .floor .lines { position: absolute; inset: 0; transform: rotateX(72deg);
+    transform-origin: bottom;
+    background-image: linear-gradient(var(--cyan) 1px, transparent 1px),
+      linear-gradient(90deg, var(--cyan) 1px, transparent 1px);
+    background-size: 60px 60px; opacity: 0.35;
+    animation: scroll 4s linear infinite; }
+  @keyframes scroll { from { background-position: 0 0; } to { background-position: 0 60px; } }
+
+  .wrap { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 26px 0; }
+  .logo { font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: 0.3em;
+    background: linear-gradient(90deg, var(--cyan), var(--magenta));
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  nav ul { list-style: none; display: flex; gap: 30px; font-size: 13px;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+  .hero { text-align: center; padding: 70px 0 120px; }
+  .badge { display: inline-block; font-family: monospace; font-size: 12px; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(45,226,230,0.4);
+    border-radius: 999px; padding: 7px 18px; margin-bottom: 32px;
+    box-shadow: 0 0 24px rgba(45,226,230,0.25); animation: fadein 0.8s ease both; }
+  .hero h1 { font-family: var(--display); font-weight: 700; font-size: clamp(48px, 9vw, 104px);
+    line-height: 0.95; letter-spacing: 0.02em; text-transform: uppercase;
+    text-shadow: 0 0 40px rgba(255,45,149,0.5);
+    background: linear-gradient(180deg, #fff 0%, var(--cyan) 45%, var(--magenta) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: fadeup 1s 0.1s ease both; }
+  .hero p { max-width: 540px; margin: 26px auto 0; font-size: 18px; color: var(--muted);
+    line-height: 1.6; animation: fadeup 1s 0.25s ease both; }
+  .cta { margin-top: 40px; display: flex; gap: 16px; justify-content: center;
+    animation: fadeup 1s 0.4s ease both; }
+  .btn { font-family: var(--display); letter-spacing: 0.12em; text-transform: uppercase;
+    font-size: 15px; padding: 16px 34px; border-radius: 6px; cursor: pointer;
+    border: none; text-decoration: none; display: inline-block; }
+  .btn.primary { color: #11071f; font-weight: 700;
+    background: linear-gradient(90deg, var(--cyan), var(--magenta));
+    box-shadow: 0 0 30px rgba(255,45,149,0.5); transition: transform 0.2s, box-shadow 0.2s; }
+  .btn.primary:hover { transform: translateY(-3px); box-shadow: 0 8px 44px rgba(255,45,149,0.7); }
+  .btn.ghost { color: var(--ink); border: 1.5px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.04); }
+
+  @keyframes fadeup { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+
+  /* feature grid */
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    padding: 40px 0 90px; }
+  .feature { background: linear-gradient(160deg, rgba(177,74,237,0.12), rgba(45,226,230,0.05));
+    border: 1px solid rgba(177,74,237,0.3); border-radius: 16px; padding: 30px;
+    backdrop-filter: blur(4px); transition: transform 0.25s, border-color 0.25s; }
+  .feature:hover { transform: translateY(-6px); border-color: var(--cyan); }
+  .feature .ic { width: 46px; height: 46px; margin-bottom: 18px; }
+  .feature h3 { font-family: var(--display); font-size: 19px; letter-spacing: 0.06em;
+    text-transform: uppercase; margin-bottom: 10px; }
+  .feature p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* pricing */
+  .pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; padding-bottom: 100px; }
+  .plan { border: 1px solid rgba(255,255,255,0.12); border-radius: 18px; padding: 36px 30px;
+    background: rgba(28,11,53,0.6); position: relative; }
+  .plan.feat { border: 1.5px solid var(--magenta);
+    box-shadow: 0 0 50px rgba(255,45,149,0.25); transform: scale(1.04); }
+  .plan.feat::before { content: "Most popular"; position: absolute; top: -12px; left: 50%;
+    transform: translateX(-50%); font-family: monospace; font-size: 10px; letter-spacing: 0.18em;
+    text-transform: uppercase; background: var(--magenta); color: #11071f;
+    padding: 5px 14px; border-radius: 999px; font-weight: 700; }
+  .plan .tier { font-family: var(--display); letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--cyan); font-size: 14px; }
+  .plan .price { font-family: var(--display); font-size: 52px; margin: 14px 0 4px; }
+  .plan .price small { font-size: 16px; color: var(--muted); }
+  .plan ul { list-style: none; margin: 24px 0; }
+  .plan li { font-size: 14px; color: var(--muted); padding: 9px 0; display: flex; gap: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .plan li svg { flex-shrink: 0; }
+
+  footer { text-align: center; padding: 50px 0; color: var(--muted); font-size: 13px;
+    border-top: 1px solid rgba(255,255,255,0.08); letter-spacing: 0.05em; }
+</style>
+</head>
+<body>
+<div class="backdrop">
+  <div class="glow"></div>
+  <div class="sun"></div>
+  <div class="floor"><div class="lines"></div></div>
+</div>
+
+<div class="wrap">
+  <nav>
+    <div class="logo">HALCYON</div>
+    <ul><li>Sound</li><li>Presets</li><li>Hardware</li><li>Buy</li></ul>
+  </nav>
+
+  <section class="hero">
+    <span class="badge">◆ Analog dreams · v3.0</span>
+    <h1>Make the<br/>night sing</h1>
+    <p>A polyphonic synthesizer built for after-hours. Sixteen voices, endless
+       modulation, and a filter that purrs. No screens — just knobs and neon.</p>
+    <div class="cta">
+      <a class="btn primary" href="#">Start free trial</a>
+      <a class="btn ghost" href="#">Hear a demo</a>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="feature">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#2de2e6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 12h3l3-8 4 16 3-8h5"/></svg>
+      <h3>16 Voices</h3>
+      <p>Stack and detune to your heart's content. True analog-modeled oscillators with zero aliasing.</p>
+    </div>
+    <div class="feature">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#ff2d95" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      <h3>Live Mod</h3>
+      <p>Eight assignable LFOs and a step sequencer that locks to your tempo automatically.</p>
+    </div>
+    <div class="feature">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#ffb800" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg>
+      <h3>Hardware Sync</h3>
+      <p>MIDI, CV/Gate, and USB-C. Plug into your rig and the patch follows you anywhere.</p>
+    </div>
+  </section>
+
+  <section class="pricing">
+    <div class="plan">
+      <div class="tier">Bedroom</div>
+      <div class="price">$0<small>/mo</small></div>
+      <ul>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2de2e6" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> 2 voices</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2de2e6" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> 12 presets</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2de2e6" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> Community patches</li>
+      </ul>
+      <a class="btn ghost" href="#" style="width:100%; text-align:center">Get started</a>
+    </div>
+    <div class="plan feat">
+      <div class="tier">Studio</div>
+      <div class="price">$19<small>/mo</small></div>
+      <ul>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff2d95" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> 16 voices</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff2d95" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> Unlimited presets</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff2d95" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> Hardware sync</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff2d95" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> Stem export</li>
+      </ul>
+      <a class="btn primary" href="#" style="width:100%; text-align:center">Go Studio</a>
+    </div>
+    <div class="plan">
+      <div class="tier">Label</div>
+      <div class="price">$49<small>/mo</small></div>
+      <ul>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2de2e6" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> Everything in Studio</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2de2e6" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> 5 seats</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2de2e6" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> Priority support</li>
+      </ul>
+      <a class="btn ghost" href="#" style="width:100%; text-align:center">Contact us</a>
+    </div>
+  </section>
+</div>
+
+<footer>© 2026 Halcyon Instruments · Built for the night · No cookies, just synths</footer>
+</body>
+</html>

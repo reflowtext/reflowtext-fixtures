@@ -1,0 +1,250 @@
+# Kubernetes manifests for the Meridian settlement worker.
+#
+# Apply with: kubectl apply -f settlement-worker.k8s.yaml
+#
+# Shared fragments are defined once with YAML anchors (&name) and reused with
+# aliases (*name) or merge keys (<<: *name). The anchors live in the first
+# document that needs them; YAML anchors do not cross document boundaries.
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: settlement
+  labels:
+    team: payments-core
+    pod-security.kubernetes.io/enforce: restricted
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: settlement-worker
+  namespace: settlement
+data:
+  MERIDIAN__SERVICE__ENVIRONMENT: production
+  MERIDIAN__SERVICE__REGION: eu-central
+  MERIDIAN__QUEUE__MAX_IN_FLIGHT: "512"
+  MERIDIAN__TELEMETRY__LOG_FORMAT: json
+  # Multi-line value: the worker reads this file at start-up.
+  holidays.txt: |
+    2026-12-25
+    2026-12-26
+    2027-01-01
+    2027-04-02
+    2027-04-05
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: settlement-worker
+  namespace: settlement
+type: Opaque
+stringData:
+  # Placeholders only. Real values are injected by the secret operator.
+  MERIDIAN__DATABASE__PASSWORD: REPLACE_ME
+  MERIDIAN__RAILS__SEPA__CLIENT_SECRET: REPLACE_ME
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: settlement-worker
+  namespace: settlement
+  labels: &labels
+    app.kubernetes.io/name: settlement-worker
+    app.kubernetes.io/part-of: meridian
+    app.kubernetes.io/component: worker
+  annotations:
+    meridian.example/owner: payments-core
+    meridian.example/runbook: https://runbooks.meridian.example/settlement-worker
+spec:
+  replicas: 4
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0        # never drop below four consumers mid-rollout
+  selector:
+    matchLabels: *labels
+  template:
+    metadata:
+      labels: *labels
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9464"
+    spec:
+      serviceAccountName: settlement-worker
+      terminationGracePeriodSeconds: 60   # > the worker's 45 s shutdown grace
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels: *labels
+      initContainers:
+        - name: migrate
+          image: &image registry.meridian.example/settlement-worker:2026.11.3
+          args: ["migrate", "--wait-for-lock", "60s"]
+          envFrom: &envFrom
+            - configMapRef:
+                name: settlement-worker
+            - secretRef:
+                name: settlement-worker
+          securityContext: &containerSecurity
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests: { cpu: 100m, memory: 128Mi }
+            limits: { memory: 256Mi }
+      containers:
+        - name: worker
+          image: *image
+          args: ["serve"]
+          ports:
+            - { name: https, containerPort: 8443 }
+            - { name: metrics, containerPort: 9464 }
+          envFrom: *envFrom
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef: { fieldPath: metadata.name }
+            - name: GOMEMLIMIT
+              valueFrom:
+                resourceFieldRef: { resource: limits.memory, divisor: "1" }
+          securityContext: *containerSecurity
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              memory: 1Gi              # no CPU limit: throttling hurts tail latency
+          startupProbe:
+            httpGet: &health { path: /healthz, port: https, scheme: HTTPS }
+            periodSeconds: 2
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              <<: *health
+              path: /readyz
+            periodSeconds: 5
+          livenessProbe:
+            httpGet: *health
+            periodSeconds: 10
+            failureThreshold: 3
+          volumeMounts:
+            - { name: tls, mountPath: /etc/meridian/tls, readOnly: true }
+            - { name: tmp, mountPath: /tmp }
+          lifecycle:
+            preStop:
+              exec:
+                # Stop taking new batches, finish the ones in flight.
+                command: ["/app/settlement-worker", "drain", "--timeout", "40s"]
+      volumes:
+        - name: tls
+          secret:
+            secretName: settlement-worker-tls
+            defaultMode: 0440
+        - name: tmp
+          emptyDir:
+            medium: Memory
+            sizeLimit: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: settlement-worker
+  namespace: settlement
+  labels: &svcLabels
+    app.kubernetes.io/name: settlement-worker
+spec:
+  selector: *svcLabels
+  ports:
+    - name: https
+      port: 443
+      targetPort: https
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: settlement-worker
+  namespace: settlement
+spec:
+  minAvailable: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: settlement-worker
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: settlement-worker
+  namespace: settlement
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: settlement-worker
+  minReplicas: 4
+  maxReplicas: 16
+  metrics:
+    # Scale on queue lag, not CPU: the work is I/O bound.
+    - type: External
+      external:
+        metric:
+          name: stream_consumer_lag
+          selector:
+            matchLabels:
+              consumer_group: settlement-worker
+        target:
+          type: AverageValue
+          averageValue: "2000"
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 30
+      policies:
+        - { type: Pods, value: 4, periodSeconds: 60 }
+    scaleDown:
+      stabilizationWindowSeconds: 600   # settlement traffic is bursty at cut-off
+      policies:
+        - { type: Percent, value: 25, periodSeconds: 120 }
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: settlement-worker
+  namespace: settlement
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: settlement-worker
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels: { team: payments-core }
+      ports:
+        - { port: 8443, protocol: TCP }
+  egress:
+    - to:
+        - ipBlock: { cidr: 192.0.2.0/24 }        # stream brokers
+        - ipBlock: { cidr: 198.51.100.0/24 }     # database and replicas
+      ports:
+        - { port: 9092, protocol: TCP }
+        - { port: 5432, protocol: TCP }
+    - to:
+        - ipBlock: { cidr: 203.0.113.0/24 }      # bank rail gateways
+      ports:
+        - { port: 443, protocol: TCP }
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels: { k8s-app: kube-dns }
+      ports:
+        - { port: 53, protocol: UDP }

@@ -1,0 +1,1048 @@
+2026-03-13 23:58:40.112 INFO  [main] c.m.settle.Application - Starting meridian-settlement 3.14.2 (build 7c1e09a, jdk 21.0.4)
+2026-03-13 23:58:40.564 INFO  [main] c.m.settle.Application - Active profiles: production, eu-west
+2026-03-13 23:58:40.798 INFO  [main] c.m.settle.config.DataSourceConfig - Ledger pool: jdbc:postgresql://ledger-primary.internal:5432/ledger (min=4, max=32)
+2026-03-13 23:58:41.194 INFO  [main] c.m.settle.config.DataSourceConfig - Read replica: jdbc:postgresql://ledger-replica.internal:5432/ledger (min=2, max=16)
+2026-03-13 23:58:41.482 INFO  [main] c.m.settle.config.KafkaConfig - Consumer group settlement-v3 subscribed to [ledger.captures, ledger.refunds, ledger.disputes]
+2026-03-13 23:58:41.805 WARN  [main] c.m.settle.config.FeatureFlags - Flag 'netting.parallel_currencies' is ON in production; it was OFF in the previous deploy
+2026-03-13 23:58:42.356 INFO  [main] c.m.settle.fx.RateCache - Loaded 41 FX pairs, as of 2026-03-13T16:00:00Z
+2026-03-13 23:58:42.951 INFO  [main] c.m.settle.scheduler.CutoffScheduler - Daily cut-off at 00:00:00 Europe/Dublin; next run in 79s
+2026-03-13 23:58:43.352 INFO  [main] o.e.jetty.server.Server - Started ServerConnector@3f2a1c{HTTP/1.1, (http/1.1, h2c)}{0.0.0.0:8080}
+2026-03-13 23:58:43.719 INFO  [main] c.m.settle.Application - Started in 6.412 s (process running for 7.03 s)
+2026-03-13 23:58:44.071 ERROR [settle-worker-4] c.m.settle.ingest.LedgerConsumer - unhandled failure, record will be retried
+org.postgresql.util.PSQLException: ERROR: could not serialize access due to concurrent update
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
+	at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:152)
+	at com.meridian.settle.store.BatchStore.applyDelta(BatchStore.java:214)
+	at com.meridian.settle.netting.Netter.flush(Netter.java:131)
+	at com.meridian.settle.ingest.LedgerConsumer.run(LedgerConsumer.java:88)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026-03-13 23:58:44.769 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-bcee94306a] - GET /v3/payouts/po_3028 from 198.51.100.59
+2026-03-13 23:58:44.809 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-bcee94306a] - 409 in 91ms
+2026-03-13 23:58:44.923 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 554 records (partition 2, offset 4652619)
+2026-03-13 23:58:45.019 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 554 records into 10 batch deltas in 74ms
+2026-03-13 23:58:45.101 WARN  [settle-worker-3] c.m.settle.fx.RateCache - GBP/SEK rate is 36 min old; using it (limit 60 min)
+2026-03-13 23:58:45.449 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-ecee7809cc] - GET /v3/batches/b_20260313_03 from 198.51.100.22
+2026-03-13 23:58:45.481 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-ecee7809cc] - 200 in 158ms
+2026-03-13 23:58:45.728 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 112 records (partition 5, offset 4856267)
+2026-03-13 23:58:45.783 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 112 records into 6 batch deltas in 85ms
+2026-03-13 23:58:46.082 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-c16484a92d] - GET /v3/batches/b_20260313_06 from 198.51.100.11
+2026-03-13 23:58:46.085 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-c16484a92d] - 200 in 13ms
+2026-03-13 23:58:46.736 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-ab95437c5a] - GET /v3/payouts/po_5600 from 198.51.100.37
+2026-03-13 23:58:46.746 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-ab95437c5a] - 200 in 131ms
+2026-03-13 23:58:47.573 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 19ms, heap 1876M/4096M
+2026-03-13 23:58:48.428 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-23cdcc80fa] - GET /v3/batches?day=2026-03-13 from 198.51.100.15
+2026-03-13 23:58:48.442 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-23cdcc80fa] - 200 in 110ms
+2026-03-13 23:58:48.707 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 380 records (partition 5, offset 4420201)
+2026-03-13 23:58:48.783 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 380 records into 21 batch deltas in 7ms
+2026-03-13 23:58:49.185 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 291 records (partition 2, offset 4895592)
+2026-03-13 23:58:49.203 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 291 records into 23 batch deltas in 35ms
+2026-03-13 23:58:49.416 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-738ac670aa] - POST /v3/batches/b_20260313_09/release from 198.51.100.21
+2026-03-13 23:58:49.424 WARN  [http-nio-5] c.m.settle.web.BatchController [req-738ac670aa] - release refused: batch still has 2 unmatched lines
+2026-03-13 23:58:49.424 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-738ac670aa] - 409 in 50ms
+2026-03-13 23:58:50.012 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-072d222b7d] - GET /v3/merchants/m_brulee/balance from 198.51.100.4
+2026-03-13 23:58:50.022 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-072d222b7d] - 409 in 144ms
+2026-03-13 23:58:50.065 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-be9ce053cf] - GET /v3/payouts/po_1515 from 198.51.100.22
+2026-03-13 23:58:50.080 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-be9ce053cf] - 200 in 38ms
+2026-03-13 23:58:50.545 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 14ms, heap 960M/4096M
+2026-03-13 23:58:51.257 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-874e80d6f1] - GET /v3/batches/b_20260313_05 from 198.51.100.35
+2026-03-13 23:58:51.259 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-874e80d6f1] - 200 in 150ms
+2026-03-13 23:58:51.606 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 81 records (partition 9, offset 4697350)
+2026-03-13 23:58:51.642 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 81 records into 15 batch deltas in 66ms
+2026-03-13 23:58:51.787 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-89b8ccf199] - POST /v3/batches/b_20260313_03/release from 198.51.100.51
+2026-03-13 23:58:51.818 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-89b8ccf199] - 200 in 119ms
+2026-03-13 23:58:52.394 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-421fabdac2] - GET /v3/merchants/m_tidepool/balance from 198.51.100.21
+2026-03-13 23:58:52.408 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-421fabdac2] - 200 in 81ms
+2026-03-13 23:58:52.732 WARN  [settle-worker-2] c.m.settle.fx.RateCache - USD/JPY rate is 30 min old; using it (limit 60 min)
+2026-03-13 23:58:53.265 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-10a8ab4c7e] - GET /v3/batches/b_20260313_04 from 198.51.100.52
+2026-03-13 23:58:53.300 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-10a8ab4c7e] - 200 in 29ms
+2026-03-13 23:58:54.176 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 222 records (partition 1, offset 4753751)
+2026-03-13 23:58:54.209 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 222 records into 10 batch deltas in 31ms
+2026-03-13 23:58:55.045 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 671 records (partition 11, offset 4657894)
+2026-03-13 23:58:55.068 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 671 records into 5 batch deltas in 29ms
+2026-03-13 23:58:55.254 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-1e2125f92f] - GET /v3/batches/b_20260313_03 from 198.51.100.26
+2026-03-13 23:58:55.272 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-1e2125f92f] - 200 in 143ms
+2026-03-13 23:58:55.827 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 893 records (partition 2, offset 4671670)
+2026-03-13 23:58:55.853 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 893 records into 17 batch deltas in 80ms
+2026-03-13 23:58:56.489 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-71430ea763] - POST /v3/batches/b_20260313_06/release from 198.51.100.12
+2026-03-13 23:58:56.497 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-71430ea763] - 409 in 176ms
+2026-03-13 23:58:57.278 ERROR [settle-worker-2] c.m.settle.ingest.LedgerConsumer - unhandled failure, record will be retried
+org.postgresql.util.PSQLException: ERROR: could not serialize access due to concurrent update
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
+	at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:152)
+	at com.meridian.settle.store.BatchStore.applyDelta(BatchStore.java:214)
+	at com.meridian.settle.netting.Netter.flush(Netter.java:131)
+	at com.meridian.settle.ingest.LedgerConsumer.run(LedgerConsumer.java:88)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026-03-13 23:58:58.010 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 795 records (partition 3, offset 4616634)
+2026-03-13 23:58:58.087 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 795 records into 16 batch deltas in 66ms
+2026-03-13 23:58:58.501 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 616 records (partition 9, offset 4719374)
+2026-03-13 23:58:58.566 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 616 records into 3 batch deltas in 61ms
+2026-03-13 23:58:59.130 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-af2a97812f] - GET /v3/batches/b_20260313_00 from 198.51.100.55
+2026-03-13 23:58:59.156 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-af2a97812f] - 200 in 172ms
+2026-03-13 23:58:59.485 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 323 records (partition 5, offset 4381005)
+2026-03-13 23:58:59.535 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 323 records into 4 batch deltas in 58ms
+2026-03-13 23:59:00.336 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 869 records (partition 7, offset 4792455)
+2026-03-13 23:59:00.433 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 869 records into 9 batch deltas in 23ms
+2026-03-13 23:59:00.920 WARN  [http-nio-7] c.m.settle.web.RateLimiter [req-ea23f0247d] - client 203.0.113.7 throttled (120 req/min)
+2026-03-13 23:59:01.275 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 728 records (partition 0, offset 4593354)
+2026-03-13 23:59:01.390 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 728 records into 12 batch deltas in 37ms
+2026-03-13 23:59:01.749 INFO  [kafka-coordinator] o.a.k.clients.consumer.internals.ConsumerCoordinator - [Consumer clientId=settle-4, groupId=settlement-v3] Rebalance: assigned partitions [0, 5, 9, 11]
+2026-03-13 23:59:02.647 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-c25d2a2662] - GET /v3/merchants/m_fjall/balance from 198.51.100.46
+2026-03-13 23:59:02.666 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-c25d2a2662] - 200 in 176ms
+2026-03-13 23:59:03.049 DEBUG [http-nio-5] c.m.settle.web.HealthController [req-1a44a47c66] - health ok (db=4ms, kafka=lag 12)
+2026-03-13 23:59:03.612 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-94c2bcf7b7] - GET /v3/merchants/m_saguaro/balance from 198.51.100.7
+2026-03-13 23:59:03.652 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-94c2bcf7b7] - 404 in 101ms
+2026-03-13 23:59:04.014 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-263b636b55] - GET /v3/batches?day=2026-03-13 from 198.51.100.39
+2026-03-13 23:59:04.020 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-263b636b55] - 200 in 100ms
+2026-03-13 23:59:04.078 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 819 records (partition 9, offset 4190087)
+2026-03-13 23:59:04.143 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 819 records into 20 batch deltas in 41ms
+2026-03-13 23:59:04.719 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-0a1c26f580] - GET /v3/payouts/po_6530 from 198.51.100.35
+2026-03-13 23:59:04.747 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-0a1c26f580] - 200 in 137ms
+2026-03-13 23:59:04.850 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 274 records (partition 4, offset 4472827)
+2026-03-13 23:59:04.955 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 274 records into 3 batch deltas in 45ms
+2026-03-13 23:59:05.487 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 810 records (partition 7, offset 4714484)
+2026-03-13 23:59:05.574 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 810 records into 11 batch deltas in 44ms
+2026-03-13 23:59:05.814 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 725 records (partition 6, offset 4891326)
+2026-03-13 23:59:05.859 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 725 records into 14 batch deltas in 68ms
+2026-03-13 23:59:06.567 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 365 records (partition 4, offset 4777481)
+2026-03-13 23:59:06.607 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 365 records into 14 batch deltas in 72ms
+2026-03-13 23:59:07.489 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 807 records (partition 8, offset 4458675)
+2026-03-13 23:59:07.521 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 807 records into 19 batch deltas in 85ms
+2026-03-13 23:59:07.526 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-5046a23e68] - GET /v3/batches?day=2026-03-13 from 198.51.100.15
+2026-03-13 23:59:07.538 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-5046a23e68] - 200 in 123ms
+2026-03-13 23:59:08.245 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-9e92725af0] - POST /v3/batches/b_20260313_09/release from 198.51.100.25
+2026-03-13 23:59:08.262 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-9e92725af0] - 200 in 79ms
+2026-03-13 23:59:08.351 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 485 records (partition 5, offset 4635214)
+2026-03-13 23:59:08.407 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 485 records into 14 batch deltas in 48ms
+2026-03-13 23:59:08.977 WARN  [settle-worker-6] c.m.settle.fx.RateCache - EUR/CHF rate is 37 min old; using it (limit 60 min)
+2026-03-13 23:59:09.074 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-152ad55c1d] - POST /v3/batches/b_20260313_08/release from 198.51.100.38
+2026-03-13 23:59:09.082 WARN  [http-nio-3] c.m.settle.web.BatchController [req-152ad55c1d] - release refused: batch still has 2 unmatched lines
+2026-03-13 23:59:09.082 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-152ad55c1d] - 409 in 177ms
+2026-03-13 23:59:09.928 WARN  [settle-worker-5] c.m.settle.fx.RateCache - EUR/NOK rate is 34 min old; using it (limit 60 min)
+2026-03-13 23:59:10.281 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 299 records (partition 7, offset 4311254)
+2026-03-13 23:59:10.380 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 299 records into 16 batch deltas in 5ms
+2026-03-13 23:59:10.903 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-8d2a6d9669] - GET /v3/batches?day=2026-03-13 from 198.51.100.35
+2026-03-13 23:59:10.915 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-8d2a6d9669] - 200 in 128ms
+2026-03-13 23:59:11.300 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-a74f63d2af] - GET /v3/payouts/po_4706 from 198.51.100.43
+2026-03-13 23:59:11.319 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-a74f63d2af] - 200 in 81ms
+2026-03-13 23:59:11.810 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 188 records (partition 4, offset 4384385)
+2026-03-13 23:59:11.876 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 188 records into 12 batch deltas in 58ms
+2026-03-13 23:59:12.645 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-cf12e9248c] - GET /v3/batches/b_20260313_07 from 198.51.100.3
+2026-03-13 23:59:12.674 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-cf12e9248c] - 409 in 56ms
+2026-03-13 23:59:13.109 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-35eed4e6c6] - GET /v3/batches/b_20260313_03 from 198.51.100.29
+2026-03-13 23:59:13.139 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-35eed4e6c6] - 404 in 71ms
+2026-03-13 23:59:13.528 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-b8e74cd7b9] - GET /v3/batches?day=2026-03-13 from 198.51.100.56
+2026-03-13 23:59:13.535 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-b8e74cd7b9] - 409 in 16ms
+2026-03-13 23:59:13.847 WARN  [settle-worker-4] c.m.settle.fx.RateCache - GBP/SEK rate is 24 min old; using it (limit 60 min)
+2026-03-13 23:59:13.989 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-dad07402fb] - GET /v3/merchants/m_heron/balance from 198.51.100.19
+2026-03-13 23:59:14.029 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-dad07402fb] - 200 in 175ms
+2026-03-13 23:59:14.543 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-933d965cf7] - GET /v3/batches/b_20260313_08 from 198.51.100.16
+2026-03-13 23:59:14.560 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-933d965cf7] - 404 in 83ms
+2026-03-13 23:59:14.999 DEBUG [http-nio-8] c.m.settle.web.HealthController [req-50ef5d9306] - health ok (db=4ms, kafka=lag 12)
+2026-03-13 23:59:15.314 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 844 records (partition 4, offset 4792676)
+2026-03-13 23:59:15.372 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 844 records into 22 batch deltas in 33ms
+2026-03-13 23:59:15.470 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 684 records (partition 9, offset 4800730)
+2026-03-13 23:59:15.587 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 684 records into 13 batch deltas in 5ms
+2026-03-13 23:59:15.684 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 352 records (partition 5, offset 4576826)
+2026-03-13 23:59:15.748 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 352 records into 12 batch deltas in 65ms
+2026-03-13 23:59:16.116 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-7c618331ec] - GET /v3/batches/b_20260313_03 from 198.51.100.28
+2026-03-13 23:59:16.153 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-7c618331ec] - 200 in 172ms
+2026-03-13 23:59:16.885 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 196 records (partition 2, offset 4097272)
+2026-03-13 23:59:16.938 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 196 records into 15 batch deltas in 34ms
+2026-03-13 23:59:17.037 WARN  [settle-worker-2] c.m.settle.fx.RateCache - EUR/CHF rate is 18 min old; using it (limit 60 min)
+2026-03-13 23:59:17.157 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-18c6d7d05f] - GET /v3/payouts/po_1076 from 198.51.100.23
+2026-03-13 23:59:17.169 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-18c6d7d05f] - 200 in 92ms
+2026-03-13 23:59:17.921 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 765 records (partition 0, offset 4727307)
+2026-03-13 23:59:17.982 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 765 records into 4 batch deltas in 30ms
+2026-03-13 23:59:18.531 WARN  [settle-worker-6] c.m.settle.fx.RateCache - USD/JPY rate is 20 min old; using it (limit 60 min)
+2026-03-13 23:59:19.143 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-125d207320] - POST /v3/batches/b_20260313_04/release from 198.51.100.7
+2026-03-13 23:59:19.172 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-125d207320] - 200 in 6ms
+2026-03-13 23:59:19.178 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-f64fe6bf88] - GET /v3/payouts/po_1930 from 198.51.100.60
+2026-03-13 23:59:19.193 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-f64fe6bf88] - 200 in 146ms
+2026-03-13 23:59:19.588 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 317 records (partition 8, offset 4661179)
+2026-03-13 23:59:19.677 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 317 records into 5 batch deltas in 48ms
+2026-03-13 23:59:20.403 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-d34488fa7f] - GET /v3/batches?day=2026-03-13 from 198.51.100.23
+2026-03-13 23:59:20.431 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-d34488fa7f] - 200 in 129ms
+2026-03-13 23:59:21.296 DEBUG [http-nio-4] c.m.settle.web.HealthController [req-d9ee486efe] - health ok (db=4ms, kafka=lag 12)
+2026-03-13 23:59:21.540 INFO  [kafka-coordinator] o.a.k.clients.consumer.internals.ConsumerCoordinator - [Consumer clientId=settle-2, groupId=settlement-v3] Rebalance: assigned partitions [1, 4, 9, 10]
+2026-03-13 23:59:22.137 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 787 records (partition 9, offset 4695449)
+2026-03-13 23:59:22.222 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 787 records into 15 batch deltas in 16ms
+2026-03-13 23:59:22.240 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-a0975d6b76] - GET /v3/batches?day=2026-03-13 from 198.51.100.30
+2026-03-13 23:59:22.265 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-a0975d6b76] - 409 in 49ms
+2026-03-13 23:59:23.093 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 91 records (partition 2, offset 4632456)
+2026-03-13 23:59:23.116 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 91 records into 13 batch deltas in 32ms
+2026-03-13 23:59:23.230 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 313 records (partition 2, offset 4176689)
+2026-03-13 23:59:23.266 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 313 records into 24 batch deltas in 68ms
+2026-03-13 23:59:23.837 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 11ms, heap 2045M/4096M
+2026-03-13 23:59:23.918 WARN  [settle-worker-3] c.m.settle.fx.RateCache - EUR/PLN rate is 21 min old; using it (limit 60 min)
+2026-03-13 23:59:23.963 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 135 records (partition 8, offset 4135090)
+2026-03-13 23:59:24.021 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 135 records into 24 batch deltas in 72ms
+2026-03-13 23:59:24.173 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 124 records (partition 4, offset 4497585)
+2026-03-13 23:59:24.213 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 124 records into 18 batch deltas in 50ms
+2026-03-13 23:59:24.645 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 530 records (partition 2, offset 4623338)
+2026-03-13 23:59:24.729 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 530 records into 6 batch deltas in 27ms
+2026-03-13 23:59:25.010 INFO  [kafka-coordinator] o.a.k.clients.consumer.internals.ConsumerCoordinator - [Consumer clientId=settle-2, groupId=settlement-v3] Rebalance: assigned partitions [6, 8, 10, 11]
+2026-03-13 23:59:25.876 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-ef797b078b] - GET /v3/batches?day=2026-03-13 from 198.51.100.45
+2026-03-13 23:59:25.912 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-ef797b078b] - 200 in 119ms
+2026-03-13 23:59:26.588 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-2719d7b117] - GET /v3/payouts/po_2381 from 198.51.100.52
+2026-03-13 23:59:26.597 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-2719d7b117] - 200 in 152ms
+2026-03-13 23:59:27.008 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-6376c97b76] - GET /v3/batches?day=2026-03-13 from 198.51.100.12
+2026-03-13 23:59:27.031 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-6376c97b76] - 404 in 70ms
+2026-03-13 23:59:27.762 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 174 records (partition 1, offset 4166832)
+2026-03-13 23:59:27.857 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 174 records into 15 batch deltas in 53ms
+2026-03-13 23:59:28.172 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 724 records (partition 6, offset 4256007)
+2026-03-13 23:59:28.194 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 724 records into 6 batch deltas in 80ms
+2026-03-13 23:59:28.999 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 93 records (partition 10, offset 4086277)
+2026-03-13 23:59:29.086 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 93 records into 23 batch deltas in 34ms
+2026-03-13 23:59:29.474 ERROR [settle-worker-2] c.m.settle.ingest.LedgerConsumer - unhandled failure, record will be retried
+org.postgresql.util.PSQLException: ERROR: could not serialize access due to concurrent update
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
+	at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:152)
+	at com.meridian.settle.store.BatchStore.applyDelta(BatchStore.java:214)
+	at com.meridian.settle.netting.Netter.flush(Netter.java:131)
+	at com.meridian.settle.ingest.LedgerConsumer.run(LedgerConsumer.java:88)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026-03-13 23:59:29.957 INFO  [kafka-coordinator] o.a.k.clients.consumer.internals.ConsumerCoordinator - [Consumer clientId=settle-6, groupId=settlement-v3] Rebalance: assigned partitions [0, 3, 8, 9]
+2026-03-13 23:59:30.373 INFO  [kafka-coordinator] o.a.k.clients.consumer.internals.ConsumerCoordinator - [Consumer clientId=settle-1, groupId=settlement-v3] Rebalance: assigned partitions [0, 3, 8, 9]
+2026-03-13 23:59:31.018 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-b161c8155e] - GET /v3/merchants/m_heron/balance from 198.51.100.48
+2026-03-13 23:59:31.034 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-b161c8155e] - 409 in 81ms
+2026-03-13 23:59:31.184 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-ba783ce1a0] - GET /v3/payouts/po_2575 from 198.51.100.27
+2026-03-13 23:59:31.213 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-ba783ce1a0] - 409 in 37ms
+2026-03-13 23:59:31.240 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-42c9a84cab] - GET /v3/batches/b_20260313_07 from 198.51.100.34
+2026-03-13 23:59:31.260 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-42c9a84cab] - 409 in 115ms
+2026-03-13 23:59:31.621 DEBUG [http-nio-7] c.m.settle.web.HealthController [req-6cf57492a7] - health ok (db=4ms, kafka=lag 12)
+2026-03-13 23:59:31.898 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 712 records (partition 6, offset 4192085)
+2026-03-13 23:59:32.011 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 712 records into 21 batch deltas in 30ms
+2026-03-13 23:59:32.103 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 595 records (partition 1, offset 4591912)
+2026-03-13 23:59:32.193 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 595 records into 18 batch deltas in 6ms
+2026-03-13 23:59:32.550 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 702 records (partition 11, offset 4799457)
+2026-03-13 23:59:32.668 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 702 records into 11 batch deltas in 46ms
+2026-03-13 23:59:32.817 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-8a584992a6] - GET /v3/merchants/m_saguaro/balance from 198.51.100.56
+2026-03-13 23:59:32.842 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-8a584992a6] - 200 in 131ms
+2026-03-13 23:59:33.285 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 710 records (partition 11, offset 4646397)
+2026-03-13 23:59:33.324 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 710 records into 24 batch deltas in 88ms
+2026-03-13 23:59:33.958 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 246 records (partition 6, offset 4419304)
+2026-03-13 23:59:34.077 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 246 records into 14 batch deltas in 73ms
+2026-03-13 23:59:34.613 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-7dc7ca7d2d] - GET /v3/merchants/m_heron/balance from 198.51.100.42
+2026-03-13 23:59:34.636 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-7dc7ca7d2d] - 200 in 144ms
+2026-03-13 23:59:35.103 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-cb74d6c10e] - GET /v3/payouts/po_7852 from 198.51.100.12
+2026-03-13 23:59:35.137 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-cb74d6c10e] - 200 in 143ms
+2026-03-13 23:59:35.602 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-1eaa942967] - GET /v3/merchants/m_saguaro/balance from 198.51.100.31
+2026-03-13 23:59:35.617 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-1eaa942967] - 200 in 33ms
+2026-03-13 23:59:36.194 DEBUG [http-nio-7] c.m.settle.web.HealthController [req-b52be43b7f] - health ok (db=4ms, kafka=lag 12)
+2026-03-13 23:59:36.718 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 842 records (partition 5, offset 4676507)
+2026-03-13 23:59:36.823 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 842 records into 23 batch deltas in 35ms
+2026-03-13 23:59:37.213 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 253 records (partition 7, offset 4315345)
+2026-03-13 23:59:37.326 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 253 records into 11 batch deltas in 84ms
+2026-03-13 23:59:37.819 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 409 records (partition 11, offset 4447858)
+2026-03-13 23:59:37.891 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 409 records into 9 batch deltas in 19ms
+2026-03-13 23:59:38.430 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 119 records (partition 10, offset 4866217)
+2026-03-13 23:59:38.496 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 119 records into 8 batch deltas in 42ms
+2026-03-13 23:59:38.595 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-99fb62d5b9] - GET /v3/batches?day=2026-03-13 from 198.51.100.45
+2026-03-13 23:59:38.616 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-99fb62d5b9] - 409 in 109ms
+2026-03-13 23:59:39.404 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-b4b86ce074] - GET /v3/batches?day=2026-03-13 from 198.51.100.8
+2026-03-13 23:59:39.410 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-b4b86ce074] - 200 in 131ms
+2026-03-13 23:59:39.705 DEBUG [http-nio-6] c.m.settle.web.HealthController [req-44ed4bbcc4] - health ok (db=4ms, kafka=lag 12)
+2026-03-13 23:59:40.322 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 657 records (partition 0, offset 4682885)
+2026-03-13 23:59:40.354 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 657 records into 17 batch deltas in 63ms
+2026-03-13 23:59:41.052 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 438 records (partition 9, offset 4748406)
+2026-03-13 23:59:41.131 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 438 records into 12 batch deltas in 69ms
+2026-03-13 23:59:41.350 WARN  [settle-worker-4] c.m.settle.fx.RateCache - GBP/SEK rate is 31 min old; using it (limit 60 min)
+2026-03-13 23:59:42.133 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-53b43d583b] - GET /v3/batches/b_20260313_07 from 198.51.100.51
+2026-03-13 23:59:42.161 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-53b43d583b] - 409 in 39ms
+2026-03-13 23:59:42.320 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-6e26ee0575] - POST /v3/batches/b_20260313_02/release from 198.51.100.38
+2026-03-13 23:59:42.334 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-6e26ee0575] - 409 in 39ms
+2026-03-13 23:59:43.143 WARN  [http-nio-6] c.m.settle.web.RateLimiter [req-662f94abf8] - client 203.0.113.101 throttled (120 req/min)
+2026-03-13 23:59:43.513 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 349 records (partition 11, offset 4601061)
+2026-03-13 23:59:43.581 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 349 records into 3 batch deltas in 81ms
+2026-03-13 23:59:44.115 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 344 records (partition 2, offset 4480642)
+2026-03-13 23:59:44.217 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 344 records into 21 batch deltas in 38ms
+2026-03-13 23:59:44.948 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-753d4e6aa6] - GET /v3/merchants/m_mosaic/balance from 198.51.100.27
+2026-03-13 23:59:44.967 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-753d4e6aa6] - 200 in 6ms
+2026-03-13 23:59:45.032 WARN  [settle-worker-6] c.m.settle.fx.RateCache - GBP/SEK rate is 17 min old; using it (limit 60 min)
+2026-03-13 23:59:45.041 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-362d241bfb] - GET /v3/batches/b_20260313_01 from 198.51.100.40
+2026-03-13 23:59:45.071 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-362d241bfb] - 409 in 165ms
+2026-03-13 23:59:45.874 ERROR [settle-worker-3] c.m.settle.payout.PayoutService - payout failed, merchant notified
+com.meridian.settle.payout.PayoutRejectedException: bank rejected payout po_3370: AC04 closed account
+	at com.meridian.settle.payout.BankGateway.submit(BankGateway.java:143)
+	at com.meridian.settle.payout.PayoutService.release(PayoutService.java:98)
+	at com.meridian.settle.payout.PayoutService.lambda$releaseAll$2(PayoutService.java:71)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.net.http.HttpTimeoutException: request timed out
+	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:951)
+	at com.meridian.settle.payout.BankGateway.post(BankGateway.java:188)
+	at com.meridian.settle.payout.BankGateway.submit(BankGateway.java:131)
+	... 4 common frames omitted
+2026-03-13 23:59:46.106 INFO  [kafka-coordinator] o.a.k.clients.consumer.internals.ConsumerCoordinator - [Consumer clientId=settle-2, groupId=settlement-v3] Rebalance: assigned partitions [0, 7, 8, 9]
+2026-03-13 23:59:46.712 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-af9d1d5014] - GET /v3/batches?day=2026-03-13 from 198.51.100.19
+2026-03-13 23:59:46.745 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-af9d1d5014] - 404 in 88ms
+2026-03-13 23:59:47.488 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-2c4964c5b9] - GET /v3/payouts/po_1015 from 198.51.100.56
+2026-03-13 23:59:47.504 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-2c4964c5b9] - 200 in 155ms
+2026-03-13 23:59:47.517 DEBUG [http-nio-7] c.m.settle.web.HealthController [req-b86ad7f319] - health ok (db=4ms, kafka=lag 12)
+2026-03-13 23:59:47.628 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 15ms, heap 1257M/4096M
+2026-03-13 23:59:48.028 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 442 records (partition 0, offset 4702624)
+2026-03-13 23:59:48.107 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 442 records into 21 batch deltas in 16ms
+2026-03-13 23:59:48.833 ERROR [settle-worker-6] c.m.settle.ingest.LedgerConsumer - unhandled failure, record will be retried
+com.meridian.settle.fx.StaleRateException: no EUR/ISK rate newer than 60 min (last 2026-03-13T22:41:07Z)
+	at com.meridian.settle.fx.RateCache.require(RateCache.java:77)
+	at com.meridian.settle.netting.CurrencyNetter.convert(CurrencyNetter.java:59)
+	at com.meridian.settle.netting.Netter.flush(Netter.java:126)
+	at com.meridian.settle.ingest.LedgerConsumer.run(LedgerConsumer.java:88)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026-03-13 23:59:49.554 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 115 records (partition 11, offset 4091731)
+2026-03-13 23:59:49.565 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 115 records into 9 batch deltas in 82ms
+2026-03-13 23:59:50.370 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-018dd16a44] - GET /v3/merchants/m_mosaic/balance from 198.51.100.37
+2026-03-13 23:59:50.393 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-018dd16a44] - 404 in 26ms
+2026-03-13 23:59:50.808 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 601 records (partition 6, offset 4871241)
+2026-03-13 23:59:50.900 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 601 records into 11 batch deltas in 42ms
+2026-03-13 23:59:51.735 ERROR [settle-worker-1] c.m.settle.ingest.LedgerConsumer - unhandled failure, record will be retried
+org.postgresql.util.PSQLException: ERROR: could not serialize access due to concurrent update
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
+	at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:152)
+	at com.meridian.settle.store.BatchStore.applyDelta(BatchStore.java:214)
+	at com.meridian.settle.netting.Netter.flush(Netter.java:131)
+	at com.meridian.settle.ingest.LedgerConsumer.run(LedgerConsumer.java:88)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026-03-13 23:59:52.596 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-f54b4ddc63] - GET /v3/batches?day=2026-03-13 from 198.51.100.59
+2026-03-13 23:59:52.621 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-f54b4ddc63] - 404 in 122ms
+2026-03-13 23:59:52.933 DEBUG [http-nio-3] c.m.settle.web.HealthController [req-287881e98c] - health ok (db=4ms, kafka=lag 12)
+2026-03-13 23:59:53.576 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 638 records (partition 9, offset 4666889)
+2026-03-13 23:59:53.642 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 638 records into 23 batch deltas in 83ms
+2026-03-13 23:59:54.450 INFO  [kafka-coordinator] o.a.k.clients.consumer.internals.ConsumerCoordinator - [Consumer clientId=settle-3, groupId=settlement-v3] Rebalance: assigned partitions [0, 1, 7, 11]
+2026-03-13 23:59:55.195 DEBUG [http-nio-1] c.m.settle.web.HealthController [req-eb260e4faa] - health ok (db=4ms, kafka=lag 12)
+2026-03-13 23:59:55.230 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-df401911cb] - GET /v3/payouts/po_8856 from 198.51.100.6
+2026-03-13 23:59:55.262 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-df401911cb] - 404 in 51ms
+2026-03-13 23:59:56.072 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-d84d7f3f7f] - POST /v3/batches/b_20260313_07/release from 198.51.100.45
+2026-03-13 23:59:56.111 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-d84d7f3f7f] - 200 in 151ms
+2026-03-13 23:59:56.329 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 150 records (partition 9, offset 4825497)
+2026-03-13 23:59:56.406 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 150 records into 9 batch deltas in 18ms
+2026-03-13 23:59:56.967 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-25ce87edc3] - GET /v3/batches?day=2026-03-13 from 198.51.100.20
+2026-03-13 23:59:56.988 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-25ce87edc3] - 409 in 56ms
+2026-03-13 23:59:57.153 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 816 records (partition 1, offset 4357349)
+2026-03-13 23:59:57.174 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 816 records into 9 batch deltas in 34ms
+2026-03-13 23:59:57.888 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-4ef03d335f] - GET /v3/batches/b_20260313_00 from 198.51.100.43
+2026-03-13 23:59:57.916 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-4ef03d335f] - 200 in 129ms
+2026-03-13 23:59:58.503 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-c5200c1c08] - GET /v3/payouts/po_6109 from 198.51.100.37
+2026-03-13 23:59:58.518 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-c5200c1c08] - 200 in 51ms
+2026-03-13 23:59:59.077 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-e8c42a7445] - GET /v3/batches/b_20260313_06 from 198.51.100.29
+2026-03-13 23:59:59.098 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-e8c42a7445] - 200 in 117ms
+2026-03-13 23:59:59.890 WARN  [http-nio-6] c.m.settle.web.RateLimiter [req-ffbcb1eb7b] - client 203.0.113.77 throttled (120 req/min)
+2026-03-14 00:00:00.051 INFO  [cutoff-scheduler] c.m.settle.scheduler.CutoffScheduler - Cut-off reached for business day 2026-03-13; sealing open batches
+2026-03-14 00:00:00.203 INFO  [cutoff-scheduler] c.m.settle.batch.Sealer - sealed b_20260313_00 merchant=m_harbor ccy=NOK lines=1902 net=85701.35
+2026-03-14 00:00:00.229 INFO  [cutoff-scheduler] c.m.settle.batch.Sealer - sealed b_20260313_01 merchant=m_northwind ccy=USD lines=2581 net=82172.31
+2026-03-14 00:00:00.242 INFO  [cutoff-scheduler] c.m.settle.batch.Sealer - sealed b_20260313_02 merchant=m_tidepool ccy=SEK lines=3772 net=37323.59
+2026-03-14 00:00:00.297 INFO  [cutoff-scheduler] c.m.settle.batch.Sealer - sealed b_20260313_03 merchant=m_lantern ccy=SEK lines=3232 net=83462.86
+2026-03-14 00:00:00.351 INFO  [cutoff-scheduler] c.m.settle.batch.Sealer - sealed b_20260313_04 merchant=m_saguaro ccy=GBP lines=3984 net=31105.02
+2026-03-14 00:00:00.372 INFO  [cutoff-scheduler] c.m.settle.batch.Sealer - sealed b_20260313_05 merchant=m_mosaic ccy=SEK lines=2936 net=79524.62
+2026-03-14 00:00:00.430 INFO  [cutoff-scheduler] c.m.settle.batch.Sealer - sealed b_20260313_06 merchant=m_fjall ccy=JPY lines=3555 net=23250.83
+2026-03-14 00:00:00.463 INFO  [cutoff-scheduler] c.m.settle.batch.Sealer - sealed b_20260313_07 merchant=m_okami ccy=PLN lines=942 net=38233.76
+2026-03-14 00:00:00.509 INFO  [cutoff-scheduler] c.m.settle.batch.Sealer - sealed b_20260313_08 merchant=m_heron ccy=SEK lines=1792 net=82673.49
+2026-03-14 00:00:00.580 INFO  [cutoff-scheduler] c.m.settle.batch.Sealer - sealed b_20260313_09 merchant=m_brulee ccy=NOK lines=2485 net=35285.15
+2026-03-14 00:00:00.606 WARN  [cutoff-scheduler] c.m.settle.batch.Sealer - b_20260313_07 sealed with 2 unmatched lines; payout will wait for reconciliation
+    unmatched: pay_4a81c03 (captured 18.40 EUR, acquirer 18.04 EUR)
+    unmatched: pay_4a81d9f (captured 129.95 GBP, missing at acquirer)
+2026-03-14 00:00:00.606 INFO  [cutoff-scheduler] c.m.settle.scheduler.CutoffScheduler - Business day 2026-03-13 sealed: 10 batches, 1 held
+2026-03-14 00:00:01.084 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 478 records (partition 9, offset 4732372)
+2026-03-14 00:00:01.164 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 478 records into 9 batch deltas in 35ms
+2026-03-14 00:00:01.252 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-ed93950c94] - GET /v3/payouts/po_2873 from 198.51.100.4
+2026-03-14 00:00:01.256 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-ed93950c94] - 200 in 165ms
+2026-03-14 00:00:01.817 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-08d6f436f7] - GET /v3/merchants/m_okami/balance from 198.51.100.23
+2026-03-14 00:00:01.856 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-08d6f436f7] - 409 in 53ms
+2026-03-14 00:00:02.016 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 828 records (partition 1, offset 4770325)
+2026-03-14 00:00:02.085 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 828 records into 24 batch deltas in 57ms
+2026-03-14 00:00:02.475 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 404 records (partition 0, offset 4781395)
+2026-03-14 00:00:02.541 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 404 records into 17 batch deltas in 34ms
+2026-03-14 00:00:03.220 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-9b90e25700] - GET /v3/batches/b_20260313_06 from 198.51.100.23
+2026-03-14 00:00:03.240 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-9b90e25700] - 200 in 4ms
+2026-03-14 00:00:03.432 WARN  [http-nio-2] c.m.settle.web.RateLimiter [req-fd8756cdec] - client 203.0.113.112 throttled (120 req/min)
+2026-03-14 00:00:03.435 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 342 records (partition 2, offset 4566510)
+2026-03-14 00:00:03.518 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 342 records into 20 batch deltas in 84ms
+2026-03-14 00:00:03.865 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 143 records (partition 3, offset 4177620)
+2026-03-14 00:00:03.917 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 143 records into 16 batch deltas in 20ms
+2026-03-14 00:00:04.131 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-256414327a] - GET /v3/batches/b_20260313_09 from 198.51.100.9
+2026-03-14 00:00:04.149 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-256414327a] - 409 in 56ms
+2026-03-14 00:00:04.231 WARN  [settle-worker-1] c.m.settle.fx.RateCache - EUR/CHF rate is 33 min old; using it (limit 60 min)
+2026-03-14 00:00:04.272 WARN  [http-nio-6] c.m.settle.web.RateLimiter [req-c0dbcf10b4] - client 203.0.113.30 throttled (120 req/min)
+2026-03-14 00:00:04.456 WARN  [http-nio-7] c.m.settle.web.RateLimiter [req-2f64525d78] - client 203.0.113.156 throttled (120 req/min)
+2026-03-14 00:00:05.305 ERROR [settle-worker-1] c.m.settle.ingest.LedgerConsumer - unhandled failure, record will be retried
+com.meridian.settle.fx.StaleRateException: no EUR/ISK rate newer than 60 min (last 2026-03-13T22:41:07Z)
+	at com.meridian.settle.fx.RateCache.require(RateCache.java:77)
+	at com.meridian.settle.netting.CurrencyNetter.convert(CurrencyNetter.java:59)
+	at com.meridian.settle.netting.Netter.flush(Netter.java:126)
+	at com.meridian.settle.ingest.LedgerConsumer.run(LedgerConsumer.java:88)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026-03-14 00:00:06.006 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 16ms, heap 1444M/4096M
+2026-03-14 00:00:06.826 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-dc18a117d8] - GET /v3/payouts/po_4252 from 198.51.100.14
+2026-03-14 00:00:06.832 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-dc18a117d8] - 200 in 150ms
+2026-03-14 00:00:07.143 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 663 records (partition 7, offset 4138727)
+2026-03-14 00:00:07.237 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 663 records into 17 batch deltas in 83ms
+2026-03-14 00:00:08.107 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-edf6d94aac] - GET /v3/merchants/m_lantern/balance from 198.51.100.19
+2026-03-14 00:00:08.126 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-edf6d94aac] - 200 in 8ms
+2026-03-14 00:00:08.164 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 508 records (partition 3, offset 4302425)
+2026-03-14 00:00:08.251 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 508 records into 12 batch deltas in 69ms
+2026-03-14 00:00:08.646 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-331331941b] - GET /v3/batches?day=2026-03-13 from 198.51.100.48
+2026-03-14 00:00:08.668 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-331331941b] - 404 in 144ms
+2026-03-14 00:00:09.316 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-75478d87ea] - POST /v3/batches/b_20260313_02/release from 198.51.100.13
+2026-03-14 00:00:09.328 WARN  [http-nio-5] c.m.settle.web.BatchController [req-75478d87ea] - release refused: batch still has 2 unmatched lines
+2026-03-14 00:00:09.328 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-75478d87ea] - 409 in 111ms
+2026-03-14 00:00:10.093 WARN  [settle-worker-1] c.m.settle.fx.RateCache - EUR/NOK rate is 31 min old; using it (limit 60 min)
+2026-03-14 00:00:10.250 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 571 records (partition 11, offset 4142920)
+2026-03-14 00:00:10.318 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 571 records into 22 batch deltas in 5ms
+2026-03-14 00:00:10.814 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 308 records (partition 10, offset 4806989)
+2026-03-14 00:00:10.849 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 308 records into 20 batch deltas in 42ms
+2026-03-14 00:00:11.136 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 670 records (partition 8, offset 4535375)
+2026-03-14 00:00:11.214 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 670 records into 16 batch deltas in 56ms
+2026-03-14 00:00:11.372 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-205b402909] - GET /v3/batches?day=2026-03-13 from 198.51.100.13
+2026-03-14 00:00:11.411 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-205b402909] - 200 in 115ms
+2026-03-14 00:00:11.737 ERROR [settle-worker-3] c.m.settle.ingest.LedgerConsumer - unhandled failure, record will be retried
+org.postgresql.util.PSQLException: ERROR: could not serialize access due to concurrent update
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
+	at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:152)
+	at com.meridian.settle.store.BatchStore.applyDelta(BatchStore.java:214)
+	at com.meridian.settle.netting.Netter.flush(Netter.java:131)
+	at com.meridian.settle.ingest.LedgerConsumer.run(LedgerConsumer.java:88)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026-03-14 00:00:12.083 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 799 records (partition 11, offset 4373953)
+2026-03-14 00:00:12.130 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 799 records into 9 batch deltas in 72ms
+2026-03-14 00:00:12.560 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 783 records (partition 0, offset 4889138)
+2026-03-14 00:00:12.644 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 783 records into 6 batch deltas in 37ms
+2026-03-14 00:00:13.053 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-acc8982ac9] - GET /v3/batches?day=2026-03-13 from 198.51.100.37
+2026-03-14 00:00:13.072 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-acc8982ac9] - 404 in 165ms
+2026-03-14 00:00:13.448 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 504 records (partition 0, offset 4339683)
+2026-03-14 00:00:13.477 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 504 records into 21 batch deltas in 75ms
+2026-03-14 00:00:14.241 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-0779b26a16] - GET /v3/batches/b_20260313_00 from 198.51.100.17
+2026-03-14 00:00:14.275 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-0779b26a16] - 404 in 132ms
+2026-03-14 00:00:14.474 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 82 records (partition 6, offset 4703521)
+2026-03-14 00:00:14.528 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 82 records into 7 batch deltas in 33ms
+2026-03-14 00:00:15.312 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 692 records (partition 0, offset 4121982)
+2026-03-14 00:00:15.420 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 692 records into 22 batch deltas in 30ms
+2026-03-14 00:00:16.013 WARN  [settle-worker-1] c.m.settle.fx.RateCache - EUR/NOK rate is 32 min old; using it (limit 60 min)
+2026-03-14 00:00:16.559 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 647 records (partition 6, offset 4352760)
+2026-03-14 00:00:16.653 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 647 records into 12 batch deltas in 15ms
+2026-03-14 00:00:17.019 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 269 records (partition 9, offset 4600449)
+2026-03-14 00:00:17.089 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 269 records into 18 batch deltas in 12ms
+2026-03-14 00:00:17.473 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 542 records (partition 11, offset 4389700)
+2026-03-14 00:00:17.571 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 542 records into 16 batch deltas in 11ms
+2026-03-14 00:00:17.814 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 637 records (partition 2, offset 4509255)
+2026-03-14 00:00:17.847 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 637 records into 16 batch deltas in 64ms
+2026-03-14 00:00:18.678 DEBUG [http-nio-3] c.m.settle.web.HealthController [req-8e951199cd] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:00:19.156 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 94 records (partition 10, offset 4253755)
+2026-03-14 00:00:19.255 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 94 records into 6 batch deltas in 20ms
+2026-03-14 00:00:19.637 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-7c0fc64328] - GET /v3/batches/b_20260313_09 from 198.51.100.6
+2026-03-14 00:00:19.640 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-7c0fc64328] - 200 in 88ms
+2026-03-14 00:00:20.384 DEBUG [http-nio-3] c.m.settle.web.HealthController [req-ba587fd6e3] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:00:20.921 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 342 records (partition 6, offset 4445014)
+2026-03-14 00:00:21.015 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 342 records into 23 batch deltas in 57ms
+2026-03-14 00:00:21.210 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-b6c8df3856] - GET /v3/batches?day=2026-03-13 from 198.51.100.19
+2026-03-14 00:00:21.248 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-b6c8df3856] - 200 in 176ms
+2026-03-14 00:00:21.570 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-9a058d29f9] - GET /v3/batches/b_20260313_02 from 198.51.100.31
+2026-03-14 00:00:21.602 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-9a058d29f9] - 409 in 86ms
+2026-03-14 00:00:22.203 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-fa4ab20400] - GET /v3/payouts/po_6501 from 198.51.100.37
+2026-03-14 00:00:22.240 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-fa4ab20400] - 200 in 133ms
+2026-03-14 00:00:23.061 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 20ms, heap 1579M/4096M
+2026-03-14 00:00:23.133 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-c1e21b0487] - GET /v3/batches/b_20260313_01 from 198.51.100.24
+2026-03-14 00:00:23.140 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-c1e21b0487] - 404 in 104ms
+2026-03-14 00:00:23.983 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-3b4f1a193a] - GET /v3/batches?day=2026-03-13 from 198.51.100.14
+2026-03-14 00:00:23.997 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-3b4f1a193a] - 200 in 163ms
+2026-03-14 00:00:24.196 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-e5e22b9efb] - GET /v3/merchants/m_harbor/balance from 198.51.100.7
+2026-03-14 00:00:24.201 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-e5e22b9efb] - 200 in 111ms
+2026-03-14 00:00:24.629 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 497 records (partition 2, offset 4458128)
+2026-03-14 00:00:24.688 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 497 records into 13 batch deltas in 65ms
+2026-03-14 00:00:25.069 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-2bf57ae104] - GET /v3/payouts/po_8428 from 198.51.100.18
+2026-03-14 00:00:25.081 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-2bf57ae104] - 200 in 70ms
+2026-03-14 00:00:25.102 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-7af89ab811] - POST /v3/batches/b_20260313_08/release from 198.51.100.25
+2026-03-14 00:00:25.111 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-7af89ab811] - 200 in 91ms
+2026-03-14 00:00:25.724 DEBUG [http-nio-1] c.m.settle.web.HealthController [req-b97d930071] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:00:26.402 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-65282b56ac] - POST /v3/batches/b_20260313_01/release from 198.51.100.51
+2026-03-14 00:00:26.421 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-65282b56ac] - 200 in 6ms
+2026-03-14 00:00:27.234 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 816 records (partition 8, offset 4718548)
+2026-03-14 00:00:27.301 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 816 records into 16 batch deltas in 38ms
+2026-03-14 00:00:28.013 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 701 records (partition 9, offset 4448527)
+2026-03-14 00:00:28.116 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 701 records into 7 batch deltas in 7ms
+2026-03-14 00:00:28.901 DEBUG [http-nio-6] c.m.settle.web.HealthController [req-d83d6fd9ba] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:00:29.465 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-bac2cddbc0] - GET /v3/payouts/po_9164 from 198.51.100.22
+2026-03-14 00:00:29.468 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-bac2cddbc0] - 409 in 30ms
+2026-03-14 00:00:29.990 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-b109e2b0f7] - GET /v3/merchants/m_northwind/balance from 198.51.100.42
+2026-03-14 00:00:29.993 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-b109e2b0f7] - 404 in 165ms
+2026-03-14 00:00:30.389 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-189354af65] - GET /v3/batches?day=2026-03-13 from 198.51.100.38
+2026-03-14 00:00:30.392 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-189354af65] - 200 in 180ms
+2026-03-14 00:00:30.408 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 176 records (partition 2, offset 4580818)
+2026-03-14 00:00:30.523 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 176 records into 10 batch deltas in 17ms
+2026-03-14 00:00:30.960 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 18ms, heap 1769M/4096M
+2026-03-14 00:00:31.447 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 651 records (partition 10, offset 4775890)
+2026-03-14 00:00:31.459 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 651 records into 4 batch deltas in 71ms
+2026-03-14 00:00:31.726 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-fd188744d2] - GET /v3/batches?day=2026-03-13 from 198.51.100.45
+2026-03-14 00:00:31.732 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-fd188744d2] - 200 in 85ms
+2026-03-14 00:00:31.788 DEBUG [http-nio-6] c.m.settle.web.HealthController [req-6a544a6462] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:00:31.908 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-ee4bdfe42a] - GET /v3/batches?day=2026-03-13 from 198.51.100.9
+2026-03-14 00:00:31.914 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-ee4bdfe42a] - 200 in 69ms
+2026-03-14 00:00:32.689 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-ece6cd75d9] - GET /v3/merchants/m_northwind/balance from 198.51.100.35
+2026-03-14 00:00:32.723 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-ece6cd75d9] - 409 in 154ms
+2026-03-14 00:00:33.203 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-6cea10a5ba] - GET /v3/merchants/m_fjall/balance from 198.51.100.29
+2026-03-14 00:00:33.241 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-6cea10a5ba] - 200 in 154ms
+2026-03-14 00:00:33.903 DEBUG [http-nio-7] c.m.settle.web.HealthController [req-60384e2995] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:00:33.982 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 732 records (partition 11, offset 4009168)
+2026-03-14 00:00:34.022 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 732 records into 14 batch deltas in 81ms
+2026-03-14 00:00:34.300 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-195a9a1e35] - GET /v3/batches?day=2026-03-13 from 198.51.100.22
+2026-03-14 00:00:34.328 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-195a9a1e35] - 200 in 170ms
+2026-03-14 00:00:34.702 WARN  [settle-worker-1] c.m.settle.fx.RateCache - GBP/SEK rate is 20 min old; using it (limit 60 min)
+2026-03-14 00:00:35.051 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 584 records (partition 3, offset 4626913)
+2026-03-14 00:00:35.106 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 584 records into 19 batch deltas in 28ms
+2026-03-14 00:00:35.988 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 228 records (partition 4, offset 4329257)
+2026-03-14 00:00:36.058 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 228 records into 24 batch deltas in 53ms
+2026-03-14 00:00:36.174 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 262 records (partition 9, offset 4595511)
+2026-03-14 00:00:36.211 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 262 records into 20 batch deltas in 40ms
+2026-03-14 00:00:36.674 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 582 records (partition 11, offset 4513595)
+2026-03-14 00:00:36.761 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 582 records into 18 batch deltas in 18ms
+2026-03-14 00:00:37.335 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-2c90c1a419] - GET /v3/merchants/m_northwind/balance from 198.51.100.7
+2026-03-14 00:00:37.338 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-2c90c1a419] - 200 in 169ms
+2026-03-14 00:00:37.476 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-73fd31e3ed] - POST /v3/batches/b_20260313_04/release from 198.51.100.57
+2026-03-14 00:00:37.487 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-73fd31e3ed] - 200 in 61ms
+2026-03-14 00:00:37.533 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-72bc82459f] - GET /v3/merchants/m_harbor/balance from 198.51.100.38
+2026-03-14 00:00:37.569 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-72bc82459f] - 200 in 141ms
+2026-03-14 00:00:37.888 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-52a7c2a3d0] - POST /v3/batches/b_20260313_03/release from 198.51.100.28
+2026-03-14 00:00:37.922 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-52a7c2a3d0] - 200 in 3ms
+2026-03-14 00:00:37.974 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 806 records (partition 4, offset 4284125)
+2026-03-14 00:00:38.019 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 806 records into 10 batch deltas in 4ms
+2026-03-14 00:00:38.274 DEBUG [http-nio-6] c.m.settle.web.HealthController [req-4942354136] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:00:39.077 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 517 records (partition 6, offset 4694052)
+2026-03-14 00:00:39.146 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 517 records into 12 batch deltas in 23ms
+2026-03-14 00:00:39.170 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-016c43d9b0] - GET /v3/batches/b_20260313_09 from 198.51.100.47
+2026-03-14 00:00:39.203 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-016c43d9b0] - 200 in 152ms
+2026-03-14 00:00:40.086 DEBUG [http-nio-3] c.m.settle.web.HealthController [req-9c3c094ef6] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:00:40.694 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 585 records (partition 5, offset 4730150)
+2026-03-14 00:00:40.709 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 585 records into 5 batch deltas in 62ms
+2026-03-14 00:00:40.835 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 567 records (partition 3, offset 4110212)
+2026-03-14 00:00:40.897 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 567 records into 18 batch deltas in 71ms
+2026-03-14 00:00:41.020 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 225 records (partition 1, offset 4752567)
+2026-03-14 00:00:41.036 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 225 records into 19 batch deltas in 78ms
+2026-03-14 00:00:41.527 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-de450df299] - GET /v3/batches/b_20260313_01 from 198.51.100.40
+2026-03-14 00:00:41.537 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-de450df299] - 409 in 68ms
+2026-03-14 00:00:41.887 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-367a50425f] - POST /v3/batches/b_20260313_00/release from 198.51.100.26
+2026-03-14 00:00:41.906 WARN  [http-nio-1] c.m.settle.web.BatchController [req-367a50425f] - release refused: batch still has 2 unmatched lines
+2026-03-14 00:00:41.906 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-367a50425f] - 409 in 174ms
+2026-03-14 00:00:42.787 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 121 records (partition 6, offset 4062299)
+2026-03-14 00:00:42.885 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 121 records into 12 batch deltas in 29ms
+2026-03-14 00:00:43.103 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-28717408c3] - GET /v3/batches/b_20260313_05 from 198.51.100.30
+2026-03-14 00:00:43.138 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-28717408c3] - 409 in 48ms
+2026-03-14 00:00:44.011 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 507 records (partition 1, offset 4175844)
+2026-03-14 00:00:44.103 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 507 records into 21 batch deltas in 52ms
+2026-03-14 00:00:44.584 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-b82856e990] - GET /v3/payouts/po_5541 from 198.51.100.45
+2026-03-14 00:00:44.599 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-b82856e990] - 404 in 86ms
+2026-03-14 00:00:45.460 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-4a304d7204] - POST /v3/batches/b_20260313_08/release from 198.51.100.56
+2026-03-14 00:00:45.494 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-4a304d7204] - 404 in 49ms
+2026-03-14 00:00:45.967 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 429 records (partition 10, offset 4601309)
+2026-03-14 00:00:46.037 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 429 records into 11 batch deltas in 41ms
+2026-03-14 00:00:46.091 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 206 records (partition 0, offset 4173827)
+2026-03-14 00:00:46.199 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 206 records into 5 batch deltas in 77ms
+2026-03-14 00:00:46.395 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 677 records (partition 5, offset 4613801)
+2026-03-14 00:00:46.450 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 677 records into 15 batch deltas in 77ms
+2026-03-14 00:00:46.751 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 824 records (partition 8, offset 4207317)
+2026-03-14 00:00:46.807 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 824 records into 12 batch deltas in 12ms
+2026-03-14 00:00:47.064 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-83481f081c] - GET /v3/batches/b_20260313_01 from 198.51.100.14
+2026-03-14 00:00:47.066 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-83481f081c] - 409 in 176ms
+2026-03-14 00:00:47.847 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-2ce045ab2e] - GET /v3/batches?day=2026-03-13 from 198.51.100.39
+2026-03-14 00:00:47.850 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-2ce045ab2e] - 200 in 93ms
+2026-03-14 00:00:48.281 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-ca0adeaa28] - GET /v3/merchants/m_saguaro/balance from 198.51.100.58
+2026-03-14 00:00:48.308 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-ca0adeaa28] - 200 in 87ms
+2026-03-14 00:00:48.968 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-668d203170] - GET /v3/merchants/m_lantern/balance from 198.51.100.36
+2026-03-14 00:00:49.008 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-668d203170] - 200 in 35ms
+2026-03-14 00:00:49.709 WARN  [settle-worker-2] c.m.settle.fx.RateCache - EUR/PLN rate is 38 min old; using it (limit 60 min)
+2026-03-14 00:00:49.920 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-5fcdc862d8] - GET /v3/batches?day=2026-03-13 from 198.51.100.16
+2026-03-14 00:00:49.949 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-5fcdc862d8] - 404 in 61ms
+2026-03-14 00:00:50.665 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 478 records (partition 4, offset 4698837)
+2026-03-14 00:00:50.769 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 478 records into 6 batch deltas in 14ms
+2026-03-14 00:00:51.083 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 781 records (partition 6, offset 4284560)
+2026-03-14 00:00:51.101 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 781 records into 18 batch deltas in 61ms
+2026-03-14 00:00:51.495 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 717 records (partition 7, offset 4378439)
+2026-03-14 00:00:51.530 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 717 records into 10 batch deltas in 70ms
+2026-03-14 00:00:52.070 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-ca0f9fdf1b] - GET /v3/batches?day=2026-03-13 from 198.51.100.58
+2026-03-14 00:00:52.087 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-ca0f9fdf1b] - 404 in 41ms
+2026-03-14 00:00:52.433 INFO  [kafka-coordinator] o.a.k.clients.consumer.internals.ConsumerCoordinator - [Consumer clientId=settle-6, groupId=settlement-v3] Rebalance: assigned partitions [2, 7, 8, 9]
+2026-03-14 00:00:53.024 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 121 records (partition 1, offset 4510539)
+2026-03-14 00:00:53.136 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 121 records into 24 batch deltas in 32ms
+2026-03-14 00:00:53.752 WARN  [http-nio-4] c.m.settle.web.RateLimiter [req-0c04562195] - client 203.0.113.208 throttled (120 req/min)
+2026-03-14 00:00:54.433 WARN  [settle-worker-6] c.m.settle.fx.RateCache - USD/JPY rate is 20 min old; using it (limit 60 min)
+2026-03-14 00:00:55.005 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 407 records (partition 10, offset 4567929)
+2026-03-14 00:00:55.092 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 407 records into 10 batch deltas in 57ms
+2026-03-14 00:00:55.556 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-964f6a9bb3] - POST /v3/batches/b_20260313_06/release from 198.51.100.52
+2026-03-14 00:00:55.576 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-964f6a9bb3] - 409 in 150ms
+2026-03-14 00:00:56.285 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 652 records (partition 8, offset 4862658)
+2026-03-14 00:00:56.340 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 652 records into 7 batch deltas in 40ms
+2026-03-14 00:00:56.560 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 810 records (partition 9, offset 4861328)
+2026-03-14 00:00:56.617 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 810 records into 11 batch deltas in 16ms
+2026-03-14 00:00:56.864 WARN  [settle-worker-3] c.m.settle.fx.RateCache - EUR/NOK rate is 25 min old; using it (limit 60 min)
+2026-03-14 00:00:57.484 DEBUG [http-nio-3] c.m.settle.web.HealthController [req-28da8d1470] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:00:57.717 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-6715aeb4c5] - GET /v3/payouts/po_4809 from 198.51.100.10
+2026-03-14 00:00:57.745 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-6715aeb4c5] - 409 in 44ms
+2026-03-14 00:00:58.589 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 105 records (partition 5, offset 4729938)
+2026-03-14 00:00:58.658 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 105 records into 16 batch deltas in 74ms
+2026-03-14 00:00:59.146 DEBUG [http-nio-7] c.m.settle.web.HealthController [req-5d072ffc4f] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:00:59.186 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 577 records (partition 0, offset 4070486)
+2026-03-14 00:00:59.217 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 577 records into 15 batch deltas in 62ms
+2026-03-14 00:01:00.110 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 513 records (partition 3, offset 4790709)
+2026-03-14 00:01:00.188 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 513 records into 14 batch deltas in 66ms
+2026-03-14 00:01:00.878 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 451 records (partition 2, offset 4467715)
+2026-03-14 00:01:00.924 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 451 records into 13 batch deltas in 12ms
+2026-03-14 00:01:01.254 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-58440f2a8d] - GET /v3/batches/b_20260313_00 from 198.51.100.40
+2026-03-14 00:01:01.262 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-58440f2a8d] - 200 in 32ms
+2026-03-14 00:01:01.339 WARN  [settle-worker-1] c.m.settle.fx.RateCache - EUR/PLN rate is 17 min old; using it (limit 60 min)
+2026-03-14 00:01:01.925 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 812 records (partition 8, offset 4549243)
+2026-03-14 00:01:01.958 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 812 records into 23 batch deltas in 64ms
+2026-03-14 00:01:02.846 INFO  [kafka-coordinator] o.a.k.clients.consumer.internals.ConsumerCoordinator - [Consumer clientId=settle-3, groupId=settlement-v3] Rebalance: assigned partitions [0, 2, 4, 11]
+2026-03-14 00:01:03.384 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-0f4edfd914] - GET /v3/batches/b_20260313_09 from 198.51.100.54
+2026-03-14 00:01:03.392 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-0f4edfd914] - 409 in 20ms
+2026-03-14 00:01:03.996 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 11ms, heap 1084M/4096M
+2026-03-14 00:01:04.535 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-0a7074dd98] - GET /v3/merchants/m_okami/balance from 198.51.100.49
+2026-03-14 00:01:04.562 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-0a7074dd98] - 200 in 96ms
+2026-03-14 00:01:05.338 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 252 records (partition 10, offset 4277073)
+2026-03-14 00:01:05.406 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 252 records into 11 batch deltas in 51ms
+2026-03-14 00:01:05.569 DEBUG [http-nio-6] c.m.settle.web.HealthController [req-a5eae15b5f] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:01:06.399 WARN  [settle-worker-1] c.m.settle.fx.RateCache - EUR/CHF rate is 38 min old; using it (limit 60 min)
+2026-03-14 00:01:06.531 DEBUG [http-nio-8] c.m.settle.web.HealthController [req-b56670d825] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:01:06.689 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-69647c1c5e] - POST /v3/batches/b_20260313_06/release from 198.51.100.49
+2026-03-14 00:01:06.691 WARN  [http-nio-3] c.m.settle.web.BatchController [req-69647c1c5e] - release refused: batch still has 2 unmatched lines
+2026-03-14 00:01:06.691 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-69647c1c5e] - 409 in 105ms
+2026-03-14 00:01:07.220 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-b816f49c28] - GET /v3/payouts/po_6041 from 198.51.100.37
+2026-03-14 00:01:07.247 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-b816f49c28] - 404 in 50ms
+2026-03-14 00:01:07.861 WARN  [settle-worker-2] c.m.settle.fx.RateCache - EUR/PLN rate is 37 min old; using it (limit 60 min)
+2026-03-14 00:01:08.749 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-875ee05195] - GET /v3/batches?day=2026-03-13 from 198.51.100.26
+2026-03-14 00:01:08.787 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-875ee05195] - 409 in 49ms
+2026-03-14 00:01:09.308 WARN  [settle-worker-5] c.m.settle.fx.RateCache - EUR/CHF rate is 37 min old; using it (limit 60 min)
+2026-03-14 00:01:09.896 ERROR [settle-worker-5] c.m.settle.ingest.LedgerConsumer - unhandled failure, record will be retried
+com.meridian.settle.fx.StaleRateException: no EUR/ISK rate newer than 60 min (last 2026-03-13T22:41:07Z)
+	at com.meridian.settle.fx.RateCache.require(RateCache.java:77)
+	at com.meridian.settle.netting.CurrencyNetter.convert(CurrencyNetter.java:59)
+	at com.meridian.settle.netting.Netter.flush(Netter.java:126)
+	at com.meridian.settle.ingest.LedgerConsumer.run(LedgerConsumer.java:88)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026-03-14 00:01:10.288 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-529133bab8] - GET /v3/merchants/m_lantern/balance from 198.51.100.30
+2026-03-14 00:01:10.304 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-529133bab8] - 409 in 117ms
+2026-03-14 00:01:10.947 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 242 records (partition 9, offset 4477586)
+2026-03-14 00:01:11.017 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 242 records into 10 batch deltas in 41ms
+2026-03-14 00:01:11.328 ERROR [settle-worker-4] c.m.settle.ingest.LedgerConsumer - unhandled failure, record will be retried
+org.postgresql.util.PSQLException: ERROR: could not serialize access due to concurrent update
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
+	at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:152)
+	at com.meridian.settle.store.BatchStore.applyDelta(BatchStore.java:214)
+	at com.meridian.settle.netting.Netter.flush(Netter.java:131)
+	at com.meridian.settle.ingest.LedgerConsumer.run(LedgerConsumer.java:88)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026-03-14 00:01:12.207 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 19ms, heap 2596M/4096M
+2026-03-14 00:01:12.996 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 314 records (partition 8, offset 4385368)
+2026-03-14 00:01:13.025 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 314 records into 23 batch deltas in 77ms
+2026-03-14 00:01:13.523 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 124 records (partition 8, offset 4784810)
+2026-03-14 00:01:13.545 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 124 records into 18 batch deltas in 46ms
+2026-03-14 00:01:14.036 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 322 records (partition 8, offset 4475106)
+2026-03-14 00:01:14.137 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 322 records into 8 batch deltas in 16ms
+2026-03-14 00:01:14.562 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-0a5b00ee66] - POST /v3/batches/b_20260313_08/release from 198.51.100.2
+2026-03-14 00:01:14.579 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-0a5b00ee66] - 200 in 125ms
+2026-03-14 00:01:15.291 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-5204292835] - GET /v3/payouts/po_7237 from 198.51.100.3
+2026-03-14 00:01:15.306 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-5204292835] - 200 in 10ms
+2026-03-14 00:01:15.540 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 381 records (partition 1, offset 4807603)
+2026-03-14 00:01:15.614 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 381 records into 11 batch deltas in 9ms
+2026-03-14 00:01:16.034 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 479 records (partition 2, offset 4065349)
+2026-03-14 00:01:16.083 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 479 records into 11 batch deltas in 88ms
+2026-03-14 00:01:16.542 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 105 records (partition 9, offset 4820585)
+2026-03-14 00:01:16.568 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 105 records into 21 batch deltas in 77ms
+2026-03-14 00:01:16.782 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-2a96ae0638] - POST /v3/batches/b_20260313_09/release from 198.51.100.27
+2026-03-14 00:01:16.794 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-2a96ae0638] - 200 in 13ms
+2026-03-14 00:01:17.350 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-30a634464e] - GET /v3/batches/b_20260313_00 from 198.51.100.4
+2026-03-14 00:01:17.387 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-30a634464e] - 404 in 171ms
+2026-03-14 00:01:18.016 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-f63b7acde9] - GET /v3/batches/b_20260313_08 from 198.51.100.20
+2026-03-14 00:01:18.018 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-f63b7acde9] - 200 in 71ms
+2026-03-14 00:01:18.888 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 117 records (partition 4, offset 4657341)
+2026-03-14 00:01:18.919 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 117 records into 23 batch deltas in 41ms
+2026-03-14 00:01:19.397 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 755 records (partition 6, offset 4023391)
+2026-03-14 00:01:19.463 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 755 records into 16 batch deltas in 13ms
+2026-03-14 00:01:19.772 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-f49db8f791] - GET /v3/batches?day=2026-03-13 from 198.51.100.41
+2026-03-14 00:01:19.803 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-f49db8f791] - 200 in 164ms
+2026-03-14 00:01:20.049 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 401 records (partition 3, offset 4418072)
+2026-03-14 00:01:20.069 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 401 records into 21 batch deltas in 47ms
+2026-03-14 00:01:20.312 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-40b66cbc2f] - POST /v3/batches/b_20260313_08/release from 198.51.100.48
+2026-03-14 00:01:20.329 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-40b66cbc2f] - 200 in 165ms
+2026-03-14 00:01:21.207 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 229 records (partition 7, offset 4078232)
+2026-03-14 00:01:21.260 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 229 records into 7 batch deltas in 57ms
+2026-03-14 00:01:22.000 INFO  [kafka-coordinator] o.a.k.clients.consumer.internals.ConsumerCoordinator - [Consumer clientId=settle-5, groupId=settlement-v3] Rebalance: assigned partitions [5, 6, 8, 10]
+2026-03-14 00:01:22.846 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-d252dd2477] - GET /v3/batches?day=2026-03-13 from 198.51.100.20
+2026-03-14 00:01:22.860 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-d252dd2477] - 200 in 39ms
+2026-03-14 00:01:23.628 WARN  [settle-worker-2] c.m.settle.fx.RateCache - USD/JPY rate is 20 min old; using it (limit 60 min)
+2026-03-14 00:01:24.517 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 240 records (partition 9, offset 4597711)
+2026-03-14 00:01:24.571 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 240 records into 6 batch deltas in 60ms
+2026-03-14 00:01:24.903 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-39d1a671e4] - GET /v3/batches/b_20260313_05 from 198.51.100.15
+2026-03-14 00:01:24.912 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-39d1a671e4] - 404 in 168ms
+2026-03-14 00:01:25.329 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 764 records (partition 10, offset 4077560)
+2026-03-14 00:01:25.406 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 764 records into 7 batch deltas in 77ms
+2026-03-14 00:01:26.018 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 549 records (partition 11, offset 4270273)
+2026-03-14 00:01:26.059 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 549 records into 11 batch deltas in 33ms
+2026-03-14 00:01:26.194 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 781 records (partition 5, offset 4841467)
+2026-03-14 00:01:26.211 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 781 records into 12 batch deltas in 49ms
+2026-03-14 00:01:26.785 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-bef3b14f8c] - POST /v3/batches/b_20260313_08/release from 198.51.100.29
+2026-03-14 00:01:26.816 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-bef3b14f8c] - 200 in 36ms
+2026-03-14 00:01:27.672 ERROR [settle-worker-4] c.m.settle.payout.PayoutService - payout failed, merchant notified
+com.meridian.settle.payout.PayoutRejectedException: bank rejected payout po_8352: AC04 closed account
+	at com.meridian.settle.payout.BankGateway.submit(BankGateway.java:143)
+	at com.meridian.settle.payout.PayoutService.release(PayoutService.java:98)
+	at com.meridian.settle.payout.PayoutService.lambda$releaseAll$2(PayoutService.java:71)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.net.http.HttpTimeoutException: request timed out
+	at java.net.http/jdk.internal.net.http.HttpClientImpl.send(HttpClientImpl.java:951)
+	at com.meridian.settle.payout.BankGateway.post(BankGateway.java:188)
+	at com.meridian.settle.payout.BankGateway.submit(BankGateway.java:131)
+	... 4 common frames omitted
+2026-03-14 00:01:28.121 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-ccca3294d1] - POST /v3/batches/b_20260313_08/release from 198.51.100.14
+2026-03-14 00:01:28.159 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-ccca3294d1] - 200 in 141ms
+2026-03-14 00:01:28.651 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-c64fcfa586] - GET /v3/batches/b_20260313_00 from 198.51.100.20
+2026-03-14 00:01:28.659 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-c64fcfa586] - 409 in 33ms
+2026-03-14 00:01:28.872 WARN  [settle-worker-6] c.m.settle.fx.RateCache - GBP/SEK rate is 32 min old; using it (limit 60 min)
+2026-03-14 00:01:29.350 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-a80513490a] - GET /v3/payouts/po_1247 from 198.51.100.21
+2026-03-14 00:01:29.358 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-a80513490a] - 200 in 99ms
+2026-03-14 00:01:30.047 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-ca466c87ab] - GET /v3/batches/b_20260313_05 from 198.51.100.14
+2026-03-14 00:01:30.081 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-ca466c87ab] - 200 in 82ms
+2026-03-14 00:01:30.636 DEBUG [http-nio-5] c.m.settle.web.HealthController [req-290543f278] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:01:30.770 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 565 records (partition 6, offset 4197429)
+2026-03-14 00:01:30.826 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 565 records into 7 batch deltas in 25ms
+2026-03-14 00:01:30.916 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-e7a021ae94] - GET /v3/batches?day=2026-03-13 from 198.51.100.10
+2026-03-14 00:01:30.929 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-e7a021ae94] - 200 in 55ms
+2026-03-14 00:01:31.069 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-73a852b816] - GET /v3/batches/b_20260313_02 from 198.51.100.33
+2026-03-14 00:01:31.092 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-73a852b816] - 404 in 105ms
+2026-03-14 00:01:31.577 INFO  [kafka-coordinator] o.a.k.clients.consumer.internals.ConsumerCoordinator - [Consumer clientId=settle-1, groupId=settlement-v3] Rebalance: assigned partitions [0, 6, 9, 10]
+2026-03-14 00:01:32.105 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 280 records (partition 6, offset 4426199)
+2026-03-14 00:01:32.191 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 280 records into 14 batch deltas in 20ms
+2026-03-14 00:01:32.676 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-a33dc200a6] - GET /v3/batches?day=2026-03-13 from 198.51.100.35
+2026-03-14 00:01:32.685 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-a33dc200a6] - 409 in 129ms
+2026-03-14 00:01:32.712 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 888 records (partition 1, offset 4454170)
+2026-03-14 00:01:32.785 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 888 records into 10 batch deltas in 5ms
+2026-03-14 00:01:32.938 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 743 records (partition 0, offset 4055893)
+2026-03-14 00:01:32.957 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 743 records into 5 batch deltas in 20ms
+2026-03-14 00:01:33.516 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 876 records (partition 10, offset 4671856)
+2026-03-14 00:01:33.529 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 876 records into 6 batch deltas in 72ms
+2026-03-14 00:01:34.391 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 698 records (partition 5, offset 4659784)
+2026-03-14 00:01:34.427 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 698 records into 8 batch deltas in 12ms
+2026-03-14 00:01:34.823 DEBUG [http-nio-5] c.m.settle.web.HealthController [req-fa1ede1aff] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:01:35.113 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-fd397596a5] - POST /v3/batches/b_20260313_05/release from 198.51.100.11
+2026-03-14 00:01:35.147 WARN  [http-nio-1] c.m.settle.web.BatchController [req-fd397596a5] - release refused: batch still has 2 unmatched lines
+2026-03-14 00:01:35.147 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-fd397596a5] - 409 in 136ms
+2026-03-14 00:01:35.527 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-8891d00314] - GET /v3/batches/b_20260313_01 from 198.51.100.2
+2026-03-14 00:01:35.535 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-8891d00314] - 200 in 43ms
+2026-03-14 00:01:36.024 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-755a58c9c7] - GET /v3/batches/b_20260313_03 from 198.51.100.35
+2026-03-14 00:01:36.057 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-755a58c9c7] - 404 in 9ms
+2026-03-14 00:01:36.599 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 99 records (partition 0, offset 4251220)
+2026-03-14 00:01:36.663 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 99 records into 18 batch deltas in 16ms
+2026-03-14 00:01:36.983 DEBUG [http-nio-7] c.m.settle.web.HealthController [req-279b03ced5] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:01:37.670 ERROR [settle-worker-6] c.m.settle.ingest.LedgerConsumer - unhandled failure, record will be retried
+org.postgresql.util.PSQLException: ERROR: could not serialize access due to concurrent update
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
+	at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:152)
+	at com.meridian.settle.store.BatchStore.applyDelta(BatchStore.java:214)
+	at com.meridian.settle.netting.Netter.flush(Netter.java:131)
+	at com.meridian.settle.ingest.LedgerConsumer.run(LedgerConsumer.java:88)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026-03-14 00:01:37.809 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 430 records (partition 8, offset 4267514)
+2026-03-14 00:01:37.821 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 430 records into 4 batch deltas in 13ms
+2026-03-14 00:01:38.221 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 189 records (partition 7, offset 4300627)
+2026-03-14 00:01:38.338 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 189 records into 24 batch deltas in 42ms
+2026-03-14 00:01:38.646 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-14fc781f89] - GET /v3/merchants/m_harbor/balance from 198.51.100.43
+2026-03-14 00:01:38.667 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-14fc781f89] - 404 in 111ms
+2026-03-14 00:01:38.877 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 452 records (partition 3, offset 4396921)
+2026-03-14 00:01:38.984 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 452 records into 15 batch deltas in 39ms
+2026-03-14 00:01:39.667 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-f361e9ebaf] - POST /v3/batches/b_20260313_00/release from 198.51.100.37
+2026-03-14 00:01:39.684 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-f361e9ebaf] - 200 in 120ms
+2026-03-14 00:01:40.052 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-54fa7a90a6] - GET /v3/merchants/m_heron/balance from 198.51.100.16
+2026-03-14 00:01:40.057 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-54fa7a90a6] - 200 in 11ms
+2026-03-14 00:01:40.241 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-8d05de0c45] - GET /v3/payouts/po_7139 from 198.51.100.31
+2026-03-14 00:01:40.247 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-8d05de0c45] - 200 in 89ms
+2026-03-14 00:01:40.870 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 792 records (partition 7, offset 4442992)
+2026-03-14 00:01:40.942 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 792 records into 7 batch deltas in 10ms
+2026-03-14 00:01:41.385 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 723 records (partition 1, offset 4260033)
+2026-03-14 00:01:41.397 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 723 records into 15 batch deltas in 88ms
+2026-03-14 00:01:42.176 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-7fed6d9342] - GET /v3/payouts/po_2555 from 198.51.100.58
+2026-03-14 00:01:42.215 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-7fed6d9342] - 200 in 62ms
+2026-03-14 00:01:42.634 ERROR [settle-worker-3] c.m.settle.ingest.LedgerConsumer - unhandled failure, record will be retried
+org.postgresql.util.PSQLException: ERROR: could not serialize access due to concurrent update
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
+	at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:152)
+	at com.meridian.settle.store.BatchStore.applyDelta(BatchStore.java:214)
+	at com.meridian.settle.netting.Netter.flush(Netter.java:131)
+	at com.meridian.settle.ingest.LedgerConsumer.run(LedgerConsumer.java:88)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026-03-14 00:01:43.035 WARN  [settle-worker-6] c.m.settle.fx.RateCache - GBP/SEK rate is 34 min old; using it (limit 60 min)
+2026-03-14 00:01:43.560 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 22ms, heap 1167M/4096M
+2026-03-14 00:01:44.174 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-831e820cfb] - GET /v3/batches?day=2026-03-13 from 198.51.100.49
+2026-03-14 00:01:44.202 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-831e820cfb] - 200 in 145ms
+2026-03-14 00:01:44.948 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-8b12988fac] - GET /v3/merchants/m_northwind/balance from 198.51.100.30
+2026-03-14 00:01:44.972 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-8b12988fac] - 200 in 152ms
+2026-03-14 00:01:45.315 WARN  [settle-worker-4] c.m.settle.fx.RateCache - USD/JPY rate is 25 min old; using it (limit 60 min)
+2026-03-14 00:01:45.469 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-f8422418c4] - GET /v3/payouts/po_9177 from 198.51.100.2
+2026-03-14 00:01:45.496 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-f8422418c4] - 200 in 105ms
+2026-03-14 00:01:45.633 DEBUG [http-nio-3] c.m.settle.web.HealthController [req-eab09cf77e] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:01:45.836 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-5e00590fbb] - GET /v3/payouts/po_6081 from 198.51.100.47
+2026-03-14 00:01:45.842 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-5e00590fbb] - 409 in 23ms
+2026-03-14 00:01:46.416 WARN  [settle-worker-6] c.m.settle.fx.RateCache - EUR/NOK rate is 36 min old; using it (limit 60 min)
+2026-03-14 00:01:46.788 DEBUG [http-nio-4] c.m.settle.web.HealthController [req-35e46b610e] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:01:47.005 WARN  [settle-worker-1] c.m.settle.fx.RateCache - GBP/SEK rate is 38 min old; using it (limit 60 min)
+2026-03-14 00:01:47.592 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-970109f0bd] - GET /v3/merchants/m_tidepool/balance from 198.51.100.12
+2026-03-14 00:01:47.617 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-970109f0bd] - 200 in 171ms
+2026-03-14 00:01:47.991 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-a5fbddd4db] - GET /v3/payouts/po_7447 from 198.51.100.42
+2026-03-14 00:01:48.018 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-a5fbddd4db] - 200 in 72ms
+2026-03-14 00:01:48.092 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-4c11163540] - GET /v3/merchants/m_fjall/balance from 198.51.100.55
+2026-03-14 00:01:48.094 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-4c11163540] - 404 in 45ms
+2026-03-14 00:01:48.202 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-09bd0559f7] - POST /v3/batches/b_20260313_04/release from 198.51.100.29
+2026-03-14 00:01:48.206 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-09bd0559f7] - 409 in 113ms
+2026-03-14 00:01:48.284 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 381 records (partition 8, offset 4537507)
+2026-03-14 00:01:48.353 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 381 records into 17 batch deltas in 87ms
+2026-03-14 00:01:48.616 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-3ea24970b8] - GET /v3/merchants/m_tidepool/balance from 198.51.100.52
+2026-03-14 00:01:48.623 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-3ea24970b8] - 200 in 110ms
+2026-03-14 00:01:49.133 DEBUG [http-nio-5] c.m.settle.web.HealthController [req-813c219e03] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:01:49.677 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 723 records (partition 7, offset 4897849)
+2026-03-14 00:01:49.737 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 723 records into 18 batch deltas in 65ms
+2026-03-14 00:01:50.320 ERROR [settle-worker-5] c.m.settle.ingest.LedgerConsumer - unhandled failure, record will be retried
+org.postgresql.util.PSQLException: ERROR: could not serialize access due to concurrent update
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
+	at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:152)
+	at com.meridian.settle.store.BatchStore.applyDelta(BatchStore.java:214)
+	at com.meridian.settle.netting.Netter.flush(Netter.java:131)
+	at com.meridian.settle.ingest.LedgerConsumer.run(LedgerConsumer.java:88)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026-03-14 00:01:50.342 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-839ac44846] - GET /v3/batches/b_20260313_00 from 198.51.100.41
+2026-03-14 00:01:50.346 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-839ac44846] - 409 in 57ms
+2026-03-14 00:01:51.181 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 870 records (partition 2, offset 4559526)
+2026-03-14 00:01:51.201 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 870 records into 16 batch deltas in 76ms
+2026-03-14 00:01:51.419 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-f27653ff16] - GET /v3/batches?day=2026-03-13 from 198.51.100.7
+2026-03-14 00:01:51.422 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-f27653ff16] - 200 in 151ms
+2026-03-14 00:01:51.677 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-54c40d483a] - GET /v3/merchants/m_fjall/balance from 198.51.100.31
+2026-03-14 00:01:51.680 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-54c40d483a] - 409 in 171ms
+2026-03-14 00:01:52.149 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-43d44781af] - GET /v3/merchants/m_okami/balance from 198.51.100.40
+2026-03-14 00:01:52.154 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-43d44781af] - 200 in 132ms
+2026-03-14 00:01:52.713 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-5f2510aef9] - GET /v3/payouts/po_8974 from 198.51.100.3
+2026-03-14 00:01:52.745 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-5f2510aef9] - 200 in 19ms
+2026-03-14 00:01:53.056 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-92ace1c835] - GET /v3/batches?day=2026-03-13 from 198.51.100.32
+2026-03-14 00:01:53.089 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-92ace1c835] - 404 in 136ms
+2026-03-14 00:01:53.376 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-ea90dc20f8] - GET /v3/payouts/po_6577 from 198.51.100.49
+2026-03-14 00:01:53.381 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-ea90dc20f8] - 200 in 82ms
+2026-03-14 00:01:54.162 DEBUG [http-nio-4] c.m.settle.web.HealthController [req-e46874952a] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:01:54.797 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 251 records (partition 10, offset 4710933)
+2026-03-14 00:01:54.901 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 251 records into 3 batch deltas in 25ms
+2026-03-14 00:01:55.632 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-59c4b729c5] - GET /v3/payouts/po_7477 from 198.51.100.44
+2026-03-14 00:01:55.645 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-59c4b729c5] - 409 in 91ms
+2026-03-14 00:01:56.242 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-d250f303fe] - GET /v3/payouts/po_8374 from 198.51.100.16
+2026-03-14 00:01:56.277 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-d250f303fe] - 200 in 41ms
+2026-03-14 00:01:56.459 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-d38f6a2c53] - GET /v3/batches/b_20260313_06 from 198.51.100.18
+2026-03-14 00:01:56.469 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-d38f6a2c53] - 200 in 36ms
+2026-03-14 00:01:56.610 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-54fb4db016] - GET /v3/batches?day=2026-03-13 from 198.51.100.30
+2026-03-14 00:01:56.625 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-54fb4db016] - 404 in 43ms
+2026-03-14 00:01:56.651 INFO  [kafka-coordinator] o.a.k.clients.consumer.internals.ConsumerCoordinator - [Consumer clientId=settle-6, groupId=settlement-v3] Rebalance: assigned partitions [0, 5, 7, 11]
+2026-03-14 00:01:56.878 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 251 records (partition 8, offset 4247374)
+2026-03-14 00:01:56.931 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 251 records into 6 batch deltas in 43ms
+2026-03-14 00:01:57.245 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 28ms, heap 2113M/4096M
+2026-03-14 00:01:57.560 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 522 records (partition 1, offset 4318264)
+2026-03-14 00:01:57.600 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 522 records into 15 batch deltas in 44ms
+2026-03-14 00:01:58.140 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-7f43b8ee16] - GET /v3/batches?day=2026-03-13 from 198.51.100.48
+2026-03-14 00:01:58.158 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-7f43b8ee16] - 409 in 81ms
+2026-03-14 00:01:58.707 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 175 records (partition 1, offset 4521673)
+2026-03-14 00:01:58.774 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 175 records into 17 batch deltas in 7ms
+2026-03-14 00:01:59.581 WARN  [settle-worker-5] c.m.settle.fx.RateCache - EUR/NOK rate is 17 min old; using it (limit 60 min)
+2026-03-14 00:02:00.256 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 890 records (partition 3, offset 4292068)
+2026-03-14 00:02:00.285 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 890 records into 11 batch deltas in 36ms
+2026-03-14 00:02:01.020 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 27ms, heap 1338M/4096M
+2026-03-14 00:02:01.183 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-e77a3fbe11] - GET /v3/batches/b_20260313_04 from 198.51.100.39
+2026-03-14 00:02:01.207 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-e77a3fbe11] - 200 in 137ms
+2026-03-14 00:02:01.778 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-19aa5ac242] - GET /v3/merchants/m_tidepool/balance from 198.51.100.15
+2026-03-14 00:02:01.790 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-19aa5ac242] - 200 in 141ms
+2026-03-14 00:02:01.957 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 769 records (partition 3, offset 4352725)
+2026-03-14 00:02:02.048 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 769 records into 17 batch deltas in 46ms
+2026-03-14 00:02:02.078 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 126 records (partition 9, offset 4426379)
+2026-03-14 00:02:02.147 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 126 records into 19 batch deltas in 37ms
+2026-03-14 00:02:02.976 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-e8aa2b2a57] - GET /v3/merchants/m_heron/balance from 198.51.100.43
+2026-03-14 00:02:02.980 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-e8aa2b2a57] - 409 in 59ms
+2026-03-14 00:02:03.073 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 198 records (partition 8, offset 4555851)
+2026-03-14 00:02:03.177 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 198 records into 12 batch deltas in 90ms
+2026-03-14 00:02:03.273 DEBUG [http-nio-6] c.m.settle.web.HealthController [req-0da5b984e3] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:02:04.002 INFO  [kafka-coordinator] o.a.k.clients.consumer.internals.ConsumerCoordinator - [Consumer clientId=settle-2, groupId=settlement-v3] Rebalance: assigned partitions [1, 3, 5, 11]
+2026-03-14 00:02:04.668 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-5ffc9cbfd4] - POST /v3/batches/b_20260313_06/release from 198.51.100.33
+2026-03-14 00:02:04.702 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-5ffc9cbfd4] - 409 in 66ms
+2026-03-14 00:02:05.179 WARN  [settle-worker-3] c.m.settle.fx.RateCache - EUR/CHF rate is 30 min old; using it (limit 60 min)
+2026-03-14 00:02:05.293 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-eb36935d22] - GET /v3/payouts/po_1567 from 198.51.100.29
+2026-03-14 00:02:05.327 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-eb36935d22] - 200 in 178ms
+2026-03-14 00:02:05.369 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 183 records (partition 6, offset 4898274)
+2026-03-14 00:02:05.435 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 183 records into 22 batch deltas in 58ms
+2026-03-14 00:02:05.498 WARN  [settle-worker-6] c.m.settle.fx.RateCache - EUR/NOK rate is 23 min old; using it (limit 60 min)
+2026-03-14 00:02:05.941 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-c0f057a19b] - GET /v3/batches/b_20260313_08 from 198.51.100.22
+2026-03-14 00:02:05.943 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-c0f057a19b] - 200 in 89ms
+2026-03-14 00:02:06.632 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-1bbfa1494c] - GET /v3/batches/b_20260313_09 from 198.51.100.10
+2026-03-14 00:02:06.639 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-1bbfa1494c] - 409 in 67ms
+2026-03-14 00:02:07.379 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 13ms, heap 937M/4096M
+2026-03-14 00:02:07.947 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-68e1236c3e] - POST /v3/batches/b_20260313_07/release from 198.51.100.34
+2026-03-14 00:02:07.967 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-68e1236c3e] - 409 in 119ms
+2026-03-14 00:02:08.523 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-7adbf49e0d] - POST /v3/batches/b_20260313_06/release from 198.51.100.23
+2026-03-14 00:02:08.542 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-7adbf49e0d] - 409 in 101ms
+2026-03-14 00:02:08.664 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 219 records (partition 10, offset 4238271)
+2026-03-14 00:02:08.763 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 219 records into 24 batch deltas in 29ms
+2026-03-14 00:02:08.848 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-ad2dc200ce] - GET /v3/batches/b_20260313_08 from 198.51.100.42
+2026-03-14 00:02:08.853 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-ad2dc200ce] - 200 in 78ms
+2026-03-14 00:02:09.460 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-c5bcbfb448] - GET /v3/batches?day=2026-03-13 from 198.51.100.36
+2026-03-14 00:02:09.487 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-c5bcbfb448] - 404 in 74ms
+2026-03-14 00:02:10.168 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 5ms, heap 2052M/4096M
+2026-03-14 00:02:10.627 WARN  [settle-worker-4] c.m.settle.fx.RateCache - USD/JPY rate is 19 min old; using it (limit 60 min)
+2026-03-14 00:02:11.424 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-9b89c732b8] - GET /v3/merchants/m_lantern/balance from 198.51.100.27
+2026-03-14 00:02:11.440 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-9b89c732b8] - 404 in 142ms
+2026-03-14 00:02:12.179 DEBUG [http-nio-6] c.m.settle.web.HealthController [req-fc06e5e5c9] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:02:12.542 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 4ms, heap 1292M/4096M
+2026-03-14 00:02:13.189 WARN  [settle-worker-5] c.m.settle.fx.RateCache - USD/JPY rate is 33 min old; using it (limit 60 min)
+2026-03-14 00:02:13.716 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 880 records (partition 11, offset 4023288)
+2026-03-14 00:02:13.787 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 880 records into 23 batch deltas in 72ms
+2026-03-14 00:02:14.001 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 483 records (partition 10, offset 4804281)
+2026-03-14 00:02:14.014 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 483 records into 9 batch deltas in 29ms
+2026-03-14 00:02:14.756 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 467 records (partition 2, offset 4632389)
+2026-03-14 00:02:14.782 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 467 records into 17 batch deltas in 31ms
+2026-03-14 00:02:15.126 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-75297a64ca] - GET /v3/payouts/po_6703 from 198.51.100.5
+2026-03-14 00:02:15.148 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-75297a64ca] - 409 in 4ms
+2026-03-14 00:02:15.692 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-413ff12651] - GET /v3/batches/b_20260313_08 from 198.51.100.50
+2026-03-14 00:02:15.718 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-413ff12651] - 200 in 22ms
+2026-03-14 00:02:15.838 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 621 records (partition 9, offset 4370730)
+2026-03-14 00:02:15.876 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 621 records into 10 batch deltas in 37ms
+2026-03-14 00:02:16.619 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 489 records (partition 8, offset 4886857)
+2026-03-14 00:02:16.637 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 489 records into 18 batch deltas in 16ms
+2026-03-14 00:02:17.283 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-3a183f5104] - GET /v3/merchants/m_okami/balance from 198.51.100.17
+2026-03-14 00:02:17.301 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-3a183f5104] - 409 in 162ms
+2026-03-14 00:02:17.393 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 563 records (partition 9, offset 4409791)
+2026-03-14 00:02:17.442 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 563 records into 19 batch deltas in 86ms
+2026-03-14 00:02:17.613 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 655 records (partition 1, offset 4456214)
+2026-03-14 00:02:17.657 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 655 records into 5 batch deltas in 80ms
+2026-03-14 00:02:17.986 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 897 records (partition 0, offset 4624460)
+2026-03-14 00:02:18.045 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 897 records into 8 batch deltas in 85ms
+2026-03-14 00:02:18.833 WARN  [settle-worker-4] c.m.settle.fx.RateCache - EUR/NOK rate is 22 min old; using it (limit 60 min)
+2026-03-14 00:02:18.839 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-190d3d5c8a] - GET /v3/batches?day=2026-03-13 from 198.51.100.21
+2026-03-14 00:02:18.867 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-190d3d5c8a] - 200 in 154ms
+2026-03-14 00:02:19.343 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 414 records (partition 9, offset 4179984)
+2026-03-14 00:02:19.431 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 414 records into 17 batch deltas in 80ms
+2026-03-14 00:02:19.799 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-8a7306f5b0] - GET /v3/merchants/m_heron/balance from 198.51.100.29
+2026-03-14 00:02:19.817 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-8a7306f5b0] - 200 in 163ms
+2026-03-14 00:02:20.438 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-ae95511a69] - GET /v3/batches/b_20260313_06 from 198.51.100.53
+2026-03-14 00:02:20.449 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-ae95511a69] - 200 in 11ms
+2026-03-14 00:02:20.875 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-2e5d16309f] - GET /v3/batches/b_20260313_00 from 198.51.100.30
+2026-03-14 00:02:20.908 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-2e5d16309f] - 200 in 32ms
+2026-03-14 00:02:21.512 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-5ca5d36eb8] - GET /v3/batches?day=2026-03-13 from 198.51.100.51
+2026-03-14 00:02:21.524 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-5ca5d36eb8] - 200 in 120ms
+2026-03-14 00:02:21.725 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 721 records (partition 9, offset 4842463)
+2026-03-14 00:02:21.750 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 721 records into 14 batch deltas in 67ms
+2026-03-14 00:02:21.799 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-b9679fdee3] - GET /v3/batches?day=2026-03-13 from 198.51.100.10
+2026-03-14 00:02:21.803 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-b9679fdee3] - 200 in 68ms
+2026-03-14 00:02:21.928 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-adbb7da977] - GET /v3/batches?day=2026-03-13 from 198.51.100.5
+2026-03-14 00:02:21.934 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-adbb7da977] - 404 in 18ms
+2026-03-14 00:02:22.612 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-96155367bf] - GET /v3/payouts/po_4125 from 198.51.100.50
+2026-03-14 00:02:22.634 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-96155367bf] - 409 in 63ms
+2026-03-14 00:02:23.067 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 303 records (partition 9, offset 4098525)
+2026-03-14 00:02:23.119 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 303 records into 21 batch deltas in 89ms
+2026-03-14 00:02:23.521 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 891 records (partition 5, offset 4663374)
+2026-03-14 00:02:23.569 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 891 records into 17 batch deltas in 85ms
+2026-03-14 00:02:24.253 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-afb79aca63] - GET /v3/batches/b_20260313_05 from 198.51.100.36
+2026-03-14 00:02:24.288 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-afb79aca63] - 200 in 125ms
+2026-03-14 00:02:24.731 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 441 records (partition 8, offset 4859844)
+2026-03-14 00:02:24.797 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 441 records into 21 batch deltas in 25ms
+2026-03-14 00:02:25.581 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 607 records (partition 5, offset 4772901)
+2026-03-14 00:02:25.649 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 607 records into 17 batch deltas in 6ms
+2026-03-14 00:02:25.947 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 122 records (partition 2, offset 4118622)
+2026-03-14 00:02:26.053 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 122 records into 14 batch deltas in 6ms
+2026-03-14 00:02:26.234 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-4d88c2324b] - GET /v3/batches?day=2026-03-13 from 198.51.100.41
+2026-03-14 00:02:26.259 INFO  [http-nio-6] c.m.settle.web.AccessFilter [req-4d88c2324b] - 200 in 156ms
+2026-03-14 00:02:26.296 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 854 records (partition 7, offset 4825116)
+2026-03-14 00:02:26.352 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 854 records into 9 batch deltas in 46ms
+2026-03-14 00:02:26.817 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 727 records (partition 11, offset 4418785)
+2026-03-14 00:02:26.846 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 727 records into 23 batch deltas in 90ms
+2026-03-14 00:02:27.520 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 489 records (partition 3, offset 4067667)
+2026-03-14 00:02:27.586 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 489 records into 7 batch deltas in 85ms
+2026-03-14 00:02:28.419 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-ffae90e17f] - GET /v3/payouts/po_2663 from 198.51.100.37
+2026-03-14 00:02:28.459 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-ffae90e17f] - 404 in 135ms
+2026-03-14 00:02:29.016 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 690 records (partition 0, offset 4603037)
+2026-03-14 00:02:29.085 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 690 records into 24 batch deltas in 86ms
+2026-03-14 00:02:29.304 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 642 records (partition 3, offset 4183232)
+2026-03-14 00:02:29.371 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 642 records into 16 batch deltas in 64ms
+2026-03-14 00:02:29.944 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 747 records (partition 11, offset 4425704)
+2026-03-14 00:02:30.039 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 747 records into 15 batch deltas in 62ms
+2026-03-14 00:02:30.243 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-7113fd379e] - POST /v3/batches/b_20260313_02/release from 198.51.100.25
+2026-03-14 00:02:30.271 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-7113fd379e] - 409 in 7ms
+2026-03-14 00:02:30.779 DEBUG [settle-worker-1] c.m.settle.ingest.LedgerConsumer - poll returned 888 records (partition 2, offset 4534299)
+2026-03-14 00:02:30.848 DEBUG [settle-worker-1] c.m.settle.netting.Netter - netted 888 records into 13 batch deltas in 77ms
+2026-03-14 00:02:30.940 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-c0e1f1fab1] - POST /v3/batches/b_20260313_08/release from 198.51.100.52
+2026-03-14 00:02:30.971 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-c0e1f1fab1] - 404 in 72ms
+2026-03-14 00:02:31.823 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-d4cffdda4e] - GET /v3/batches?day=2026-03-13 from 198.51.100.26
+2026-03-14 00:02:31.825 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-d4cffdda4e] - 200 in 140ms
+2026-03-14 00:02:32.556 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-8b58f97e94] - POST /v3/batches/b_20260313_04/release from 198.51.100.41
+2026-03-14 00:02:32.559 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-8b58f97e94] - 200 in 78ms
+2026-03-14 00:02:32.740 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-5562846e62] - GET /v3/batches/b_20260313_04 from 198.51.100.58
+2026-03-14 00:02:32.767 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-5562846e62] - 200 in 114ms
+2026-03-14 00:02:33.534 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-45effd672f] - POST /v3/batches/b_20260313_08/release from 198.51.100.15
+2026-03-14 00:02:33.544 WARN  [http-nio-5] c.m.settle.web.BatchController [req-45effd672f] - release refused: batch still has 2 unmatched lines
+2026-03-14 00:02:33.544 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-45effd672f] - 409 in 170ms
+2026-03-14 00:02:34.289 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-0d65b1c1a3] - GET /v3/payouts/po_6627 from 198.51.100.11
+2026-03-14 00:02:34.326 INFO  [http-nio-2] c.m.settle.web.AccessFilter [req-0d65b1c1a3] - 409 in 153ms
+2026-03-14 00:02:34.765 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 496 records (partition 5, offset 4547466)
+2026-03-14 00:02:34.884 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 496 records into 18 batch deltas in 34ms
+2026-03-14 00:02:35.089 INFO  [kafka-coordinator] o.a.k.clients.consumer.internals.ConsumerCoordinator - [Consumer clientId=settle-5, groupId=settlement-v3] Rebalance: assigned partitions [1, 4, 6, 9]
+2026-03-14 00:02:35.884 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 144 records (partition 6, offset 4771668)
+2026-03-14 00:02:35.920 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 144 records into 7 batch deltas in 28ms
+2026-03-14 00:02:35.926 WARN  [settle-worker-3] c.m.settle.fx.RateCache - USD/JPY rate is 19 min old; using it (limit 60 min)
+2026-03-14 00:02:36.328 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 394 records (partition 1, offset 4531035)
+2026-03-14 00:02:36.409 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 394 records into 18 batch deltas in 26ms
+2026-03-14 00:02:36.748 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-5ca94d2b5c] - GET /v3/batches?day=2026-03-13 from 198.51.100.49
+2026-03-14 00:02:36.775 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-5ca94d2b5c] - 200 in 108ms
+2026-03-14 00:02:36.819 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-d198fbcb35] - GET /v3/batches/b_20260313_00 from 198.51.100.18
+2026-03-14 00:02:36.822 INFO  [http-nio-3] c.m.settle.web.AccessFilter [req-d198fbcb35] - 409 in 80ms
+2026-03-14 00:02:37.636 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 426 records (partition 0, offset 4855166)
+2026-03-14 00:02:37.730 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 426 records into 3 batch deltas in 90ms
+2026-03-14 00:02:38.182 WARN  [settle-worker-5] c.m.settle.fx.RateCache - EUR/PLN rate is 21 min old; using it (limit 60 min)
+2026-03-14 00:02:38.798 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-99ec2a5bcd] - GET /v3/batches/b_20260313_01 from 198.51.100.36
+2026-03-14 00:02:38.824 INFO  [http-nio-7] c.m.settle.web.AccessFilter [req-99ec2a5bcd] - 200 in 155ms
+2026-03-14 00:02:38.895 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 7ms, heap 2101M/4096M
+2026-03-14 00:02:39.586 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 134 records (partition 7, offset 4529936)
+2026-03-14 00:02:39.658 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 134 records into 19 batch deltas in 67ms
+2026-03-14 00:02:40.060 DEBUG [http-nio-3] c.m.settle.web.HealthController [req-512e6b6a57] - health ok (db=4ms, kafka=lag 12)
+2026-03-14 00:02:40.427 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-eb15e2ad8e] - GET /v3/payouts/po_2013 from 198.51.100.58
+2026-03-14 00:02:40.458 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-eb15e2ad8e] - 200 in 162ms
+2026-03-14 00:02:40.620 DEBUG [settle-worker-6] c.m.settle.ingest.LedgerConsumer - poll returned 386 records (partition 6, offset 4230210)
+2026-03-14 00:02:40.733 DEBUG [settle-worker-6] c.m.settle.netting.Netter - netted 386 records into 24 batch deltas in 63ms
+2026-03-14 00:02:40.893 DEBUG [settle-worker-4] c.m.settle.ingest.LedgerConsumer - poll returned 825 records (partition 1, offset 4733367)
+2026-03-14 00:02:40.947 DEBUG [settle-worker-4] c.m.settle.netting.Netter - netted 825 records into 16 batch deltas in 66ms
+2026-03-14 00:02:41.721 WARN  [http-nio-8] c.m.settle.web.RateLimiter [req-3df5e5e2bd] - client 203.0.113.10 throttled (120 req/min)
+2026-03-14 00:02:42.265 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-99240b24e1] - POST /v3/batches/b_20260313_07/release from 198.51.100.42
+2026-03-14 00:02:42.300 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-99240b24e1] - 200 in 123ms
+2026-03-14 00:02:42.567 DEBUG [settle-worker-5] c.m.settle.ingest.LedgerConsumer - poll returned 855 records (partition 6, offset 4543412)
+2026-03-14 00:02:42.642 DEBUG [settle-worker-5] c.m.settle.netting.Netter - netted 855 records into 16 batch deltas in 65ms
+2026-03-14 00:02:43.206 DEBUG [settle-worker-3] c.m.settle.ingest.LedgerConsumer - poll returned 613 records (partition 11, offset 4894451)
+2026-03-14 00:02:43.233 DEBUG [settle-worker-3] c.m.settle.netting.Netter - netted 613 records into 7 batch deltas in 22ms
+2026-03-14 00:02:43.353 DEBUG [settle-worker-2] c.m.settle.ingest.LedgerConsumer - poll returned 127 records (partition 8, offset 4564391)
+2026-03-14 00:02:43.393 DEBUG [settle-worker-2] c.m.settle.netting.Netter - netted 127 records into 3 batch deltas in 83ms
+2026-03-14 00:02:43.448 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-b2fc51c4f3] - GET /v3/batches?day=2026-03-13 from 198.51.100.39
+2026-03-14 00:02:43.477 INFO  [http-nio-5] c.m.settle.web.AccessFilter [req-b2fc51c4f3] - 200 in 72ms
+2026-03-14 00:02:44.132 INFO  [gc-monitor] c.m.settle.ops.GcMonitor - G1 young pause 15ms, heap 1553M/4096M
+2026-03-14 00:02:44.402 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-b592af59fb] - GET /v3/merchants/m_tidepool/balance from 198.51.100.36
+2026-03-14 00:02:44.431 INFO  [http-nio-1] c.m.settle.web.AccessFilter [req-b592af59fb] - 200 in 72ms
+2026-03-14 00:02:44.679 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-0dcb955e8e] - GET /v3/merchants/m_tidepool/balance from 198.51.100.5
+2026-03-14 00:02:44.718 INFO  [http-nio-8] c.m.settle.web.AccessFilter [req-0dcb955e8e] - 404 in 43ms
+2026-03-14 00:02:45.244 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-c8e257962b] - GET /v3/batches/b_20260313_01 from 198.51.100.17
+2026-03-14 00:02:45.263 INFO  [http-nio-4] c.m.settle.web.AccessFilter [req-c8e257962b] - 200 in 28ms
+2026-03-14 00:02:45.760 ERROR [settle-worker-4] c.m.settle.ingest.LedgerConsumer - unhandled failure, record will be retried
+org.postgresql.util.PSQLException: ERROR: could not serialize access due to concurrent update
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2725)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2412)
+	at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:152)
+	at com.meridian.settle.store.BatchStore.applyDelta(BatchStore.java:214)
+	at com.meridian.settle.netting.Netter.flush(Netter.java:131)
+	at com.meridian.settle.ingest.LedgerConsumer.run(LedgerConsumer.java:88)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026-03-14 00:02:45.760 INFO  [SIGTERM-handler] c.m.settle.Application - Shutdown requested; draining 3 in-flight batches
+2026-03-14 00:02:46.478 INFO  [SIGTERM-handler] c.m.settle.Application - Stopped cleanly

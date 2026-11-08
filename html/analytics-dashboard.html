@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Orbital — Analytics</title>
+<style>
+  :root {
+    --bg: #0a0e14;
+    --panel: #121822;
+    --panel-2: #0f141d;
+    --line: #1e2733;
+    --ink: #e6edf3;
+    --muted: #7d8b9a;
+    --accent: #4ade80;
+    --accent-2: #38bdf8;
+    --accent-3: #f472b6;
+    --warn: #fbbf24;
+    --mono: "SF Mono", "JetBrains Mono", ui-monospace, "Cascadia Code", Menlo, monospace;
+    --sans: "Söhne", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(56,189,248,0.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(74,222,128,0.08), transparent 55%),
+      var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    padding: 28px;
+    min-height: 100vh;
+  }
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='80' height='80' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  header { display: flex; align-items: baseline; justify-content: space-between;
+    border-bottom: 1px solid var(--line); padding-bottom: 18px; margin-bottom: 24px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .logo { width: 30px; height: 30px; }
+  h1 { font-size: 19px; font-weight: 600; letter-spacing: -0.01em; }
+  .tag { font-family: var(--mono); font-size: 11px; color: var(--muted);
+    border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
+  .live { color: var(--accent); }
+  .live::before { content: "●"; margin-right: 6px; font-size: 9px;
+    animation: pulse 2s ease-in-out infinite; display: inline-block; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+  .card { background: linear-gradient(180deg, var(--panel), var(--panel-2));
+    border: 1px solid var(--line); border-radius: 14px; padding: 20px;
+    position: relative; overflow: hidden; }
+  .card::after { content: ""; position: absolute; inset: 0 0 auto 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); }
+
+  .span-3 { grid-column: span 3; } .span-4 { grid-column: span 4; }
+  .span-6 { grid-column: span 6; } .span-8 { grid-column: span 8; }
+  .span-12 { grid-column: span 12; }
+
+  .stat .label { font-size: 12px; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.08em; }
+  .stat .value { font-family: var(--mono); font-size: 32px; font-weight: 600;
+    letter-spacing: -0.02em; margin-top: 8px; }
+  .stat .delta { font-size: 12px; margin-top: 6px; font-family: var(--mono); }
+  .up { color: var(--accent); } .down { color: var(--accent-3); }
+  .spark { margin-top: 10px; display: block; }
+
+  .card h2 { font-size: 13px; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
+
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--muted);
+    font-family: var(--mono); margin-top: 14px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .dot { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; color: var(--muted); font-weight: 500; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.06em; padding: 0 0 12px; }
+  td { padding: 11px 0; border-top: 1px solid var(--line); font-family: var(--mono); }
+  .pill { font-size: 11px; padding: 3px 9px; border-radius: 999px; font-family: var(--mono); }
+  .pill.ok { background: rgba(74,222,128,0.12); color: var(--accent); }
+  .pill.hold { background: rgba(251,191,36,0.12); color: var(--warn); }
+  .bar-cell { width: 120px; }
+  .bar-track { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent-2), var(--accent)); }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header>
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 32 32" fill="none">
+      <circle cx="16" cy="16" r="14" stroke="#4ade80" stroke-width="1.5" opacity="0.4"/>
+      <circle cx="16" cy="16" r="5" fill="#4ade80"/>
+      <ellipse cx="16" cy="16" rx="14" ry="6" stroke="#38bdf8" stroke-width="1.5" transform="rotate(30 16 16)"/>
+    </svg>
+    <h1>Orbital Analytics</h1>
+  </div>
+  <div style="display:flex; gap:10px; align-items:center;">
+    <span class="tag live">streaming</span>
+    <span class="tag">Q2 · 2026</span>
+  </div>
+</header>
+
+<div class="grid">
+  <!-- Stat cards -->
+  <div class="card span-3 stat">
+    <div class="label">Revenue</div>
+    <div class="value">$1.284M</div>
+    <div class="delta up">▲ 12.4% vs last qtr</div>
+    <svg class="spark" width="100%" height="32" viewBox="0 0 200 32" preserveAspectRatio="none">
+      <polyline points="0,26 25,22 50,24 75,16 100,18 125,10 150,12 175,5 200,7"
+        fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="card span-3 stat">
+    <div class="label">Active users</div>
+    <div class="value">48.2K</div>
+    <div class="delta up">▲ 6.1%</div>
+    <svg class="spark" width="100%" height="32" viewBox="0 0 200 32" preserveAspectRatio="none">
+      <polyline points="0,18 25,20 50,14 75,16 100,11 125,14 150,9 175,11 200,6"
+        fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="card span-3 stat">
+    <div class="label">Churn</div>
+    <div class="value">2.3%</div>
+    <div class="delta down">▼ 0.4%</div>
+    <svg class="spark" width="100%" height="32" viewBox="0 0 200 32" preserveAspectRatio="none">
+      <polyline points="0,8 25,12 50,10 75,15 100,13 125,18 150,16 175,21 200,20"
+        fill="none" stroke="#f472b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="card span-3 stat">
+    <div class="label">Avg. session</div>
+    <div class="value">7m 12s</div>
+    <div class="delta up">▲ 18s</div>
+    <svg class="spark" width="100%" height="32" viewBox="0 0 200 32" preserveAspectRatio="none">
+      <polyline points="0,22 25,18 50,20 75,14 100,16 125,12 150,13 175,8 200,10"
+        fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <!-- Area + line chart -->
+  <div class="card span-8">
+    <h2>Revenue vs. forecast — trailing 12 months</h2>
+    <svg width="100%" height="260" viewBox="0 0 720 260" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <!-- gridlines -->
+      <g stroke="#1e2733" stroke-width="1">
+        <line x1="0" y1="40" x2="720" y2="40"/>
+        <line x1="0" y1="100" x2="720" y2="100"/>
+        <line x1="0" y1="160" x2="720" y2="160"/>
+        <line x1="0" y1="220" x2="720" y2="220"/>
+      </g>
+      <!-- actual area -->
+      <path d="M0,200 L60,185 L120,190 L180,150 L240,160 L300,120 L360,128 L420,90 L480,98 L540,70 L600,60 L660,42 L720,48 L720,260 L0,260 Z" fill="url(#area)"/>
+      <path d="M0,200 L60,185 L120,190 L180,150 L240,160 L300,120 L360,128 L420,90 L480,98 L540,70 L600,60 L660,42 L720,48"
+        fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- forecast dashed -->
+      <path d="M0,210 L60,196 L120,188 L180,170 L240,150 L300,140 L360,118 L420,108 L480,88 L540,80 L600,66 L660,54 L720,40"
+        fill="none" stroke="#4ade80" stroke-width="2" stroke-dasharray="5 5" opacity="0.8"/>
+      <!-- data points -->
+      <g fill="#0a0e14" stroke="#38bdf8" stroke-width="2">
+        <circle cx="300" cy="120" r="3.5"/><circle cx="540" cy="70" r="3.5"/><circle cx="720" cy="48" r="3.5"/>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i class="dot" style="background:#38bdf8"></i> Actual</span>
+      <span><i class="dot" style="background:#4ade80"></i> Forecast</span>
+    </div>
+  </div>
+
+  <!-- Donut -->
+  <div class="card span-4">
+    <h2>Traffic by source</h2>
+    <div style="display:flex; align-items:center; gap:20px;">
+      <svg width="150" height="150" viewBox="0 0 42 42">
+        <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#1e2733" stroke-width="6"/>
+        <!-- segments via stroke-dasharray (circumference = 100) -->
+        <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#38bdf8" stroke-width="6"
+          stroke-dasharray="42 58" stroke-dashoffset="25" transform="rotate(-90 21 21)"/>
+        <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#4ade80" stroke-width="6"
+          stroke-dasharray="28 72" stroke-dashoffset="-17" transform="rotate(-90 21 21)"/>
+        <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#f472b6" stroke-width="6"
+          stroke-dasharray="18 82" stroke-dashoffset="-45" transform="rotate(-90 21 21)"/>
+        <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#fbbf24" stroke-width="6"
+          stroke-dasharray="12 88" stroke-dashoffset="-63" transform="rotate(-90 21 21)"/>
+        <text x="21" y="20" text-anchor="middle" fill="#e6edf3" font-size="6" font-weight="600" font-family="monospace">48K</text>
+        <text x="21" y="26" text-anchor="middle" fill="#7d8b9a" font-size="3">visits</text>
+      </svg>
+      <div class="legend" style="flex-direction:column; gap:9px;">
+        <span><i class="dot" style="background:#38bdf8"></i> Organic 42%</span>
+        <span><i class="dot" style="background:#4ade80"></i> Direct 28%</span>
+        <span><i class="dot" style="background:#f472b6"></i> Social 18%</span>
+        <span><i class="dot" style="background:#fbbf24"></i> Referral 12%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bar chart -->
+  <div class="card span-6">
+    <h2>Sign-ups by channel</h2>
+    <svg width="100%" height="200" viewBox="0 0 480 200">
+      <g stroke="#1e2733"><line x1="0" y1="170" x2="480" y2="170"/></g>
+      <g font-family="monospace" font-size="10" fill="#7d8b9a" text-anchor="middle">
+        <rect x="20"  y="70"  width="48" height="100" rx="4" fill="#38bdf8"/>
+        <rect x="100" y="40"  width="48" height="130" rx="4" fill="#4ade80"/>
+        <rect x="180" y="100" width="48" height="70"  rx="4" fill="#38bdf8" opacity="0.7"/>
+        <rect x="260" y="55"  width="48" height="115" rx="4" fill="#4ade80" opacity="0.85"/>
+        <rect x="340" y="120" width="48" height="50"  rx="4" fill="#38bdf8" opacity="0.6"/>
+        <rect x="420" y="85"  width="48" height="85"  rx="4" fill="#4ade80" opacity="0.7"/>
+        <text x="44" y="186">API</text><text x="124" y="186">Web</text><text x="204" y="186">iOS</text>
+        <text x="284" y="186">Android</text><text x="364" y="186">CLI</text><text x="444" y="186">Embed</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Radial gauges -->
+  <div class="card span-6">
+    <h2>System health</h2>
+    <div style="display:flex; justify-content:space-around;">
+      <!-- gauge 1 -->
+      <div style="text-align:center">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#1e2733" stroke-width="10"/>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#4ade80" stroke-width="10"
+            stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="47"
+            transform="rotate(-90 60 60)"/>
+          <text x="60" y="58" text-anchor="middle" fill="#e6edf3" font-size="20" font-weight="600" font-family="monospace">85%</text>
+          <text x="60" y="74" text-anchor="middle" fill="#7d8b9a" font-size="9">uptime</text>
+        </svg>
+      </div>
+      <div style="text-align:center">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#1e2733" stroke-width="10"/>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#38bdf8" stroke-width="10"
+            stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="160"
+            transform="rotate(-90 60 60)"/>
+          <text x="60" y="58" text-anchor="middle" fill="#e6edf3" font-size="20" font-weight="600" font-family="monospace">49%</text>
+          <text x="60" y="74" text-anchor="middle" fill="#7d8b9a" font-size="9">CPU</text>
+        </svg>
+      </div>
+      <div style="text-align:center">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#1e2733" stroke-width="10"/>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#fbbf24" stroke-width="10"
+            stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="100"
+            transform="rotate(-90 60 60)"/>
+          <text x="60" y="58" text-anchor="middle" fill="#e6edf3" font-size="20" font-weight="600" font-family="monospace">68%</text>
+          <text x="60" y="74" text-anchor="middle" fill="#7d8b9a" font-size="9">memory</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data table -->
+  <div class="card span-12">
+    <h2>Top campaigns</h2>
+    <table>
+      <thead><tr><th>Campaign</th><th>Channel</th><th>Spend</th><th>Conversions</th><th>ROAS</th><th>Pacing</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Spring Launch</td><td>Paid Social</td><td>$42,100</td><td>1,284</td><td>4.2×</td>
+          <td class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:88%"></div></div></td><td><span class="pill ok">on track</span></td></tr>
+        <tr><td>Brand Search</td><td>SEM</td><td>$28,750</td><td>2,011</td><td>6.1×</td>
+          <td class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:96%"></div></div></td><td><span class="pill ok">on track</span></td></tr>
+        <tr><td>Retargeting</td><td>Display</td><td>$15,300</td><td>742</td><td>3.4×</td>
+          <td class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:54%"></div></div></td><td><span class="pill hold">review</span></td></tr>
+        <tr><td>Newsletter</td><td>Email</td><td>$3,200</td><td>918</td><td>9.8×</td>
+          <td class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:72%"></div></div></td><td><span class="pill ok">on track</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

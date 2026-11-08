@@ -1,0 +1,1456 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.halcyon-instruments.example/patch/2.1/patch.schema.json",
+  "title": "Halcyon patch",
+  "description": "A sound for the Halcyon Vesper and Halcyon Lantern synthesizers (fictional instruments). A patch stacks up to four layers, each with its own oscillators, filter, envelopes and LFOs, plus macros, a recursive modulation tree and an effects chain.\n\nKnob values are stored normalised (0–1) so a patch moves between hardware revisions without re-scaling.",
+  "type": "object",
+  "required": [
+    "format",
+    "name",
+    "category",
+    "layers"
+  ],
+  "properties": {
+    "format": {
+      "const": "halcyon-patch/2.1"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 24
+    },
+    "category": {
+      "enum": [
+        "bass",
+        "lead",
+        "pad",
+        "keys",
+        "pluck",
+        "bell",
+        "brass",
+        "strings",
+        "texture",
+        "percussion",
+        "fx",
+        "sequence"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 8,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z-]*$"
+      },
+      "examples": [
+        [
+          "warm",
+          "evolving",
+          "cinematic"
+        ]
+      ]
+    },
+    "author": {
+      "$ref": "#/$defs/author"
+    },
+    "created": {
+      "type": "string",
+      "format": "date"
+    },
+    "instrument": {
+      "type": "object",
+      "required": [
+        "model",
+        "firmware"
+      ],
+      "properties": {
+        "model": {
+          "enum": [
+            "vesper",
+            "vesper-desktop",
+            "lantern"
+          ]
+        },
+        "firmware": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        }
+      }
+    },
+    "tempo": {
+      "type": "number",
+      "minimum": 20,
+      "maximum": 300,
+      "description": "Tempo used for synced rates when no host clock is present."
+    },
+    "layerMode": {
+      "enum": [
+        "single",
+        "stack",
+        "split",
+        "velocity-switch"
+      ],
+      "default": "single"
+    },
+    "layers": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/layer"
+      }
+    },
+    "macros": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "$ref": "#/$defs/macro"
+      }
+    },
+    "modulation": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/modGroup"
+        }
+      ],
+      "description": "The root of the modulation tree."
+    },
+    "effects": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "$ref": "#/$defs/effect"
+      },
+      "description": "Processed in order, after the layers are mixed."
+    },
+    "performance": {
+      "type": "object",
+      "properties": {
+        "pitchBendRange": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 24,
+          "default": 2
+        },
+        "mpe": {
+          "type": "boolean",
+          "default": false
+        },
+        "aftertouch": {
+          "enum": [
+            "off",
+            "channel",
+            "polyphonic"
+          ]
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "Playing tips shown on the patch browser's detail card."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "layerMode": {
+            "const": "single"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "layers": {
+            "maxItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "layerMode": {
+            "enum": [
+              "stack",
+              "split",
+              "velocity-switch"
+            ]
+          }
+        },
+        "required": [
+          "layerMode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "layers": {
+            "minItems": 2
+          }
+        }
+      }
+    }
+  ],
+  "unevaluatedProperties": false,
+  "$defs": {
+    "unit": {
+      "title": "Unit interval",
+      "description": "A normalised control value from 0 to 1. Every knob on the panel stores one of these; the voice maps it to its real range.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "bipolar": {
+      "title": "Bipolar amount",
+      "description": "A signed depth from -1 to 1. Negative values invert the source.",
+      "type": "number",
+      "minimum": -1,
+      "maximum": 1
+    },
+    "hertz": {
+      "title": "Frequency",
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 20000,
+      "description": "A frequency in hertz."
+    },
+    "seconds": {
+      "title": "Time",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 60,
+      "description": "A duration in seconds. The envelope generators reach 60 s at their slowest."
+    },
+    "decibels": {
+      "title": "Level",
+      "type": "number",
+      "minimum": -96,
+      "maximum": 12,
+      "description": "A level in decibels relative to unity gain."
+    },
+    "semitones": {
+      "title": "Transpose",
+      "type": "integer",
+      "minimum": -48,
+      "maximum": 48
+    },
+    "cents": {
+      "title": "Fine tune",
+      "type": "number",
+      "minimum": -100,
+      "maximum": 100,
+      "description": "Hundredths of a semitone."
+    },
+    "noteName": {
+      "title": "Note name",
+      "type": "string",
+      "pattern": "^[A-G](#|b)?(-1|[0-9])$",
+      "examples": [
+        "C2",
+        "F#4",
+        "Bb-1"
+      ]
+    },
+    "identifier": {
+      "title": "Identifier",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,31}$",
+      "description": "A short, lower-case name used to wire modules together."
+    },
+    "tempoSync": {
+      "title": "Tempo-synced division",
+      "type": "object",
+      "required": [
+        "division"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "division": {
+          "enum": [
+            "4/1",
+            "2/1",
+            "1/1",
+            "1/2",
+            "1/4",
+            "1/8",
+            "1/16",
+            "1/32"
+          ]
+        },
+        "modifier": {
+          "enum": [
+            "straight",
+            "dotted",
+            "triplet"
+          ],
+          "default": "straight"
+        }
+      }
+    },
+    "rate": {
+      "title": "Rate",
+      "description": "Either a free rate in hertz or a division of the host tempo.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/hertz"
+        },
+        {
+          "$ref": "#/$defs/tempoSync"
+        }
+      ]
+    },
+    "waveform": {
+      "title": "Classic waveform",
+      "enum": [
+        "sine",
+        "triangle",
+        "saw",
+        "ramp",
+        "square",
+        "pulse",
+        "noise-white",
+        "noise-pink"
+      ]
+    },
+    "analogOscillator": {
+      "title": "Analogue-modelled oscillator",
+      "description": "The Vesper core: a drifting virtual-analogue oscillator with hard sync and a sub.",
+      "type": "object",
+      "required": [
+        "engine",
+        "waveform"
+      ],
+      "unevaluatedProperties": false,
+      "properties": {
+        "engine": {
+          "const": "analog"
+        },
+        "waveform": {
+          "$ref": "#/$defs/waveform"
+        },
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "tune": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "octave": {
+              "type": "integer",
+              "minimum": -3,
+              "maximum": 3,
+              "default": 0
+            },
+            "semitones": {
+              "$ref": "#/$defs/semitones"
+            },
+            "cents": {
+              "$ref": "#/$defs/cents"
+            }
+          }
+        },
+        "level": {
+          "$ref": "#/$defs/unit"
+        },
+        "pan": {
+          "$ref": "#/$defs/bipolar"
+        },
+        "keyTrack": {
+          "type": "boolean",
+          "default": true,
+          "description": "Follow the keyboard. Turn off for drones and fixed-pitch percussion."
+        },
+        "pulseWidth": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/unit"
+            }
+          ],
+          "description": "Only heard on the `pulse` waveform.",
+          "default": 0.5
+        },
+        "drift": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/unit"
+            }
+          ],
+          "description": "Slow random pitch wander, the reason two Vespers never sound quite alike.",
+          "default": 0.12
+        },
+        "sync": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/identifier"
+            }
+          ],
+          "description": "Hard-sync to another oscillator by its id."
+        },
+        "sub": {
+          "type": "object",
+          "properties": {
+            "octavesDown": {
+              "enum": [
+                1,
+                2
+              ]
+            },
+            "shape": {
+              "enum": [
+                "square",
+                "sine"
+              ]
+            },
+            "level": {
+              "$ref": "#/$defs/unit"
+            }
+          }
+        }
+      },
+      "dependentSchemas": {
+        "pulseWidth": {
+          "properties": {
+            "waveform": {
+              "const": "pulse"
+            }
+          }
+        }
+      }
+    },
+    "wavetableOscillator": {
+      "title": "Wavetable oscillator",
+      "type": "object",
+      "required": [
+        "engine",
+        "table"
+      ],
+      "unevaluatedProperties": false,
+      "properties": {
+        "engine": {
+          "const": "wavetable"
+        },
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "tune": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "octave": {
+              "type": "integer",
+              "minimum": -3,
+              "maximum": 3,
+              "default": 0
+            },
+            "semitones": {
+              "$ref": "#/$defs/semitones"
+            },
+            "cents": {
+              "$ref": "#/$defs/cents"
+            }
+          }
+        },
+        "level": {
+          "$ref": "#/$defs/unit"
+        },
+        "pan": {
+          "$ref": "#/$defs/bipolar"
+        },
+        "keyTrack": {
+          "type": "boolean",
+          "default": true,
+          "description": "Follow the keyboard. Turn off for drones and fixed-pitch percussion."
+        },
+        "table": {
+          "type": "string",
+          "description": "Name of a factory or user wavetable.",
+          "examples": [
+            "Glass Harmonics",
+            "Tidal Formants",
+            "Basalt"
+          ]
+        },
+        "position": {
+          "$ref": "#/$defs/unit"
+        },
+        "interpolation": {
+          "enum": [
+            "none",
+            "linear",
+            "spectral"
+          ],
+          "default": "linear"
+        },
+        "warp": {
+          "type": "object",
+          "required": [
+            "mode"
+          ],
+          "properties": {
+            "mode": {
+              "enum": [
+                "bend",
+                "mirror",
+                "quantise",
+                "formant",
+                "fold"
+              ]
+            },
+            "amount": {
+              "$ref": "#/$defs/unit"
+            }
+          }
+        }
+      }
+    },
+    "fmOscillator": {
+      "title": "FM operator stack",
+      "description": "Up to six sine operators routed by an algorithm number.",
+      "type": "object",
+      "required": [
+        "engine",
+        "algorithm",
+        "operators"
+      ],
+      "unevaluatedProperties": false,
+      "properties": {
+        "engine": {
+          "const": "fm"
+        },
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "tune": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "octave": {
+              "type": "integer",
+              "minimum": -3,
+              "maximum": 3,
+              "default": 0
+            },
+            "semitones": {
+              "$ref": "#/$defs/semitones"
+            },
+            "cents": {
+              "$ref": "#/$defs/cents"
+            }
+          }
+        },
+        "level": {
+          "$ref": "#/$defs/unit"
+        },
+        "pan": {
+          "$ref": "#/$defs/bipolar"
+        },
+        "keyTrack": {
+          "type": "boolean",
+          "default": true,
+          "description": "Follow the keyboard. Turn off for drones and fixed-pitch percussion."
+        },
+        "algorithm": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 24
+        },
+        "feedback": {
+          "$ref": "#/$defs/unit"
+        },
+        "operators": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 6,
+          "items": {
+            "type": "object",
+            "required": [
+              "ratio",
+              "level"
+            ],
+            "properties": {
+              "ratio": {
+                "type": "number",
+                "minimum": 0.125,
+                "maximum": 32,
+                "description": "Frequency as a multiple of the note."
+              },
+              "fixed": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/hertz"
+                  }
+                ],
+                "description": "If set, the operator ignores the note and runs at this frequency."
+              },
+              "level": {
+                "$ref": "#/$defs/unit"
+              },
+              "envelope": {
+                "$ref": "#/$defs/envelope"
+              },
+              "velocity": {
+                "$ref": "#/$defs/unit"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sampleOscillator": {
+      "title": "Sample player",
+      "type": "object",
+      "required": [
+        "engine",
+        "sample"
+      ],
+      "unevaluatedProperties": false,
+      "properties": {
+        "engine": {
+          "const": "sample"
+        },
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "tune": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "octave": {
+              "type": "integer",
+              "minimum": -3,
+              "maximum": 3,
+              "default": 0
+            },
+            "semitones": {
+              "$ref": "#/$defs/semitones"
+            },
+            "cents": {
+              "$ref": "#/$defs/cents"
+            }
+          }
+        },
+        "level": {
+          "$ref": "#/$defs/unit"
+        },
+        "pan": {
+          "$ref": "#/$defs/bipolar"
+        },
+        "keyTrack": {
+          "type": "boolean",
+          "default": true,
+          "description": "Follow the keyboard. Turn off for drones and fixed-pitch percussion."
+        },
+        "sample": {
+          "type": "object",
+          "required": [
+            "file",
+            "root"
+          ],
+          "properties": {
+            "file": {
+              "type": "string",
+              "pattern": "^[^/\\\\:]+\\.(wav|aif|aiff|flac)$"
+            },
+            "root": {
+              "$ref": "#/$defs/noteName"
+            },
+            "loop": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "start",
+                    "end"
+                  ],
+                  "properties": {
+                    "start": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "end": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "crossfade": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "Crossfade length in samples."
+                    },
+                    "mode": {
+                      "enum": [
+                        "forward",
+                        "ping-pong",
+                        "reverse"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "startOffset": {
+          "$ref": "#/$defs/unit"
+        },
+        "reverse": {
+          "type": "boolean"
+        }
+      }
+    },
+    "oscillator": {
+      "title": "Oscillator",
+      "description": "One sound source. `engine` decides which shape applies.",
+      "type": "object",
+      "required": [
+        "id",
+        "engine"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "engine": {
+          "enum": [
+            "analog",
+            "wavetable",
+            "fm",
+            "sample"
+          ]
+        }
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/analogOscillator"
+        },
+        {
+          "$ref": "#/$defs/wavetableOscillator"
+        },
+        {
+          "$ref": "#/$defs/fmOscillator"
+        },
+        {
+          "$ref": "#/$defs/sampleOscillator"
+        }
+      ]
+    },
+    "envelope": {
+      "title": "Envelope",
+      "description": "A contour over time. Classic four-stage, or a free multi-segment shape.",
+      "anyOf": [
+        {
+          "title": "ADSR",
+          "type": "object",
+          "required": [
+            "attack",
+            "decay",
+            "sustain",
+            "release"
+          ],
+          "properties": {
+            "attack": {
+              "$ref": "#/$defs/seconds"
+            },
+            "decay": {
+              "$ref": "#/$defs/seconds"
+            },
+            "sustain": {
+              "$ref": "#/$defs/unit"
+            },
+            "release": {
+              "$ref": "#/$defs/seconds"
+            },
+            "curve": {
+              "enum": [
+                "linear",
+                "exponential",
+                "analogue"
+              ],
+              "default": "analogue"
+            },
+            "velocity": {
+              "$ref": "#/$defs/unit"
+            },
+            "loop": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        },
+        {
+          "title": "Multi-segment",
+          "type": "object",
+          "required": [
+            "segments"
+          ],
+          "properties": {
+            "segments": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 16,
+              "items": {
+                "type": "object",
+                "required": [
+                  "to",
+                  "time"
+                ],
+                "properties": {
+                  "to": {
+                    "$ref": "#/$defs/unit"
+                  },
+                  "time": {
+                    "$ref": "#/$defs/seconds"
+                  },
+                  "bend": {
+                    "$ref": "#/$defs/bipolar"
+                  }
+                }
+              }
+            },
+            "sustainAt": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Index of the segment that holds while the key is down."
+            },
+            "loopFrom": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      ]
+    },
+    "filter": {
+      "title": "Filter",
+      "type": "object",
+      "required": [
+        "model",
+        "cutoff"
+      ],
+      "properties": {
+        "model": {
+          "enum": [
+            "ladder-24",
+            "state-variable",
+            "comb",
+            "formant",
+            "diode",
+            "bypass"
+          ],
+          "description": "`ladder-24` is the warm four-pole; `formant` gives vowels between A and U."
+        },
+        "mode": {
+          "enum": [
+            "lowpass",
+            "highpass",
+            "bandpass",
+            "notch",
+            "peak"
+          ]
+        },
+        "cutoff": {
+          "$ref": "#/$defs/hertz"
+        },
+        "resonance": {
+          "$ref": "#/$defs/unit"
+        },
+        "drive": {
+          "$ref": "#/$defs/unit"
+        },
+        "keyTrack": {
+          "$ref": "#/$defs/unit"
+        },
+        "envelopeDepth": {
+          "$ref": "#/$defs/bipolar"
+        },
+        "vowel": {
+          "type": "string",
+          "enum": [
+            "a",
+            "e",
+            "i",
+            "o",
+            "u"
+          ]
+        }
+      },
+      "if": {
+        "properties": {
+          "model": {
+            "const": "formant"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "vowel"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "vowel"
+          ]
+        }
+      }
+    },
+    "lfo": {
+      "title": "LFO",
+      "type": "object",
+      "required": [
+        "id",
+        "shape",
+        "rate"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "shape": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/waveform"
+            },
+            {
+              "const": "sample-and-hold"
+            },
+            {
+              "const": "smooth-random"
+            }
+          ]
+        },
+        "rate": {
+          "$ref": "#/$defs/rate"
+        },
+        "phase": {
+          "$ref": "#/$defs/unit"
+        },
+        "delay": {
+          "$ref": "#/$defs/seconds"
+        },
+        "fadeIn": {
+          "$ref": "#/$defs/seconds"
+        },
+        "retrigger": {
+          "enum": [
+            "free",
+            "per-note",
+            "per-phrase"
+          ],
+          "default": "per-note"
+        }
+      }
+    },
+    "modSource": {
+      "title": "Modulation source",
+      "oneOf": [
+        {
+          "enum": [
+            "velocity",
+            "aftertouch",
+            "mod-wheel",
+            "pitch-bend",
+            "breath",
+            "key",
+            "random-per-note",
+            "slide"
+          ]
+        },
+        {
+          "type": "string",
+          "pattern": "^(lfo|env|macro)\\.[a-z][a-z0-9-]*$",
+          "description": "A named LFO, envelope or macro, e.g. `lfo.wobble`."
+        }
+      ]
+    },
+    "modTarget": {
+      "title": "Modulation target",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*(\\.[a-zA-Z][a-zA-Z0-9]*)+$",
+      "description": "A dotted path to any knob, e.g. `osc1.position` or `filter.cutoff`.",
+      "examples": [
+        "osc1.position",
+        "filter.cutoff",
+        "fx.reverb.mix"
+      ]
+    },
+    "modRoute": {
+      "title": "Modulation route",
+      "type": "object",
+      "required": [
+        "source",
+        "target",
+        "amount"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/modSource"
+        },
+        "target": {
+          "$ref": "#/$defs/modTarget"
+        },
+        "amount": {
+          "$ref": "#/$defs/bipolar"
+        },
+        "via": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/modSource"
+            }
+          ],
+          "description": "Scale the route by a second source, e.g. LFO depth on the mod wheel."
+        },
+        "curve": {
+          "enum": [
+            "linear",
+            "exponential",
+            "logarithmic",
+            "s-curve",
+            "stepped"
+          ],
+          "default": "linear"
+        }
+      }
+    },
+    "modGroup": {
+      "title": "Modulation group",
+      "description": "A named folder of routes that can be muted together. Groups nest to any depth: this definition refers to itself.",
+      "type": "object",
+      "required": [
+        "name",
+        "children"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "muted": {
+          "type": "boolean",
+          "default": false
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/modRoute"
+              },
+              {
+                "$ref": "#/$defs/modGroup"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "effect": {
+      "title": "Effect",
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "chorus",
+            "phaser",
+            "delay",
+            "reverb",
+            "drive",
+            "eq",
+            "compressor",
+            "bitcrush"
+          ]
+        },
+        "bypass": {
+          "type": "boolean"
+        },
+        "mix": {
+          "$ref": "#/$defs/unit"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "delay"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "time"
+            ],
+            "properties": {
+              "time": {
+                "$ref": "#/$defs/rate"
+              },
+              "feedback": {
+                "$ref": "#/$defs/unit"
+              },
+              "pingPong": {
+                "type": "boolean"
+              },
+              "tone": {
+                "$ref": "#/$defs/bipolar"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "reverb"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "space": {
+                "enum": [
+                  "room",
+                  "hall",
+                  "plate",
+                  "spring",
+                  "cathedral",
+                  "shimmer"
+                ]
+              },
+              "size": {
+                "$ref": "#/$defs/unit"
+              },
+              "decay": {
+                "$ref": "#/$defs/seconds"
+              },
+              "predelay": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 0.5
+              },
+              "damping": {
+                "$ref": "#/$defs/unit"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "eq"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "bands"
+            ],
+            "properties": {
+              "bands": {
+                "type": "array",
+                "maxItems": 4,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "frequency",
+                    "gain"
+                  ],
+                  "properties": {
+                    "frequency": {
+                      "$ref": "#/$defs/hertz"
+                    },
+                    "gain": {
+                      "$ref": "#/$defs/decibels"
+                    },
+                    "q": {
+                      "type": "number",
+                      "minimum": 0.1,
+                      "maximum": 18
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "chorus"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "voices": {
+                "type": "integer",
+                "minimum": 2,
+                "maximum": 8
+              },
+              "rate": {
+                "$ref": "#/$defs/rate"
+              },
+              "depth": {
+                "$ref": "#/$defs/unit"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "layer": {
+      "title": "Layer",
+      "description": "A complete voice: oscillators through a filter and amplifier. A patch stacks or splits up to four layers.",
+      "type": "object",
+      "required": [
+        "name",
+        "oscillators",
+        "amp"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 24
+        },
+        "keyRange": {
+          "type": "object",
+          "properties": {
+            "low": {
+              "$ref": "#/$defs/noteName"
+            },
+            "high": {
+              "$ref": "#/$defs/noteName"
+            }
+          },
+          "description": "Leave out to cover the whole keyboard."
+        },
+        "velocityRange": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 127
+            },
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 127
+            }
+          ],
+          "items": false,
+          "minItems": 2
+        },
+        "oscillators": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "items": {
+            "$ref": "#/$defs/oscillator"
+          }
+        },
+        "filter": {
+          "$ref": "#/$defs/filter"
+        },
+        "filterEnvelope": {
+          "$ref": "#/$defs/envelope"
+        },
+        "amp": {
+          "type": "object",
+          "required": [
+            "envelope"
+          ],
+          "properties": {
+            "envelope": {
+              "$ref": "#/$defs/envelope"
+            },
+            "level": {
+              "$ref": "#/$defs/decibels"
+            },
+            "velocity": {
+              "$ref": "#/$defs/unit"
+            }
+          }
+        },
+        "lfos": {
+          "type": "array",
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/$defs/lfo"
+          }
+        },
+        "voicing": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "enum": [
+                "poly",
+                "mono",
+                "legato",
+                "unison"
+              ]
+            },
+            "voices": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 16
+            },
+            "glide": {
+              "$ref": "#/$defs/seconds"
+            },
+            "unisonDetune": {
+              "$ref": "#/$defs/unit"
+            },
+            "unisonSpread": {
+              "$ref": "#/$defs/unit"
+            }
+          },
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "unison"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "required": [
+              "voices",
+              "unisonDetune"
+            ]
+          }
+        }
+      }
+    },
+    "macro": {
+      "title": "Macro",
+      "type": "object",
+      "required": [
+        "id",
+        "label"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 12,
+          "description": "Shown on the small display above the knob."
+        },
+        "value": {
+          "$ref": "#/$defs/unit"
+        }
+      }
+    },
+    "author": {
+      "title": "Author",
+      "description": "Who made the patch. A handle, never a legal name.",
+      "type": "object",
+      "required": [
+        "handle"
+      ],
+      "properties": {
+        "handle": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]{2,24}$"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://[^/]+\\.(example|test)(/|$)"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "format": "halcyon-patch/2.1",
+      "name": "Tidepool Glass",
+      "category": "pad",
+      "tags": [
+        "evolving",
+        "glassy",
+        "wide"
+      ],
+      "author": {
+        "handle": "lowtide_sound"
+      },
+      "instrument": {
+        "model": "vesper",
+        "firmware": "2.4.1"
+      },
+      "layerMode": "single",
+      "layers": [
+        {
+          "name": "Glass",
+          "oscillators": [
+            {
+              "id": "osc1",
+              "engine": "wavetable",
+              "table": "Glass Harmonics",
+              "position": 0.31,
+              "warp": {
+                "mode": "mirror",
+                "amount": 0.2
+              }
+            }
+          ],
+          "filter": {
+            "model": "state-variable",
+            "mode": "lowpass",
+            "cutoff": 2400,
+            "resonance": 0.18
+          },
+          "amp": {
+            "envelope": {
+              "attack": 2.4,
+              "decay": 1.0,
+              "sustain": 0.8,
+              "release": 6.5
+            }
+          }
+        }
+      ],
+      "macros": [
+        {
+          "id": "shimmer",
+          "label": "SHIMMER",
+          "value": 0.4
+        }
+      ],
+      "modulation": {
+        "name": "root",
+        "children": [
+          {
+            "source": "macro.shimmer",
+            "target": "osc1.position",
+            "amount": 0.55
+          }
+        ]
+      },
+      "effects": [
+        {
+          "type": "reverb",
+          "space": "shimmer",
+          "size": 0.9,
+          "decay": 11,
+          "mix": 0.45
+        }
+      ]
+    }
+  ]
+}

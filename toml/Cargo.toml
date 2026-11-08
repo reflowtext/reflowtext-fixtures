@@ -1,0 +1,134 @@
+# Workspace manifest for "Driftwood", the firmware toolchain behind the
+# Halcyon Instruments Tidewater synthesizers: a patch compiler, a DSP core
+# shared by firmware and desktop editor, a USB librarian and the editor itself.
+
+[workspace]
+resolver = "2"
+members = [
+    "crates/dsp-core",
+    "crates/patch-format",
+    "crates/patch-compiler",
+    "crates/librarian",
+    "crates/midi-io",
+    "apps/editor",
+    "apps/tw-cli",
+    "firmware/tidewater",
+]
+default-members = ["crates/dsp-core", "crates/patch-format", "crates/patch-compiler", "apps/tw-cli"]
+exclude = ["firmware/bootloader", "experiments/*"]
+
+[workspace.package]
+version = "4.2.0"
+edition = "2021"
+rust-version = "1.82"
+authors = ["Halcyon Instruments firmware team"]
+repository = "https://git.halcyon-instruments.example/driftwood"
+publish = false
+
+[workspace.dependencies]
+# Internal crates, referenced by path so a single version moves together.
+dsp-core       = { path = "crates/dsp-core", default-features = false }
+patch-format   = { path = "crates/patch-format" }
+patch-compiler = { path = "crates/patch-compiler" }
+midi-io        = { path = "crates/midi-io" }
+librarian      = { path = "crates/librarian" }
+
+# Shared third-party versions. Crates opt in with `foo.workspace = true`.
+anyhow       = "1.0"
+thiserror    = "2.0"
+bitflags     = "2.6"
+heapless     = "0.8"
+libm         = "0.2"
+fixed        = { version = "1.28", default-features = false }
+serde        = { version = "1.0", default-features = false, features = ["derive"] }
+serde_json   = "1.0"
+postcard     = { version = "1.0", default-features = false, features = ["heapless"] }
+clap         = { version = "4.5", features = ["derive", "wrap_help"] }
+tokio        = { version = "1.40", features = ["rt-multi-thread", "macros", "sync", "time"] }
+tracing      = { version = "0.1", default-features = false, features = ["attributes"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+proptest     = "1.5"
+criterion    = { version = "0.5", default-features = false, features = ["cargo_bench_support"] }
+insta        = { version = "1.40", features = ["yaml"] }
+
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+missing_debug_implementations = "warn"
+unreachable_pub = "warn"
+
+[workspace.lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+# DSP code is full of deliberate float/int casts; review them, do not ban them.
+cast_possible_truncation = "allow"
+cast_precision_loss = "allow"
+module_name_repetitions = "allow"
+float_cmp = "deny"
+unwrap_used = "deny"
+dbg_macro = "deny"
+
+# ---------------------------------------------------------------- profiles --
+
+[profile.dev]
+opt-level = 1            # unoptimised DSP is too slow to audition at all
+debug = "line-tables-only"
+
+[profile.dev.package.dsp-core]
+opt-level = 3            # the hot loop, even while debugging everything else
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = "symbols"
+
+# The firmware image must fit in 512 KiB of flash on the Tidewater 8.
+[profile.firmware]
+inherits = "release"
+opt-level = "s"
+debug = false
+overflow-checks = false
+
+[profile.bench]
+inherits = "release"
+debug = "line-tables-only"
+strip = "none"
+
+# ------------------------------------------------------------- patches --
+
+[patch.crates-io]
+# Waiting on an upstream release that includes the no_std fix for f32 parsing.
+# Remove once the next minor version is out.
+# lexical-core = { git = "https://git.halcyon-instruments.example/forks/lexical", branch = "nostd-f32" }
+
+# ----------------------------------------------------------- metadata --
+
+[workspace.metadata.release]
+tag-prefix = "driftwood-"
+pre-release-commit-message = "release: driftwood {{version}}"
+consolidate-commits = true
+
+[workspace.metadata.firmware]
+targets = [
+    { board = "tidewater-8",  triple = "thumbv7em-none-eabihf", flash_kib = 512, ram_kib = 256 },
+    { board = "tidewater-8d", triple = "thumbv7em-none-eabihf", flash_kib = 512, ram_kib = 256 },
+    { board = "mono-k",       triple = "thumbv6m-none-eabi",    flash_kib = 256, ram_kib = 64 },
+]
+sample_rate_hz = 48_000
+block_size = 32
+voices = 8
+
+[[workspace.metadata.firmware.checks]]
+name = "flash budget"
+command = "tw-cli size --budget"
+blocking = true
+
+[[workspace.metadata.firmware.checks]]
+name = "voice CPU budget"
+command = "tw-cli bench --voices 8 --max-load 0.70"
+blocking = true
+
+[[workspace.metadata.firmware.checks]]
+name = "patch round trip"
+command = "tw-cli patches verify factory/"
+blocking = false

@@ -1,0 +1,4174 @@
+{
+  "openapi": "3.1.0",
+  "jsonSchemaDialect": "https://spec.openapis.org/oas/3.1/dialect/base",
+  "info": {
+    "title": "Meridian Settlement API",
+    "version": "3.4.0",
+    "summary": "Captures in, payouts out, and a ledger that always balances.",
+    "description": "The Meridian Settlement API moves money from the moment a payment is captured to the moment it lands in a merchant's bank account.\n\n**Meridian Payments is fictional.** Every endpoint, identifier and amount in this document is invented for demonstration.\n\n## Concepts\n\n- A **capture** is money taken from a payer.\n- Captures for one merchant, one currency and one window form a **run**.\n- A closed run becomes part of a **payout** to a verified bank account.\n- Every movement is written to the **ledger** as balanced double entries.\n\n## Money\n\nAmounts are always integer minor units plus a currency code. The API never accepts or returns a float for money.",
+    "contact": {
+      "name": "Meridian developer relations",
+      "url": "https://docs.meridian.example",
+      "email": "developers@meridian.example"
+    },
+    "license": {
+      "name": "CC0-1.0",
+      "identifier": "CC0-1.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.meridian.example/v3",
+      "description": "Production"
+    },
+    {
+      "url": "https://sandbox.meridian.example/v3",
+      "description": "Sandbox: no real money moves"
+    },
+    {
+      "url": "https://{region}.api.meridian.example/v3",
+      "description": "Regional endpoint",
+      "variables": {
+        "region": {
+          "default": "eu-north",
+          "enum": [
+            "eu-north",
+            "eu-central",
+            "us-east"
+          ]
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "platformKey": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Merchants",
+      "description": "Accounts that receive money, their payout destinations and fee schedules."
+    },
+    {
+      "name": "Captures",
+      "description": "Money taken from payers, and refunds of it."
+    },
+    {
+      "name": "Settlement runs",
+      "description": "Windows of captures that settle together."
+    },
+    {
+      "name": "Payouts",
+      "description": "Transfers of settled money to merchants' banks."
+    },
+    {
+      "name": "Disputes",
+      "description": "Chargebacks and the evidence that answers them."
+    },
+    {
+      "name": "Foreign exchange",
+      "description": "Locked quotes and indicative rates."
+    },
+    {
+      "name": "Ledger",
+      "description": "The double-entry record behind every balance."
+    },
+    {
+      "name": "Reports",
+      "description": "Reconciliation between the books and the bank."
+    },
+    {
+      "name": "Webhooks",
+      "description": "Where Meridian tells you something happened."
+    }
+  ],
+  "paths": {
+    "/merchants": {
+      "get": {
+        "operationId": "listMerchants",
+        "tags": [
+          "Merchants"
+        ],
+        "summary": "List merchant accounts",
+        "description": "Returns merchant accounts visible to the calling platform key, newest first. Filter by onboarding status to find accounts that still need attention.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Cursor"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Only return merchants in this onboarding state.",
+            "schema": {
+              "$ref": "#/components/schemas/MerchantStatus"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "description": "Two-letter country of incorporation.",
+            "schema": {
+              "$ref": "#/components/schemas/CountryCode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page of merchant accounts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MerchantPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createMerchant",
+        "tags": [
+          "Merchants"
+        ],
+        "summary": "Onboard a merchant",
+        "description": "Creates a merchant account in the `pending_review` state. Settlement is disabled until the account passes review and at least one verified payout destination exists.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MerchantCreate"
+              },
+              "examples": {
+                "bakery": {
+                  "$ref": "#/components/examples/MerchantCreateBakery"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The merchant was created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Merchant"
+                },
+                "examples": {
+                  "bakery": {
+                    "$ref": "#/components/examples/MerchantBakery"
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "$ref": "#/components/headers/Location"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable"
+          }
+        }
+      }
+    },
+    "/merchants/{merchantId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/MerchantId"
+        }
+      ],
+      "get": {
+        "operationId": "getMerchant",
+        "tags": [
+          "Merchants"
+        ],
+        "summary": "Retrieve a merchant",
+        "responses": {
+          "200": {
+            "description": "The merchant account.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Merchant"
+                },
+                "examples": {
+                  "bakery": {
+                    "$ref": "#/components/examples/MerchantBakery"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateMerchant",
+        "tags": [
+          "Merchants"
+        ],
+        "summary": "Update a merchant",
+        "description": "Partial update using JSON Merge Patch semantics. Fields set to `null` are cleared; fields left out are kept.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/merge-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MerchantUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated merchant.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Merchant"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable"
+          }
+        }
+      }
+    },
+    "/merchants/{merchantId}/payout-destinations": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/MerchantId"
+        }
+      ],
+      "get": {
+        "operationId": "listPayoutDestinations",
+        "tags": [
+          "Merchants"
+        ],
+        "summary": "List payout destinations",
+        "responses": {
+          "200": {
+            "description": "Every destination on file, verified or not.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PayoutDestination"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "post": {
+        "operationId": "addPayoutDestination",
+        "tags": [
+          "Merchants"
+        ],
+        "summary": "Add a payout destination",
+        "description": "Adds a bank account the merchant can be paid into. A new destination starts `unverified`; Meridian sends two micro-deposits which the merchant confirms.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BankAccount"
+              },
+              "examples": {
+                "iban": {
+                  "summary": "An IBAN-style account",
+                  "value": {
+                    "scheme": "iban",
+                    "holder_name": "Lindqvist Bakery AB",
+                    "iban": "SE00 0000 0000 0000 0000 0042",
+                    "bic": "MRDNSESSXXX"
+                  }
+                },
+                "local": {
+                  "summary": "A domestic account and routing number",
+                  "value": {
+                    "scheme": "local",
+                    "holder_name": "Copperline Outfitters LLC",
+                    "country": "US",
+                    "routing_number": "000000042",
+                    "account_number": "000123456789",
+                    "account_type": "checking"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The destination was added.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayoutDestination"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable"
+          }
+        }
+      }
+    },
+    "/merchants/{merchantId}/fee-schedule": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/MerchantId"
+        }
+      ],
+      "get": {
+        "operationId": "getFeeSchedule",
+        "tags": [
+          "Merchants"
+        ],
+        "summary": "Retrieve the active fee schedule",
+        "description": "The schedule in force today. Historic schedules are kept and referenced by each run line that used them.",
+        "responses": {
+          "200": {
+            "description": "The fee schedule.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeSchedule"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "put": {
+        "operationId": "replaceFeeSchedule",
+        "tags": [
+          "Merchants"
+        ],
+        "summary": "Schedule a new fee schedule",
+        "description": "A new schedule takes effect at the start of the next settlement window after `effective_from`; it never changes a run already open.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeeSchedule"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted; it will apply from the next window.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeSchedule"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable"
+          }
+        }
+      }
+    },
+    "/captures": {
+      "get": {
+        "operationId": "listCaptures",
+        "tags": [
+          "Captures"
+        ],
+        "summary": "List captures",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Cursor"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/MerchantFilter"
+          },
+          {
+            "$ref": "#/components/parameters/CreatedAfter"
+          },
+          {
+            "$ref": "#/components/parameters/CreatedBefore"
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/CaptureState"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page of captures.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CapturePage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createCapture",
+        "tags": [
+          "Captures"
+        ],
+        "summary": "Record a capture",
+        "description": "Records funds captured from a cardholder or account holder. A capture joins the merchant's open run for its currency and is settled when that run closes.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaptureCreate"
+              },
+              "examples": {
+                "card": {
+                  "$ref": "#/components/examples/CaptureCreateCard"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The capture was recorded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Capture"
+                },
+                "examples": {
+                  "card": {
+                    "$ref": "#/components/examples/CaptureCard"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable"
+          }
+        }
+      }
+    },
+    "/captures/{captureId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/CaptureId"
+        }
+      ],
+      "get": {
+        "operationId": "getCapture",
+        "tags": [
+          "Captures"
+        ],
+        "summary": "Retrieve a capture",
+        "responses": {
+          "200": {
+            "description": "The capture.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Capture"
+                },
+                "examples": {
+                  "card": {
+                    "$ref": "#/components/examples/CaptureCard"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/captures/{captureId}/refunds": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/CaptureId"
+        }
+      ],
+      "get": {
+        "operationId": "listRefunds",
+        "tags": [
+          "Captures"
+        ],
+        "summary": "List refunds of a capture",
+        "responses": {
+          "200": {
+            "description": "Every refund issued against the capture.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Refund"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "post": {
+        "operationId": "refundCapture",
+        "tags": [
+          "Captures"
+        ],
+        "summary": "Refund a capture",
+        "description": "Refunds all or part of a capture. The sum of refunds can never exceed the captured amount; a request that would is refused with `422` and the remaining refundable amount.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefundCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The refund was issued.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Refund"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable"
+          }
+        }
+      }
+    },
+    "/runs": {
+      "get": {
+        "operationId": "listRuns",
+        "tags": [
+          "Settlement runs"
+        ],
+        "summary": "List settlement runs",
+        "description": "A run groups every monetary movement for one merchant, one currency and one settlement window. Runs are listed newest window first.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Cursor"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/MerchantFilter"
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/RunState"
+            }
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/CurrencyCode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page of runs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/runs/{runId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/RunId"
+        }
+      ],
+      "get": {
+        "operationId": "getRun",
+        "tags": [
+          "Settlement runs"
+        ],
+        "summary": "Retrieve a run",
+        "responses": {
+          "200": {
+            "description": "The run with its totals.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                },
+                "examples": {
+                  "closed": {
+                    "$ref": "#/components/examples/RunClosed"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/runs/{runId}/lines": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/RunId"
+        },
+        {
+          "$ref": "#/components/parameters/Cursor"
+        },
+        {
+          "$ref": "#/components/parameters/Limit"
+        }
+      ],
+      "get": {
+        "operationId": "listRunLines",
+        "tags": [
+          "Settlement runs"
+        ],
+        "summary": "List the lines of a run",
+        "description": "Every line that makes up the run's net amount, in the order they were appended. Lines are immutable: a correction is a new line that reverses an earlier one.",
+        "responses": {
+          "200": {
+            "description": "A page of run lines.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunLinePage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/runs/{runId}/close": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/RunId"
+        }
+      ],
+      "post": {
+        "operationId": "closeRun",
+        "tags": [
+          "Settlement runs"
+        ],
+        "summary": "Close a run early",
+        "description": "Closes an open run before its window ends, for example ahead of a public holiday. Closing is final: later captures open a new run.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 280,
+                    "description": "Free text kept on the run's audit trail."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The run is now closed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable"
+          }
+        }
+      }
+    },
+    "/payouts": {
+      "get": {
+        "operationId": "listPayouts",
+        "tags": [
+          "Payouts"
+        ],
+        "summary": "List payouts",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Cursor"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/MerchantFilter"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/PayoutStatus"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page of payouts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayoutPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/payouts/{payoutId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/PayoutId"
+        }
+      ],
+      "get": {
+        "operationId": "getPayout",
+        "tags": [
+          "Payouts"
+        ],
+        "summary": "Retrieve a payout",
+        "responses": {
+          "200": {
+            "description": "The payout and the runs it settles.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payout"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/payouts/{payoutId}/hold": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/PayoutId"
+        }
+      ],
+      "post": {
+        "operationId": "holdPayout",
+        "tags": [
+          "Payouts"
+        ],
+        "summary": "Place a payout on hold",
+        "description": "Stops a scheduled payout from being released. Only payouts in `scheduled` can be held.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HoldRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The payout is held.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payout"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "releaseHold",
+        "tags": [
+          "Payouts"
+        ],
+        "summary": "Release a hold",
+        "responses": {
+          "200": {
+            "description": "The payout is scheduled again.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payout"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable"
+          }
+        }
+      }
+    },
+    "/disputes": {
+      "get": {
+        "operationId": "listDisputes",
+        "tags": [
+          "Disputes"
+        ],
+        "summary": "List disputes",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Cursor"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/MerchantFilter"
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/DisputeStage"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page of disputes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisputePage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/disputes/{disputeId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/DisputeId"
+        }
+      ],
+      "get": {
+        "operationId": "getDispute",
+        "tags": [
+          "Disputes"
+        ],
+        "summary": "Retrieve a dispute",
+        "responses": {
+          "200": {
+            "description": "The dispute with its timeline.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dispute"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/disputes/{disputeId}/evidence": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/DisputeId"
+        }
+      ],
+      "post": {
+        "operationId": "submitEvidence",
+        "tags": [
+          "Disputes"
+        ],
+        "summary": "Submit evidence",
+        "description": "Attaches evidence to a dispute. Evidence can be added until `respond_by`; each item is one of the shapes in `Evidence`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 20,
+                "items": {
+                  "$ref": "#/components/schemas/Evidence"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The evidence was attached.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dispute"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable"
+          }
+        }
+      }
+    },
+    "/fx/quotes": {
+      "post": {
+        "operationId": "createFxQuote",
+        "tags": [
+          "Foreign exchange"
+        ],
+        "summary": "Lock an FX quote",
+        "description": "Locks a conversion rate for a short time. A capture that references the quote settles at the locked rate even if the market moves.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FxQuoteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The locked quote.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FxQuote"
+                },
+                "examples": {
+                  "eurSek": {
+                    "$ref": "#/components/examples/FxQuoteEurSek"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable"
+          }
+        }
+      }
+    },
+    "/fx/rates": {
+      "get": {
+        "operationId": "listFxRates",
+        "tags": [
+          "Foreign exchange"
+        ],
+        "summary": "Indicative rates",
+        "description": "Indicative mid-market rates for every supported pair. Indicative rates are never used to settle; lock a quote for that.",
+        "parameters": [
+          {
+            "name": "base",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CurrencyCode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rates against the base currency.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "base",
+                    "as_of",
+                    "rates"
+                  ],
+                  "properties": {
+                    "base": {
+                      "$ref": "#/components/schemas/CurrencyCode"
+                    },
+                    "as_of": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "rates": {
+                      "type": "object",
+                      "propertyNames": {
+                        "$ref": "#/components/schemas/CurrencyCode"
+                      },
+                      "additionalProperties": {
+                        "$ref": "#/components/schemas/DecimalString"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/ledger/entries": {
+      "get": {
+        "operationId": "listLedgerEntries",
+        "tags": [
+          "Ledger"
+        ],
+        "summary": "Read the ledger",
+        "description": "Double-entry postings behind every balance. Each movement writes two or more entries whose amounts sum to zero per currency.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Cursor"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "name": "account",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/LedgerAccount"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/CreatedAfter"
+          },
+          {
+            "$ref": "#/components/parameters/CreatedBefore"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page of ledger entries.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LedgerEntryPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/reports/reconciliation": {
+      "post": {
+        "operationId": "requestReconciliation",
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Request a reconciliation report",
+        "description": "Builds a report comparing runs, payouts and bank statement lines for a period. Large periods are built asynchronously; poll the returned report.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReconciliationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "The report is being built.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReconciliationReport"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable"
+          }
+        }
+      }
+    },
+    "/reports/reconciliation/{reportId}": {
+      "parameters": [
+        {
+          "name": "reportId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "pattern": "^rpt_[0-9a-z]{20}$"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "getReconciliation",
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Retrieve a reconciliation report",
+        "responses": {
+          "200": {
+            "description": "The report, possibly still building.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReconciliationReport"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/webhook-endpoints": {
+      "get": {
+        "operationId": "listWebhookEndpoints",
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "List webhook endpoints",
+        "responses": {
+          "200": {
+            "description": "Every endpoint.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WebhookEndpoint"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createWebhookEndpoint",
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Register an endpoint",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebhookEndpointCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The endpoint, with its signing secret shown once.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookEndpoint"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable"
+          }
+        }
+      }
+    }
+  },
+  "webhooks": {
+    "runClosed": {
+      "post": {
+        "summary": "A run closed and its totals are sealed",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Event"
+                  },
+                  {
+                    "properties": {
+                      "type": {
+                        "const": "run.closed"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/Run"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Acknowledge within ten seconds."
+          }
+        }
+      }
+    },
+    "payoutPaid": {
+      "post": {
+        "summary": "A payout reached the bank",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Event"
+                  },
+                  {
+                    "properties": {
+                      "type": {
+                        "const": "payout.paid"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/Payout"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Acknowledged."
+          }
+        }
+      }
+    },
+    "disputeOpened": {
+      "post": {
+        "summary": "A payer disputed a capture",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Event"
+                  },
+                  {
+                    "properties": {
+                      "type": {
+                        "const": "dispute.opened"
+                      },
+                      "data": {
+                        "$ref": "#/components/schemas/Dispute"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Acknowledged."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Identifier": {
+        "type": "string",
+        "description": "A prefixed, URL-safe identifier. The prefix names the object type.",
+        "pattern": "^[a-z]{2,4}_[0-9a-z]{20}$",
+        "examples": [
+          "mer_8f2k1q0z7c3v5b9n4x6m"
+        ]
+      },
+      "CurrencyCode": {
+        "type": "string",
+        "description": "Three-letter currency code, upper case.",
+        "enum": [
+          "EUR",
+          "SEK",
+          "NOK",
+          "DKK",
+          "GBP",
+          "CHF",
+          "PLN",
+          "USD",
+          "CAD",
+          "JPY"
+        ]
+      },
+      "CountryCode": {
+        "type": "string",
+        "pattern": "^[A-Z]{2}$",
+        "description": "Two-letter country code, upper case.",
+        "examples": [
+          "SE",
+          "DE",
+          "US"
+        ]
+      },
+      "DecimalString": {
+        "type": "string",
+        "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+        "description": "A decimal carried as a string so no precision is lost in transit.",
+        "examples": [
+          "11.4382"
+        ]
+      },
+      "Money": {
+        "type": "object",
+        "description": "An amount of money. Always integer minor units plus a currency: never a float.",
+        "required": [
+          "amount_minor",
+          "currency"
+        ],
+        "properties": {
+          "amount_minor": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Amount in the currency's minor unit (cents, öre). Negative for debits."
+          },
+          "currency": {
+            "$ref": "#/components/schemas/CurrencyCode"
+          }
+        },
+        "examples": [
+          {
+            "amount_minor": 12950,
+            "currency": "EUR"
+          }
+        ]
+      },
+      "Timestamps": {
+        "type": "object",
+        "required": [
+          "created_at"
+        ],
+        "properties": {
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          }
+        }
+      },
+      "Metadata": {
+        "type": "object",
+        "description": "Up to 20 key-value pairs of your own. Meridian stores them and never reads them.",
+        "maxProperties": 20,
+        "propertyNames": {
+          "maxLength": 40,
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "additionalProperties": {
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "Address": {
+        "type": "object",
+        "required": [
+          "line1",
+          "city",
+          "country"
+        ],
+        "properties": {
+          "line1": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "line2": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "city": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "region": {
+            "type": "string",
+            "maxLength": 80,
+            "description": "State, county or province, where the country uses one."
+          },
+          "postal_code": {
+            "type": "string",
+            "maxLength": 16
+          },
+          "country": {
+            "$ref": "#/components/schemas/CountryCode"
+          }
+        }
+      },
+      "MerchantStatus": {
+        "type": "string",
+        "enum": [
+          "pending_review",
+          "active",
+          "restricted",
+          "suspended",
+          "closed"
+        ],
+        "description": "`restricted` merchants can capture but are not paid out; `suspended` merchants can do neither."
+      },
+      "MerchantCategory": {
+        "type": "string",
+        "description": "What the merchant sells, in Meridian's own coarse categories.",
+        "enum": [
+          "food_and_drink",
+          "retail_goods",
+          "digital_goods",
+          "travel",
+          "professional_services",
+          "education",
+          "nonprofit",
+          "other"
+        ]
+      },
+      "MerchantCreate": {
+        "type": "object",
+        "required": [
+          "legal_name",
+          "category",
+          "address",
+          "settlement_currency"
+        ],
+        "properties": {
+          "legal_name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 140
+          },
+          "trading_name": {
+            "type": "string",
+            "maxLength": 80,
+            "description": "The name a customer sees on their statement, if different."
+          },
+          "category": {
+            "$ref": "#/components/schemas/MerchantCategory"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "settlement_currency": {
+            "$ref": "#/components/schemas/CurrencyCode"
+          },
+          "settlement_window": {
+            "$ref": "#/components/schemas/SettlementWindow"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/Contact"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata"
+          }
+        }
+      },
+      "MerchantUpdate": {
+        "type": "object",
+        "minProperties": 1,
+        "properties": {
+          "trading_name": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 80
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "settlement_window": {
+            "$ref": "#/components/schemas/SettlementWindow"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/Contact"
+          },
+          "metadata": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Metadata"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "Merchant": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MerchantCreate"
+          },
+          {
+            "$ref": "#/components/schemas/Timestamps"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id",
+              "status",
+              "capabilities"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/Identifier"
+              },
+              "status": {
+                "$ref": "#/components/schemas/MerchantStatus"
+              },
+              "capabilities": {
+                "type": "object",
+                "description": "What the account can do right now, after review.",
+                "properties": {
+                  "captures": {
+                    "type": "boolean"
+                  },
+                  "refunds": {
+                    "type": "boolean"
+                  },
+                  "payouts": {
+                    "type": "boolean"
+                  },
+                  "fx": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "requirements": {
+                "type": "array",
+                "description": "Anything still needed before the account is fully active.",
+                "items": {
+                  "$ref": "#/components/schemas/Requirement"
+                }
+              },
+              "balances": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Balance"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phone": {
+            "type": "string",
+            "pattern": "^\\+[1-9][0-9]{6,14}$"
+          },
+          "locale": {
+            "type": "string",
+            "examples": [
+              "sv-SE",
+              "en-GB"
+            ]
+          }
+        }
+      },
+      "Requirement": {
+        "type": "object",
+        "required": [
+          "code",
+          "due_by"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "identity_document",
+              "proof_of_address",
+              "beneficial_owners",
+              "payout_destination",
+              "tax_identifier"
+            ]
+          },
+          "due_by": {
+            "type": "string",
+            "format": "date"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      },
+      "Balance": {
+        "type": "object",
+        "required": [
+          "currency",
+          "available",
+          "pending",
+          "reserved"
+        ],
+        "description": "A merchant's position in one currency.",
+        "properties": {
+          "currency": {
+            "$ref": "#/components/schemas/CurrencyCode"
+          },
+          "available": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "pending": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "reserved": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              }
+            ],
+            "description": "Held back against open disputes and rolling reserves."
+          }
+        }
+      },
+      "SettlementWindow": {
+        "type": "object",
+        "description": "When runs close and how long funds wait before payout.",
+        "required": [
+          "cadence"
+        ],
+        "properties": {
+          "cadence": {
+            "type": "string",
+            "enum": [
+              "daily",
+              "weekly",
+              "monthly"
+            ]
+          },
+          "cutoff_local": {
+            "type": "string",
+            "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+            "default": "23:59",
+            "description": "Local time at which the run closes."
+          },
+          "time_zone": {
+            "type": "string",
+            "default": "UTC",
+            "examples": [
+              "Europe/Stockholm"
+            ]
+          },
+          "weekday": {
+            "type": "string",
+            "enum": [
+              "monday",
+              "tuesday",
+              "wednesday",
+              "thursday",
+              "friday"
+            ],
+            "description": "Required when `cadence` is `weekly`."
+          },
+          "delay_days": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 14,
+            "default": 2,
+            "description": "Business days between a run closing and its payout."
+          }
+        },
+        "if": {
+          "properties": {
+            "cadence": {
+              "const": "weekly"
+            }
+          }
+        },
+        "then": {
+          "required": [
+            "weekday"
+          ]
+        }
+      },
+      "BankAccount": {
+        "description": "Where money is paid. The `scheme` decides which fields apply.",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/IbanAccount"
+          },
+          {
+            "$ref": "#/components/schemas/LocalAccount"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "scheme",
+          "mapping": {
+            "iban": "#/components/schemas/IbanAccount",
+            "local": "#/components/schemas/LocalAccount"
+          }
+        }
+      },
+      "IbanAccount": {
+        "type": "object",
+        "required": [
+          "scheme",
+          "holder_name",
+          "iban"
+        ],
+        "properties": {
+          "scheme": {
+            "const": "iban"
+          },
+          "holder_name": {
+            "type": "string",
+            "maxLength": 140
+          },
+          "iban": {
+            "type": "string",
+            "description": "Spaces are allowed and ignored.",
+            "pattern": "^[A-Z]{2}[0-9]{2}[A-Z0-9 ]{10,40}$"
+          },
+          "bic": {
+            "type": "string",
+            "pattern": "^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$"
+          }
+        }
+      },
+      "LocalAccount": {
+        "type": "object",
+        "required": [
+          "scheme",
+          "holder_name",
+          "country",
+          "account_number"
+        ],
+        "properties": {
+          "scheme": {
+            "const": "local"
+          },
+          "holder_name": {
+            "type": "string",
+            "maxLength": 140
+          },
+          "country": {
+            "$ref": "#/components/schemas/CountryCode"
+          },
+          "routing_number": {
+            "type": "string",
+            "description": "Bank or branch code, in the country's own format."
+          },
+          "account_number": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 34
+          },
+          "account_type": {
+            "type": "string",
+            "enum": [
+              "checking",
+              "savings"
+            ],
+            "default": "checking"
+          }
+        }
+      },
+      "PayoutDestination": {
+        "type": "object",
+        "required": [
+          "id",
+          "account",
+          "verification",
+          "default"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "account": {
+            "$ref": "#/components/schemas/BankAccount"
+          },
+          "masked": {
+            "type": "string",
+            "readOnly": true,
+            "description": "The account as shown to people: only its last four characters.",
+            "examples": [
+              "•••• 0042"
+            ]
+          },
+          "verification": {
+            "type": "string",
+            "enum": [
+              "unverified",
+              "pending",
+              "verified",
+              "failed"
+            ]
+          },
+          "default": {
+            "type": "boolean",
+            "description": "Exactly one verified destination per currency is the default."
+          },
+          "currency": {
+            "$ref": "#/components/schemas/CurrencyCode"
+          }
+        }
+      },
+      "FeeSchedule": {
+        "type": "object",
+        "required": [
+          "effective_from",
+          "tiers"
+        ],
+        "description": "How Meridian's fee is computed on each capture.",
+        "properties": {
+          "effective_from": {
+            "type": "string",
+            "format": "date"
+          },
+          "tiers": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/FeeTier"
+            },
+            "description": "Tiers by monthly captured volume; the first tier whose ceiling is not yet reached applies."
+          },
+          "fx_margin_bps": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 500,
+            "description": "Margin over mid-market on conversions, in basis points."
+          },
+          "dispute_fee": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "minimum_monthly": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              }
+            ],
+            "description": "Charged as a top-up line when monthly fees fall short of it."
+          }
+        }
+      },
+      "FeeTier": {
+        "type": "object",
+        "required": [
+          "percent_bps",
+          "fixed"
+        ],
+        "properties": {
+          "up_to_volume": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Ceiling of this tier. `null` for the last, open-ended tier."
+          },
+          "percent_bps": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000,
+            "description": "Percentage fee in basis points (145 = 1.45 %)."
+          },
+          "fixed": {
+            "$ref": "#/components/schemas/Money"
+          }
+        }
+      },
+      "PaymentMethod": {
+        "description": "How the payer paid. Only the non-sensitive outline is ever stored or returned.",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/CardMethod"
+          },
+          {
+            "$ref": "#/components/schemas/AccountDebitMethod"
+          },
+          {
+            "$ref": "#/components/schemas/WalletMethod"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "CardMethod": {
+        "type": "object",
+        "required": [
+          "type",
+          "network",
+          "last4"
+        ],
+        "properties": {
+          "type": {
+            "const": "card"
+          },
+          "network": {
+            "type": "string",
+            "enum": [
+              "northstar",
+              "lumen",
+              "orbit"
+            ],
+            "description": "Card network (fictional networks in this sample)."
+          },
+          "last4": {
+            "type": "string",
+            "pattern": "^[0-9]{4}$"
+          },
+          "expiry": {
+            "type": "string",
+            "pattern": "^(0[1-9]|1[0-2])/[0-9]{2}$"
+          },
+          "funding": {
+            "type": "string",
+            "enum": [
+              "credit",
+              "debit",
+              "prepaid"
+            ]
+          },
+          "issuer_country": {
+            "$ref": "#/components/schemas/CountryCode"
+          },
+          "three_ds": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "type": "string",
+                "enum": [
+                  "2.1",
+                  "2.2"
+                ]
+              },
+              "outcome": {
+                "type": "string",
+                "enum": [
+                  "authenticated",
+                  "attempted",
+                  "exempt",
+                  "failed"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "AccountDebitMethod": {
+        "type": "object",
+        "required": [
+          "type",
+          "mandate_id"
+        ],
+        "properties": {
+          "type": {
+            "const": "account_debit"
+          },
+          "mandate_id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "account_masked": {
+            "type": "string"
+          }
+        }
+      },
+      "WalletMethod": {
+        "type": "object",
+        "required": [
+          "type",
+          "wallet"
+        ],
+        "properties": {
+          "type": {
+            "const": "wallet"
+          },
+          "wallet": {
+            "type": "string",
+            "enum": [
+              "pocketpay",
+              "brightwallet"
+            ]
+          },
+          "underlying": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CardMethod"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The card behind the wallet token, when the wallet discloses it."
+          }
+        }
+      },
+      "CaptureState": {
+        "type": "string",
+        "enum": [
+          "recorded",
+          "in_run",
+          "settled",
+          "refunded",
+          "partially_refunded",
+          "disputed"
+        ]
+      },
+      "CaptureCreate": {
+        "type": "object",
+        "required": [
+          "merchant_id",
+          "amount",
+          "method"
+        ],
+        "properties": {
+          "merchant_id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "method": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          },
+          "fx_quote_id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Identifier"
+              }
+            ],
+            "description": "Settle at a locked rate. The quote must not have expired."
+          },
+          "statement_descriptor": {
+            "type": "string",
+            "maxLength": 22,
+            "description": "Text on the payer's statement."
+          },
+          "reference": {
+            "type": "string",
+            "maxLength": 64,
+            "description": "Your own order or invoice reference."
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata"
+          }
+        }
+      },
+      "Capture": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CaptureCreate"
+          },
+          {
+            "$ref": "#/components/schemas/Timestamps"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id",
+              "state",
+              "fee",
+              "net"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/Identifier"
+              },
+              "state": {
+                "$ref": "#/components/schemas/CaptureState"
+              },
+              "run_id": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Identifier"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "fee": {
+                "$ref": "#/components/schemas/Money"
+              },
+              "net": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Money"
+                  }
+                ],
+                "description": "`amount` minus `fee`, in the settlement currency."
+              },
+              "fx": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/FxApplied"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "refunded": {
+                "$ref": "#/components/schemas/Money"
+              }
+            }
+          }
+        ]
+      },
+      "FxApplied": {
+        "type": "object",
+        "required": [
+          "from",
+          "to",
+          "rate"
+        ],
+        "properties": {
+          "from": {
+            "$ref": "#/components/schemas/CurrencyCode"
+          },
+          "to": {
+            "$ref": "#/components/schemas/CurrencyCode"
+          },
+          "rate": {
+            "$ref": "#/components/schemas/DecimalString"
+          },
+          "quote_id": {
+            "$ref": "#/components/schemas/Identifier"
+          }
+        }
+      },
+      "RefundCreate": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              }
+            ],
+            "description": "Leave out to refund everything still refundable."
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "requested_by_customer",
+              "duplicate",
+              "fraudulent",
+              "goods_not_received",
+              "other"
+            ]
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 500
+          }
+        }
+      },
+      "Refund": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/RefundCreate"
+          },
+          {
+            "$ref": "#/components/schemas/Timestamps"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id",
+              "capture_id",
+              "amount",
+              "status"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/Identifier"
+              },
+              "capture_id": {
+                "$ref": "#/components/schemas/Identifier"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "succeeded",
+                  "failed"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "RunState": {
+        "type": "string",
+        "enum": [
+          "open",
+          "closing",
+          "closed",
+          "paid",
+          "reversed"
+        ],
+        "description": "`closing` lasts seconds while the run's totals are sealed; nothing can join a run after it."
+      },
+      "Run": {
+        "type": "object",
+        "required": [
+          "id",
+          "merchant_id",
+          "currency",
+          "state",
+          "window",
+          "totals"
+        ],
+        "properties": {
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Identifier"
+              }
+            ],
+            "description": "A content hash of the merchant, currency and window, so replaying a window never makes a second run."
+          },
+          "merchant_id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/CurrencyCode"
+          },
+          "state": {
+            "$ref": "#/components/schemas/RunState"
+          },
+          "window": {
+            "type": "object",
+            "required": [
+              "opens_at",
+              "closes_at"
+            ],
+            "properties": {
+              "opens_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "closes_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "totals": {
+            "$ref": "#/components/schemas/RunTotals"
+          },
+          "payout_id": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Identifier"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "line_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sealed_hash": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "SHA-256 over every line, set when the run closes."
+          }
+        }
+      },
+      "RunTotals": {
+        "type": "object",
+        "required": [
+          "gross",
+          "fees",
+          "refunds",
+          "adjustments",
+          "net"
+        ],
+        "description": "`net = gross - fees - refunds + adjustments`, always, to the minor unit.",
+        "properties": {
+          "gross": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "fees": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "refunds": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "disputes": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "adjustments": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "net": {
+            "$ref": "#/components/schemas/Money"
+          }
+        }
+      },
+      "RunLine": {
+        "type": "object",
+        "required": [
+          "seq",
+          "kind",
+          "amount",
+          "source_id"
+        ],
+        "properties": {
+          "seq": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Position in the run; gap-free."
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "capture",
+              "fee",
+              "refund",
+              "dispute",
+              "dispute_reversal",
+              "adjustment",
+              "reserve_hold",
+              "reserve_release"
+            ]
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "source_id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "reverses_seq": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Set when this line corrects an earlier one."
+          },
+          "fee_schedule_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "posted_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PayoutStatus": {
+        "type": "string",
+        "enum": [
+          "scheduled",
+          "held",
+          "in_transit",
+          "paid",
+          "returned",
+          "failed"
+        ]
+      },
+      "Payout": {
+        "type": "object",
+        "required": [
+          "id",
+          "merchant_id",
+          "amount",
+          "status",
+          "destination_id",
+          "run_ids"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "merchant_id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PayoutStatus"
+          },
+          "destination_id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "run_ids": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Identifier"
+            },
+            "minItems": 1
+          },
+          "expected_arrival": {
+            "type": "string",
+            "format": "date"
+          },
+          "bank_reference": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "hold": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/HoldRequest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "failure": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "required": [
+                  "code"
+                ],
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "enum": [
+                      "account_closed",
+                      "account_frozen",
+                      "invalid_account",
+                      "name_mismatch",
+                      "bank_declined"
+                    ]
+                  },
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "HoldRequest": {
+        "type": "object",
+        "required": [
+          "reason"
+        ],
+        "properties": {
+          "reason": {
+            "type": "string",
+            "enum": [
+              "risk_review",
+              "merchant_request",
+              "compliance",
+              "bank_holiday"
+            ]
+          },
+          "until": {
+            "type": "string",
+            "format": "date",
+            "description": "Release automatically on this date. Leave out to hold until released."
+          }
+        }
+      },
+      "DisputeStage": {
+        "type": "string",
+        "enum": [
+          "inquiry",
+          "chargeback",
+          "pre_arbitration",
+          "arbitration",
+          "won",
+          "lost",
+          "accepted"
+        ]
+      },
+      "Dispute": {
+        "type": "object",
+        "required": [
+          "id",
+          "capture_id",
+          "stage",
+          "amount",
+          "respond_by"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "capture_id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "stage": {
+            "$ref": "#/components/schemas/DisputeStage"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "fraud",
+              "not_received",
+              "not_as_described",
+              "duplicate",
+              "cancelled_subscription",
+              "credit_not_processed"
+            ]
+          },
+          "respond_by": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            }
+          },
+          "timeline": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "at",
+                "stage"
+              ],
+              "properties": {
+                "at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "stage": {
+                  "$ref": "#/components/schemas/DisputeStage"
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Evidence": {
+        "description": "One item of evidence. Text, a file you uploaded, or a delivery record.",
+        "oneOf": [
+          {
+            "title": "Text",
+            "type": "object",
+            "required": [
+              "kind",
+              "text"
+            ],
+            "properties": {
+              "kind": {
+                "const": "text"
+              },
+              "text": {
+                "type": "string",
+                "maxLength": 20000
+              }
+            }
+          },
+          {
+            "title": "File",
+            "type": "object",
+            "required": [
+              "kind",
+              "file_id",
+              "purpose"
+            ],
+            "properties": {
+              "kind": {
+                "const": "file"
+              },
+              "file_id": {
+                "$ref": "#/components/schemas/Identifier"
+              },
+              "purpose": {
+                "type": "string",
+                "enum": [
+                  "receipt",
+                  "correspondence",
+                  "terms_of_sale",
+                  "photo",
+                  "other"
+                ]
+              }
+            }
+          },
+          {
+            "title": "Delivery",
+            "type": "object",
+            "required": [
+              "kind",
+              "carrier",
+              "tracking"
+            ],
+            "properties": {
+              "kind": {
+                "const": "delivery"
+              },
+              "carrier": {
+                "type": "string"
+              },
+              "tracking": {
+                "type": "string"
+              },
+              "delivered_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "signed_by": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "FxQuoteRequest": {
+        "type": "object",
+        "required": [
+          "from",
+          "to"
+        ],
+        "properties": {
+          "from": {
+            "$ref": "#/components/schemas/CurrencyCode"
+          },
+          "to": {
+            "$ref": "#/components/schemas/CurrencyCode"
+          },
+          "amount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Money"
+              }
+            ],
+            "description": "Optional: the amount you intend to convert; very large amounts may get a shorter lock."
+          },
+          "lock_seconds": {
+            "type": "integer",
+            "enum": [
+              30,
+              300,
+              3600
+            ],
+            "default": 300
+          }
+        },
+        "not": {
+          "properties": {
+            "from": {
+              "const": "EUR"
+            },
+            "to": {
+              "const": "EUR"
+            }
+          },
+          "required": [
+            "from",
+            "to"
+          ]
+        }
+      },
+      "FxQuote": {
+        "type": "object",
+        "required": [
+          "id",
+          "from",
+          "to",
+          "rate",
+          "expires_at"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "from": {
+            "$ref": "#/components/schemas/CurrencyCode"
+          },
+          "to": {
+            "$ref": "#/components/schemas/CurrencyCode"
+          },
+          "rate": {
+            "$ref": "#/components/schemas/DecimalString"
+          },
+          "inverse": {
+            "$ref": "#/components/schemas/DecimalString"
+          },
+          "margin_bps": {
+            "type": "integer"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "LedgerAccount": {
+        "type": "string",
+        "pattern": "^(merchant|platform|reserve|fx|suspense|bank):[0-9a-z_]+$",
+        "examples": [
+          "merchant:mer_8f2k1q0z7c3v5b9n4x6m",
+          "platform:fees",
+          "bank:settlement_eur"
+        ]
+      },
+      "LedgerEntry": {
+        "type": "object",
+        "required": [
+          "id",
+          "journal_id",
+          "account",
+          "amount",
+          "posted_at"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "journal_id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Identifier"
+              }
+            ],
+            "description": "Entries sharing a journal balance to zero per currency."
+          },
+          "account": {
+            "$ref": "#/components/schemas/LedgerAccount"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "posted_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "memo": {
+            "type": "string"
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "id": {
+                "$ref": "#/components/schemas/Identifier"
+              }
+            }
+          }
+        }
+      },
+      "ReconciliationRequest": {
+        "type": "object",
+        "required": [
+          "period"
+        ],
+        "properties": {
+          "period": {
+            "type": "object",
+            "required": [
+              "from",
+              "to"
+            ],
+            "properties": {
+              "from": {
+                "type": "string",
+                "format": "date"
+              },
+              "to": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          },
+          "merchant_ids": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Identifier"
+            },
+            "maxItems": 500,
+            "description": "Leave out for every merchant."
+          },
+          "currencies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CurrencyCode"
+            },
+            "uniqueItems": true
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "json",
+              "csv"
+            ],
+            "default": "json"
+          }
+        }
+      },
+      "ReconciliationReport": {
+        "type": "object",
+        "required": [
+          "id",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^rpt_[0-9a-z]{20}$"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "building",
+              "ready",
+              "failed"
+            ]
+          },
+          "progress": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "summary": {
+            "type": "object",
+            "properties": {
+              "runs": {
+                "type": "integer"
+              },
+              "payouts": {
+                "type": "integer"
+              },
+              "matched": {
+                "type": "integer"
+              },
+              "unmatched": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ReconciliationBreak"
+                }
+              }
+            }
+          },
+          "download_url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          }
+        }
+      },
+      "ReconciliationBreak": {
+        "type": "object",
+        "required": [
+          "kind",
+          "difference"
+        ],
+        "description": "One place where the books and the bank disagree.",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "payout_without_statement_line",
+              "statement_line_without_payout",
+              "amount_mismatch",
+              "date_outside_tolerance"
+            ]
+          },
+          "payout_id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "statement_reference": {
+            "type": "string"
+          },
+          "difference": {
+            "$ref": "#/components/schemas/Money"
+          }
+        }
+      },
+      "WebhookEndpointCreate": {
+        "type": "object",
+        "required": [
+          "url",
+          "events"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://"
+          },
+          "events": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "#/components/schemas/EventType"
+            }
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 200
+          }
+        }
+      },
+      "WebhookEndpoint": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/WebhookEndpointCreate"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id",
+              "enabled"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/Identifier"
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "secret": {
+                "type": "string",
+                "readOnly": true,
+                "description": "Returned only when the endpoint is created. Use it to verify the `Meridian-Signature` header."
+              }
+            }
+          }
+        ]
+      },
+      "EventType": {
+        "type": "string",
+        "enum": [
+          "run.closed",
+          "payout.paid",
+          "payout.failed",
+          "dispute.opened",
+          "dispute.closed",
+          "merchant.status_changed"
+        ]
+      },
+      "Event": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "created_at",
+          "data"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Identifier"
+          },
+          "type": {
+            "$ref": "#/components/schemas/EventType"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "attempt": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Delivery attempt; retries back off over 72 hours."
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
+      "Problem": {
+        "type": "object",
+        "description": "An error, in the problem-details shape.",
+        "required": [
+          "type",
+          "title",
+          "status"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri-reference",
+            "examples": [
+              "https://docs.meridian.example/problems/refund-exceeds-capture"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "minimum": 400,
+            "maximum": 599
+          },
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "description": "Field-level problems, one per offending field.",
+            "items": {
+              "type": "object",
+              "required": [
+                "pointer",
+                "message"
+              ],
+              "properties": {
+                "pointer": {
+                  "type": "string",
+                  "description": "JSON Pointer into the request body.",
+                  "examples": [
+                    "/amount/amount_minor"
+                  ]
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "MerchantPage": {
+        "type": "object",
+        "required": [
+          "data",
+          "has_more"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Merchant"
+            }
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "True when another page follows this one."
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Opaque cursor for the next page. Pass it back unchanged as `cursor`."
+          }
+        }
+      },
+      "CapturePage": {
+        "type": "object",
+        "required": [
+          "data",
+          "has_more"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Capture"
+            }
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "True when another page follows this one."
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Opaque cursor for the next page. Pass it back unchanged as `cursor`."
+          }
+        }
+      },
+      "RunPage": {
+        "type": "object",
+        "required": [
+          "data",
+          "has_more"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Run"
+            }
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "True when another page follows this one."
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Opaque cursor for the next page. Pass it back unchanged as `cursor`."
+          }
+        }
+      },
+      "RunLinePage": {
+        "type": "object",
+        "required": [
+          "data",
+          "has_more"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RunLine"
+            }
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "True when another page follows this one."
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Opaque cursor for the next page. Pass it back unchanged as `cursor`."
+          }
+        }
+      },
+      "PayoutPage": {
+        "type": "object",
+        "required": [
+          "data",
+          "has_more"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Payout"
+            }
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "True when another page follows this one."
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Opaque cursor for the next page. Pass it back unchanged as `cursor`."
+          }
+        }
+      },
+      "DisputePage": {
+        "type": "object",
+        "required": [
+          "data",
+          "has_more"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Dispute"
+            }
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "True when another page follows this one."
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Opaque cursor for the next page. Pass it back unchanged as `cursor`."
+          }
+        }
+      },
+      "LedgerEntryPage": {
+        "type": "object",
+        "required": [
+          "data",
+          "has_more"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LedgerEntry"
+            }
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "True when another page follows this one."
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Opaque cursor for the next page. Pass it back unchanged as `cursor`."
+          }
+        }
+      }
+    },
+    "parameters": {
+      "MerchantId": {
+        "name": "merchantId",
+        "in": "path",
+        "required": true,
+        "description": "The merchant account.",
+        "schema": {
+          "type": "string",
+          "pattern": "^mer_[0-9a-z]{20}$"
+        }
+      },
+      "CaptureId": {
+        "name": "captureId",
+        "in": "path",
+        "required": true,
+        "description": "The capture.",
+        "schema": {
+          "type": "string",
+          "pattern": "^cap_[0-9a-z]{20}$"
+        }
+      },
+      "RunId": {
+        "name": "runId",
+        "in": "path",
+        "required": true,
+        "description": "The settlement run.",
+        "schema": {
+          "type": "string",
+          "pattern": "^run_[0-9a-z]{20}$"
+        }
+      },
+      "PayoutId": {
+        "name": "payoutId",
+        "in": "path",
+        "required": true,
+        "description": "The payout.",
+        "schema": {
+          "type": "string",
+          "pattern": "^pay_[0-9a-z]{20}$"
+        }
+      },
+      "DisputeId": {
+        "name": "disputeId",
+        "in": "path",
+        "required": true,
+        "description": "The dispute.",
+        "schema": {
+          "type": "string",
+          "pattern": "^dsp_[0-9a-z]{20}$"
+        }
+      },
+      "Cursor": {
+        "name": "cursor",
+        "in": "query",
+        "description": "Cursor from a previous page's `next_cursor`.",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "Limit": {
+        "name": "limit",
+        "in": "query",
+        "description": "Page size.",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200,
+          "default": 50
+        }
+      },
+      "MerchantFilter": {
+        "name": "merchant_id",
+        "in": "query",
+        "description": "Only objects for this merchant.",
+        "schema": {
+          "$ref": "#/components/schemas/Identifier"
+        }
+      },
+      "CreatedAfter": {
+        "name": "created_after",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "CreatedBefore": {
+        "name": "created_before",
+        "in": "query",
+        "schema": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "IdempotencyKey": {
+        "name": "Idempotency-Key",
+        "in": "header",
+        "required": true,
+        "description": "A unique key per logical operation. Replaying the same key and body returns the first result; the same key with a different body is a `409`.",
+        "schema": {
+          "type": "string",
+          "minLength": 16,
+          "maxLength": 64
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "The request was malformed.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            },
+            "example": {
+              "type": "https://docs.meridian.example/problems/malformed-request",
+              "title": "Malformed request",
+              "status": 400,
+              "request_id": "req_4b7e0c2a9d1f"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "The key is missing, revoked or lacks the scope.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            },
+            "example": {
+              "type": "https://docs.meridian.example/problems/unauthorized",
+              "title": "Unauthorized",
+              "status": 401,
+              "request_id": "req_4b7e0c2a9d1f"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "No object with that identifier is visible to this key.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            },
+            "example": {
+              "type": "https://docs.meridian.example/problems/not-found",
+              "title": "Not found",
+              "status": 404,
+              "request_id": "req_4b7e0c2a9d1f"
+            }
+          }
+        }
+      },
+      "Conflict": {
+        "description": "An idempotency key was reused with a different body, or the object changed state.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            },
+            "example": {
+              "type": "https://docs.meridian.example/problems/conflict",
+              "title": "Conflict",
+              "status": 409,
+              "request_id": "req_4b7e0c2a9d1f"
+            }
+          }
+        }
+      },
+      "Unprocessable": {
+        "description": "The request was well-formed but breaks a business rule.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            },
+            "example": {
+              "type": "https://docs.meridian.example/problems/refund-exceeds-capture",
+              "title": "Refund exceeds capture",
+              "status": 422,
+              "request_id": "req_4b7e0c2a9d1f"
+            }
+          }
+        }
+      },
+      "TooManyRequests": {
+        "description": "Slow down. Retry after the number of seconds in `Retry-After`.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            },
+            "example": {
+              "type": "https://docs.meridian.example/problems/rate-limited",
+              "title": "Rate limited",
+              "status": 429,
+              "request_id": "req_4b7e0c2a9d1f"
+            }
+          }
+        },
+        "headers": {
+          "Retry-After": {
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      }
+    },
+    "examples": {
+      "MerchantCreateBakery": {
+        "summary": "A bakery in Uppsala",
+        "value": {
+          "legal_name": "Lindqvist Bakery AB",
+          "trading_name": "Lindqvist Bageri",
+          "category": "food_and_drink",
+          "address": {
+            "line1": "Exempelgatan 12",
+            "city": "Uppsala",
+            "postal_code": "000 00",
+            "country": "SE"
+          },
+          "settlement_currency": "SEK",
+          "settlement_window": {
+            "cadence": "daily",
+            "cutoff_local": "22:00",
+            "time_zone": "Europe/Stockholm",
+            "delay_days": 1
+          },
+          "contact": {
+            "email": "accounts@lindqvist-bakery.example",
+            "locale": "sv-SE"
+          },
+          "metadata": {
+            "crm_ref": "acct-20391"
+          }
+        }
+      },
+      "MerchantBakery": {
+        "summary": "The bakery, after review",
+        "value": {
+          "id": "mer_8f2k1q0z7c3v5b9n4x6m",
+          "status": "active",
+          "legal_name": "Lindqvist Bakery AB",
+          "trading_name": "Lindqvist Bageri",
+          "category": "food_and_drink",
+          "address": {
+            "line1": "Exempelgatan 12",
+            "city": "Uppsala",
+            "postal_code": "000 00",
+            "country": "SE"
+          },
+          "settlement_currency": "SEK",
+          "settlement_window": {
+            "cadence": "daily",
+            "cutoff_local": "22:00",
+            "time_zone": "Europe/Stockholm",
+            "delay_days": 1
+          },
+          "capabilities": {
+            "captures": true,
+            "refunds": true,
+            "payouts": true,
+            "fx": false
+          },
+          "requirements": [],
+          "balances": [
+            {
+              "currency": "SEK",
+              "available": {
+                "amount_minor": 4821950,
+                "currency": "SEK"
+              },
+              "pending": {
+                "amount_minor": 612400,
+                "currency": "SEK"
+              },
+              "reserved": {
+                "amount_minor": 0,
+                "currency": "SEK"
+              }
+            }
+          ],
+          "created_at": "2026-03-02T08:14:55Z",
+          "updated_at": "2026-03-04T10:02:11Z"
+        }
+      },
+      "CaptureCreateCard": {
+        "summary": "A card capture in EUR settled to SEK",
+        "value": {
+          "merchant_id": "mer_8f2k1q0z7c3v5b9n4x6m",
+          "amount": {
+            "amount_minor": 2450,
+            "currency": "EUR"
+          },
+          "method": {
+            "type": "card",
+            "network": "northstar",
+            "last4": "4242",
+            "expiry": "09/29",
+            "funding": "debit",
+            "issuer_country": "DE",
+            "three_ds": {
+              "version": "2.2",
+              "outcome": "authenticated"
+            }
+          },
+          "fx_quote_id": "fxq_0w9e8r7t6y5u4i3o2p1a",
+          "statement_descriptor": "LINDQVIST BAGERI",
+          "reference": "order-77810"
+        }
+      },
+      "CaptureCard": {
+        "summary": "The recorded capture",
+        "value": {
+          "id": "cap_3n5m7b9v1c2x4z6l8k0j",
+          "state": "in_run",
+          "run_id": "run_q1w2e3r4t5y6u7i8o9p0",
+          "merchant_id": "mer_8f2k1q0z7c3v5b9n4x6m",
+          "amount": {
+            "amount_minor": 2450,
+            "currency": "EUR"
+          },
+          "method": {
+            "type": "card",
+            "network": "northstar",
+            "last4": "4242",
+            "funding": "debit",
+            "issuer_country": "DE"
+          },
+          "fee": {
+            "amount_minor": 520,
+            "currency": "SEK"
+          },
+          "net": {
+            "amount_minor": 27503,
+            "currency": "SEK"
+          },
+          "fx": {
+            "from": "EUR",
+            "to": "SEK",
+            "rate": "11.4382",
+            "quote_id": "fxq_0w9e8r7t6y5u4i3o2p1a"
+          },
+          "refunded": {
+            "amount_minor": 0,
+            "currency": "EUR"
+          },
+          "created_at": "2026-06-18T14:22:07Z"
+        }
+      },
+      "RunClosed": {
+        "summary": "A closed daily run",
+        "value": {
+          "id": "run_q1w2e3r4t5y6u7i8o9p0",
+          "merchant_id": "mer_8f2k1q0z7c3v5b9n4x6m",
+          "currency": "SEK",
+          "state": "closed",
+          "window": {
+            "opens_at": "2026-06-17T20:00:00Z",
+            "closes_at": "2026-06-18T20:00:00Z"
+          },
+          "totals": {
+            "gross": {
+              "amount_minor": 1893400,
+              "currency": "SEK"
+            },
+            "fees": {
+              "amount_minor": 31120,
+              "currency": "SEK"
+            },
+            "refunds": {
+              "amount_minor": 14500,
+              "currency": "SEK"
+            },
+            "disputes": {
+              "amount_minor": 0,
+              "currency": "SEK"
+            },
+            "adjustments": {
+              "amount_minor": 0,
+              "currency": "SEK"
+            },
+            "net": {
+              "amount_minor": 1847780,
+              "currency": "SEK"
+            }
+          },
+          "payout_id": null,
+          "line_count": 412,
+          "sealed_hash": "9c1d5e0b7a3f2e8d4c6b1a0f9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b3a2f1e0d"
+        }
+      },
+      "FxQuoteEurSek": {
+        "summary": "EUR to SEK, locked for five minutes",
+        "value": {
+          "id": "fxq_0w9e8r7t6y5u4i3o2p1a",
+          "from": "EUR",
+          "to": "SEK",
+          "rate": "11.4382",
+          "inverse": "0.087426",
+          "margin_bps": 40,
+          "expires_at": "2026-06-18T14:26:55Z"
+        }
+      }
+    },
+    "headers": {
+      "Location": {
+        "description": "URL of the created object.",
+        "schema": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "securitySchemes": {
+      "platformKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "A secret platform key, `sk_live_…` or `sk_test_…`. Keys are scoped; a key without the scope gets `401`."
+      },
+      "merchantOAuth": {
+        "type": "oauth2",
+        "description": "For apps acting on behalf of a merchant.",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://connect.meridian.example/oauth/authorize",
+            "tokenUrl": "https://connect.meridian.example/oauth/token",
+            "scopes": {
+              "captures:write": "Record captures and refunds",
+              "runs:read": "Read settlement runs",
+              "payouts:read": "Read payouts",
+              "disputes:write": "Answer disputes"
+            }
+          }
+        }
+      }
+    }
+  }
+}

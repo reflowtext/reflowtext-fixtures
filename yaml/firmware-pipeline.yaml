@@ -1,0 +1,205 @@
+# Build pipeline for Driftwood, the Halcyon Instruments firmware toolchain.
+#
+# Runs on every push and merge request. A tagged commit (driftwood-X.Y.Z)
+# additionally signs the firmware images and publishes them.
+#
+#   stage      | what it proves
+#   -----------+--------------------------------------------------------
+#   check      | the code is formatted, lint-clean and dependency-safe
+#   test       | host tests pass on every supported OS
+#   firmware   | each board's image builds and fits its flash budget
+#   hardware   | the image boots and plays on a real unit in the rack
+#   release    | (tags only) images are signed, checksummed, published
+
+version: 2
+
+defaults:
+  timeout: 30m
+  retry:
+    on: [runner-lost, network]   # never retry a real test failure
+    max: 2
+  env: &base-env
+    RUST_BACKTRACE: "1"
+    CARGO_TERM_COLOR: always
+    CARGO_INCREMENTAL: "0"
+    DRIFTWOOD_CACHE_BUCKET: ci-cache-driftwood
+
+# Reusable fragments --------------------------------------------------------
+
+.rust-cache: &rust-cache
+  cache:
+    key: cargo-{{ runner.os }}-{{ hash "Cargo.lock" }}
+    paths:
+      - ~/.cargo/registry/index
+      - ~/.cargo/registry/cache
+      - target/
+    fallback-keys:
+      - cargo-{{ runner.os }}-
+
+.linux: &linux
+  runner: linux-x64-medium
+  image: registry.halcyon-instruments.example/ci/rust:1.82-bookworm
+
+.only-tags: &only-tags
+  when:
+    ref: refs/tags/driftwood-*
+
+triggers:
+  push:
+    branches: [main, "release/*"]
+    tags: ["driftwood-*"]
+  merge_request:
+    target: [main]
+    paths-ignore: ["docs/**", "*.md"]
+  schedule:
+    - cron: "0 3 * * 1-5"         # nightly hardware soak, weekdays
+      only: [hardware-soak]
+
+concurrency:
+  group: driftwood-{{ ref }}
+  cancel-in-progress: "{{ ref != 'refs/heads/main' }}"
+
+# Jobs --------------------------------------------------------------------
+
+stages: [check, test, firmware, hardware, release]
+
+jobs:
+  fmt:
+    stage: check
+    <<: *linux
+    steps:
+      - run: cargo fmt --all --check
+
+  clippy:
+    stage: check
+    <<: [*linux, *rust-cache]
+    steps:
+      - run: cargo clippy --workspace --all-targets --locked -- -D warnings
+
+  deny:
+    stage: check
+    <<: *linux
+    allow-failure: false
+    steps:
+      - run: cargo deny check advisories bans sources
+
+  host-tests:
+    stage: test
+    needs: [fmt]
+    <<: *rust-cache
+    matrix:
+      os:
+        - { runner: linux-x64-medium, label: linux }
+        - { runner: macos-arm64, label: macos }
+        - { runner: windows-x64, label: windows }
+      toolchain: ["1.82", stable]
+      exclude:
+        - { os: { label: windows }, toolchain: "1.82" }   # MSRV checked on unix only
+    runner: "{{ matrix.os.runner }}"
+    env:
+      <<: *base-env
+      PROPTEST_CASES: "512"
+    steps:
+      - run: rustup toolchain install {{ matrix.toolchain }} --profile minimal
+      - run: cargo +{{ matrix.toolchain }} test --workspace --locked --exclude tidewater-fw
+      - name: snapshot drift
+        run: cargo insta test --check --unreferenced=reject
+        if: "{{ matrix.os.label == 'linux' }}"
+    artifacts:
+      when: on-failure
+      paths: ["target/nextest/**/junit.xml", "**/*.snap.new"]
+      expire-in: 7d
+
+  dsp-bench:
+    stage: test
+    needs: [fmt]
+    <<: [*linux, *rust-cache]
+    runner: linux-x64-quiet          # dedicated runner, nothing else scheduled on it
+    steps:
+      - run: cargo bench -p dsp-core -- --save-baseline pr
+      - name: compare with main
+        run: |
+          cargo bench -p dsp-core -- --baseline main --load-baseline pr \
+            | tee bench.txt
+          ./ci/fail-on-regression.sh bench.txt --threshold 5%
+    artifacts:
+      paths: [bench.txt, target/criterion/]
+
+  firmware:
+    stage: firmware
+    needs: [clippy, host-tests]
+    <<: [*linux, *rust-cache]
+    matrix:
+      board:
+        - { name: tidewater-8,  triple: thumbv7em-none-eabihf, flash_kib: 512 }
+        - { name: tidewater-8d, triple: thumbv7em-none-eabihf, flash_kib: 512 }
+        - { name: mono-k,       triple: thumbv6m-none-eabi,    flash_kib: 256 }
+    steps:
+      - run: rustup target add {{ matrix.board.triple }}
+      - run: >-
+          cargo build -p tidewater-fw --profile firmware --locked
+          --target {{ matrix.board.triple }}
+          --features board-{{ matrix.board.name }}
+      - name: flash budget
+        run: |
+          image=target/{{ matrix.board.triple }}/firmware/tidewater-fw
+          size=$(./ci/image-size.sh "$image")
+          budget=$(( {{ matrix.board.flash_kib }} * 1024 ))
+          echo "{{ matrix.board.name }}: $size of $budget bytes"
+          test "$size" -le "$budget"
+      - run: ./ci/pack-image.sh {{ matrix.board.name }} > dist/{{ matrix.board.name }}.hfw
+    artifacts:
+      paths: ["dist/*.hfw"]
+      expire-in: 30d
+
+  hardware-smoke:
+    stage: hardware
+    needs: [firmware]
+    runner: hw-rack-01               # a rack with one unit of each board attached
+    timeout: 20m
+    resource-lock: hw-rack-01        # one job on the rack at a time
+    steps:
+      - run: ./ci/hw/flash-all.sh dist/
+      - run: ./ci/hw/boot-check.sh --all --timeout 30s
+      - name: audio loopback
+        run: ./ci/hw/loopback.sh --patch factory/A01 --expect-rms -18dB±2
+    artifacts:
+      when: always
+      paths: ["hw-logs/"]
+
+  hardware-soak:
+    stage: hardware
+    needs: [firmware]
+    runner: hw-rack-02
+    timeout: 6h
+    when:
+      trigger: schedule
+    steps:
+      - run: ./ci/hw/soak.sh --hours 5 --random-patches --midi-flood 800/s
+    notify:
+      on: failure
+      channel: "#firmware-nightly"
+
+  sign:
+    stage: release
+    needs: [hardware-smoke]
+    <<: [*linux, *only-tags]
+    environment: release-signing     # requires approval from two maintainers
+    secrets: [FIRMWARE_SIGNING_KEY]
+    steps:
+      - run: ./ci/sign.sh dist/*.hfw --key-env FIRMWARE_SIGNING_KEY
+      - run: (cd dist && sha256sum *.hfw > SHA256SUMS)
+    artifacts:
+      paths: ["dist/"]
+
+  publish:
+    stage: release
+    needs: [sign]
+    <<: [*linux, *only-tags]
+    steps:
+      - run: ./ci/publish.sh dist/ --channel stable --version "${REF_NAME#driftwood-}"
+      - run: ./ci/release-notes.sh "${REF_NAME}" > notes.txt
+    notify:
+      on: success
+      channel: "#releases"
+      message: "Driftwood {{ ref_name }} is out: firmware for {{ matrix_count.firmware }} boards"
